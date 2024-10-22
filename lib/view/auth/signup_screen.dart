@@ -1,3 +1,4 @@
+import 'package:ebook_reader/view/auth/controller/auth_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -8,18 +9,17 @@ import '../../widgets/app_button.dart';
 import '../../widgets/app_input.dart';
 
 
-class SignupScreen extends StatelessWidget {
+class SignupScreen extends GetView<AuthController> {
    SignupScreen({super.key});
-  final _name = TextEditingController();
-  final _email = TextEditingController();
-  final _phone = TextEditingController();
-  final _pass = TextEditingController();
-  bool show = false;
   //slider
 
 
   @override
   Widget build(BuildContext context) {
+    //clear text field
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      controller.clearAll();
+    });
     return Scaffold(
       body: ListView(
         padding:const EdgeInsets.all(20),
@@ -41,28 +41,33 @@ class SignupScreen extends StatelessWidget {
           AppInput(
               hint: "Name",
               textType: TextInputType.name,
-              controller: _name),
+              controller: controller.name.value),
           const SizedBox(height: 15,),
 
 
           AppInput(
               hint: "Email",
               textType: TextInputType.emailAddress,
-              controller: _email),
+              controller: controller.email.value),
           const SizedBox(height: 15,),
 
           AppInput(
               hint: "Phone",
               textType: TextInputType.number,
-              controller: _phone),
+              controller: controller.phone.value),
           const SizedBox(height: 15,),
 
-          AppInput(
-            hint: "Password",
-            textType: TextInputType.visiblePassword,
-            controller: _pass,
-            obscureText: show,
-            suffixIcon: Icon(show?Icons.visibility_off:Icons.visibility,color: Colors.black,),
+          Obx((){
+              return AppInput(
+                hint: "Password",
+                textType: TextInputType.visiblePassword,
+                controller: controller.pass.value,
+                obscureText: controller.show.value,
+                suffixIcon: InkWell(
+                    onTap: ()=>controller.show.value = !controller.show.value,
+                    child: Icon(controller.show.value?Icons.visibility_off:Icons.visibility,color: Colors.black,)),
+              );
+            }
           ),
 
 
@@ -72,16 +77,20 @@ class SignupScreen extends StatelessWidget {
           const SizedBox(height: 30,),
 
 
-          Center(child: AppButton(
-            name: "Sign Up",
-            onClick: ()=>Get.toNamed(RouteName.appNavigation),
+          Center(child: Obx(() {
+              return AppButton(
+                name: "Sign Up",
+                isLoading: controller.isRegister.value,
+                onClick: ()=>controller.register(),
+              );
+            }
           ),
           ),
           const SizedBox(height: 20,),
 
           Center(
             child: InkWell(
-                onTap: ()=>Get.toNamed(RouteName.login),
+                onTap: ()=>Get.toNamed(AppRoute.login),
                 child:const Text("I have account. Login.",style: TextStyle(fontSize: 17,fontWeight: FontWeight.w600,color: Colors.indigo),)),
           ),
 

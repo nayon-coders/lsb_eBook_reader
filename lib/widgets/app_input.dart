@@ -1,4 +1,5 @@
 
+import 'package:ebook_reader/widgets/app_shimmer_pro.dart';
 import 'package:flutter/material.dart';
 
 import '../utility/app_color.dart';
@@ -16,7 +17,8 @@ class AppInput extends StatelessWidget {
     this.onClick,
     this.onChanged,
     this.maxLine = 1,
-    this.isValidatorNeed = true
+    this.isValidatorNeed = true,
+    this.isDataLoading = false
 
   });
   final String hint;
@@ -31,11 +33,14 @@ class AppInput extends StatelessWidget {
   final Function(String)? onChanged;
   final int maxLine;
   final bool isValidatorNeed;
+  final bool isDataLoading;
 
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
+    return isDataLoading
+        ? AppShimmerPro.circularShimmer(width: double.infinity, height: 50, borderRadius: 10)
+        : TextFormField(
       onTap: onClick,
       onChanged: onChanged,
       maxLines: maxLine,
@@ -56,7 +61,7 @@ class AppInput extends StatelessWidget {
       decoration: InputDecoration(
         contentPadding:const EdgeInsets.only(left: 15,),
         filled: true,
-        fillColor:AppColors.filleColor,
+        fillColor: AppColors.filleColor,
         hintText: hint,
         hintStyle:const TextStyle(fontWeight: FontWeight.w600,fontSize: 14,color: Colors.black),
 
