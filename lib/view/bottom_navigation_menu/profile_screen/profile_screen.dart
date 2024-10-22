@@ -1,12 +1,9 @@
 import 'package:ebook_reader/routes/route_name.dart';
-import 'package:ebook_reader/utility/app_assets.dart';
 import 'package:ebook_reader/utility/app_color.dart';
-import 'package:ebook_reader/widgets/app_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import '../favorite_screen/favorite_screen.dart';
 import 'screen/edit_profile.dart';
-import 'screen/favorite_screen.dart';
 import 'widget/list_menu.dart';
 import 'widget/profile_info_widgets.dart';
 

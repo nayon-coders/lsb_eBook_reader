@@ -1,57 +1,85 @@
+import 'package:ebook_reader/routes/route_name.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../utility/app_color.dart';
 import '../../../../widgets/app_button.dart';
-import '../screen/add_address.dart';
+import '../controller/shipping_address_controller.dart';
 import 'addrass_card.dart';
 
-class CustomBottomSheet extends GetxController{
+class CustomBottomSheet extends GetxController {
+  final ShippingAddressController addressController = Get.find<ShippingAddressController>();
 
-  void openBottomSheet(){
+  void openBottomSheet() {
     Get.bottomSheet(
-        Container(
-          padding:const EdgeInsets.all(10),
+      Obx(() {
+        // Null check before using data
+        if(addressController.isGetting.value){
+          return Center(child: CircularProgressIndicator(),);
+        }
+        if (addressController.getAddressModel.value.data == null ||
+            addressController.getAddressModel.value.data!.isEmpty) {
+          return Container(
+            padding: const EdgeInsets.all(10),
+            height: 600,
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+              color: Colors.white,
+            ),
+            child: const Center(
+              child: Text("No addresses available", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: AppColors.textBlack)),
+            ),
+          );
+        }
+
+        return Container(
+          padding: const EdgeInsets.all(10),
           height: 600,
           width: double.infinity,
-          decoration:const BoxDecoration(
-              borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
-              color: Colors.white
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+            color: Colors.white,
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
-              const Text("Select Address",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: AppColors.textBlack),),
-              const SizedBox(height: 10,),
-              const AddressCard(
-                  home: "Home",
-                  bgColor: Color(0xFFEEEEEE),
-                  addressName: "Motijheel, Mugda, Manda, Green Model town, Block c, Roade1,"),
-              const SizedBox(height: 10,),
-              const AddressCard(
-                  home: "Home",
-                  bgColor: Color(0xFFEEEEEE),
-                  addressName: "Motijheel, Mugda, Manda, Green Model town, Block c, Roade1,"),
-              const SizedBox(height: 10,),
-              const AddressCard(
-                  home: "Home",
-                  bgColor: Color(0xFFEEEEEE),
-                  addressName: "Motijheel, Mugda, Manda, Green Model town, Block c, Roade1,"),
-              const Spacer(),
-              AppButton(
-                  width: double.infinity,
-                  name: "Add new Address",
-                  onClick: (){
-                    Get.to(()=>AddAddress());
+              const Text(
+                "Select Address",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: AppColors.textBlack),
+              ),
+              const SizedBox(height: 10),
+              // Expanded to ensure proper height for ListView.builder
+              Expanded(
+                child: ListView.builder(
+                  itemCount: addressController.getAddressModel.value.data!.length,
+                  itemBuilder: (context, index) {
+                    final data = addressController.getAddressModel.value.data![index];
+                    return Column(
+                      children: [
+                        AddressCard(
+                          home: data.city!,
+                          bgColor: const Color(0xFFEEEEEE),
+                          addressName: data.address!,
+                        ),
+                        const SizedBox(height: 10),
+                      ],
+                    );
                   },
-              )
-
+                ),
+              ),
+              const SizedBox(height: 10),
+              AppButton(
+                width: double.infinity,
+                name: "Add new Address",
+                onClick: () {
+                  Get.toNamed(AppRoute.addShippingAddress);
+                },
+              ),
             ],
           ),
-
-        ));
+        );
+      }),
+    );
   }
-
-
 }

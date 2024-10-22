@@ -1,4 +1,5 @@
 
+import 'package:ebook_reader/data/binding/order_binding.dart';
 import 'package:ebook_reader/data/binding/reading_binding.dart';
 import 'package:ebook_reader/data/middleware/auth_middleware.dart';
 import 'package:ebook_reader/routes/route_name.dart';
@@ -9,6 +10,8 @@ import 'package:ebook_reader/view/bottom_navigation_menu/books_screen/screen/rea
 import 'package:ebook_reader/view/bottom_navigation_menu/books_screen/screen/single_book_screen.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/books_screen/screen/capter_screen.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/books_screen/screen/topics_screen.dart';
+import 'package:ebook_reader/view/bottom_navigation_menu/favorite_screen/favorite_screen.dart';
+import 'package:ebook_reader/view/bottom_navigation_menu/order_screen/screen/add_address.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/profile_screen/screen/edit_profile.dart';
 import 'package:get/get.dart';
 
@@ -45,7 +48,9 @@ class RoutePage{
     ),
     GetPage(
         name: AppRoute.orderScreen,
-        page: ()=>OrderScreen()
+        page: ()=>OrderScreen(),
+      binding: OrderBinding(),
+
     ),
 
 
@@ -83,6 +88,19 @@ class RoutePage{
         name: AppRoute.readingScreen,
         page: ()=>ReadingScreen(),
         binding: ReadingBinding()
+    ),
+    GetPage(
+        name: AppRoute.favoriteBooks,
+        page: ()=>FavoriteScreen(),
+      binding: HomeBinding(),
+
+    ),
+
+    GetPage(
+      name: AppRoute.addShippingAddress,
+      page: ()=>AddAddress(),
+      binding: OrderBinding(),
+
     ),
   ];
 }

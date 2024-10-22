@@ -1,4 +1,5 @@
 import 'package:ebook_reader/view/bottom_navigation_menu/books_screen/controller/book_controller.dart';
+import 'package:ebook_reader/view/bottom_navigation_menu/favorite_screen/controller/favorite_book_controller.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/home_screen/controller/controller.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/profile_screen/controller/favroit_controller.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/profile_screen/controller/profile_controller.dart';
@@ -12,5 +13,6 @@ class HomeBinding extends Bindings {
     Get.lazyPut<HomeController>(() => HomeController());
     Get.lazyPut<ProfileController>(() => ProfileController());
     Get.lazyPut<BookController>(() => BookController());
+    Get.lazyPut<FavoriteBookController>(() => FavoriteBookController());
   }
 }

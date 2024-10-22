@@ -1,4 +1,6 @@
+import 'package:ebook_reader/routes/route_name.dart';
 import 'package:ebook_reader/utility/app_color.dart';
+import 'package:ebook_reader/view/bottom_navigation_menu/order_screen/controller/shipping_address_controller.dart';
 import 'package:ebook_reader/widgets/app_input.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,14 +8,10 @@ import 'package:get/get.dart';
 import '../../../../widgets/app_button.dart';
 import '../order_screen.dart';
 
-class AddAddress extends StatelessWidget {
+class AddAddress extends GetView<ShippingAddressController> {
    AddAddress({super.key});
 
-  final _name = TextEditingController();
-  final _number = TextEditingController();
-  final _division = TextEditingController();
-  final _district = TextEditingController();
-  final _address = TextEditingController();
+  final _key = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -34,42 +32,67 @@ class AddAddress extends StatelessWidget {
         ),
         body: Padding(
           padding: const EdgeInsets.all(20.0),
-          child: ListView(
-            children: [
+          child: Form(
+            key: _key,
+            child: ListView(
+              children: [
 
-              //name
-              AppInput(
-                  hint: "Name",
-                  controller:_name
-              ),
-              const SizedBox(height: 15,),
-              AppInput(
-                  hint: "Contact Number",
-                  textType: TextInputType.number,
-                  controller:_number ),
-              const SizedBox(height: 15,),
+                //phone number
+                AppInput(
+                    hint: "Phone",
+                    controller:controller.phone.value,
+                  textType: TextInputType.phone,
+
+                ),
+
+                const SizedBox(height: 15,),
+
+                AppInput(
+                    hint: "Address",
+                    controller:controller.address.value
+                ),
+                const SizedBox(height: 15,),
+
+                //city
+                AppInput(
+                    hint: "City",
+                    textType: TextInputType.name,
+                    controller:controller.city.value
+                ),
+
+                const SizedBox(height: 15,),
+                AppInput(
+                  hint: "District Name",
+                  controller:controller.district.value,
+                ),
+                const SizedBox(height: 15,),
 
 
-              AppInput(hint: "Division Name", controller:_division ),
+                AppInput(
+                    hint: "Division Name",
+                    controller:controller.division.value
+                ),
 
-              const SizedBox(height: 15,),
-              AppInput(hint: "District Name", controller:_district ),
-
-              const SizedBox(height: 15,),
-
-              AppInput(hint: "Address", controller:_address ),
-
-
-
-            ],
+              ],
+            ),
           ),
         ),
         bottomNavigationBar:  Padding(
           padding: const EdgeInsets.all(8.0),
-          child: AppButton(
-            width: double.infinity,
-            name: "Save Address",
-            onClick: ()=>Get.to(()=>OrderScreen()),
+          child: Obx(() {
+              return AppButton(
+                isLoading: controller.isLoading.value,
+                width: double.infinity,
+                name: "Save Address",
+                onClick: (){
+                  if(_key.currentState!.validate()){
+                    controller.addShippingAddress();
+                    Get.toNamed(AppRoute.orderScreen);
+                  }
+
+                },
+              );
+            }
           ),
         ),
       ),

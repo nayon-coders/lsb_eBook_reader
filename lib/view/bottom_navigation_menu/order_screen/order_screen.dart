@@ -7,10 +7,11 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 
 import '../../../utility/app_color.dart';
+import 'controller/shipping_address_controller.dart';
 import 'widget/custom_bottom_sheet.dart';
 import 'widget/order_rice_text.dart';
 
-class OrderScreen extends StatelessWidget {
+class OrderScreen extends GetView<ShippingAddressController> {
    OrderScreen({super.key});
   final _coupon = TextEditingController();
   final bottomSheetContro = Get.put(CustomBottomSheet());
@@ -166,12 +167,13 @@ class OrderScreen extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: ()=>bottomSheetContro.openBottomSheet(),
-                    child: Text("Change",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w500,color: AppColors.linkColor),))
+                    child: const Text("Change",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w500,color: AppColors.linkColor),))
 
               ],
             ),
 
            const SizedBox(height: 10,),
+
             //address
             Container(
               padding:const EdgeInsets.all(10),
@@ -187,7 +189,7 @@ class OrderScreen extends StatelessWidget {
                   Text("Home",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 16,color: AppColors.textBlack),),
                   SizedBox(
                     width: 300,
-                      child: Text("Motijheel, Mugda, Manda, Green Model town, Block c, Roade1, ",
+                      child: Text("mukda,dhaka,Bangladesh",
                         style: TextStyle(fontWeight: FontWeight.w400,fontSize: 15,color: AppColors.textBlack),)),
                 ],
               ),

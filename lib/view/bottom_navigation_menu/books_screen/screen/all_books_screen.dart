@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ebook_reader/app_config.dart';
 import 'package:ebook_reader/routes/route_name.dart';
 import 'package:ebook_reader/widgets/app_shimmer_pro.dart';
 import 'package:flutter/material.dart';
@@ -53,11 +55,11 @@ class AllBooksScreen extends GetView<BookController> {
                     onTap: (){
                       controller.bookId.value = data!.bookId!.toString();
                       controller.getBookById();
-                      Get.toNamed(AppRoute.singleBook);
+                      Get.toNamed(AppRoute.singleBook,arguments: data);
                     },
                     index: index,
                     bookName: data.bookName! ?? "Book Name",
-                    bookImage: Assets.book1,
+                    bookImage: data.image!,
                     bookPrice: "৳ ${data.price ?? 0.00}",
                     bookRating: 3,
 
@@ -110,7 +112,14 @@ class SingleBookWidgets extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 color: AppColors.cardAmber,
               ),
-              child: Image.asset(index.isEven?Assets.book1:Assets.book2,height:120,width: 120,fit: BoxFit.cover,),
+              child: CachedNetworkImage(
+                imageUrl:bookImage,
+                height: 120,
+                width: 120,
+                fit: BoxFit.cover,
+                placeholder: (context, url) => const CircularProgressIndicator(),  // Loading indicator
+                errorWidget: (context, url, error) => Icon(Icons.error),     // Error indicator
+              ),
             ),
 
             const SizedBox(height: 6,),
@@ -146,7 +155,7 @@ class SingleBookWidgets extends StatelessWidget {
 
             //price
             Padding(
-              padding:  EdgeInsets.only(left: 6.0),
+              padding:const  EdgeInsets.only(left: 6.0),
               child: Text("${bookPrice}",style:const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,

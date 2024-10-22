@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ebook_reader/routes/route_name.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/profile_screen/controller/favroit_controller.dart';
 import 'package:ebook_reader/widgets/app_button.dart';
@@ -6,6 +7,7 @@ import 'package:ebook_reader/widgets/bg_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../app_config.dart';
 import '../../../../utility/app_assets.dart';
 import '../../../../utility/app_color.dart';
 import 'capter_screen.dart';
@@ -19,6 +21,7 @@ class SingleBookScreen extends GetView<BookController> {
 
   @override
   Widget build(BuildContext context) {
+    final bookData = Get.arguments;
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       favroitController.checkFavList(controller.bookId.value); //check favorite list
     });
@@ -76,8 +79,8 @@ class SingleBookScreen extends GetView<BookController> {
                               right: 0,
                               child: Column(
                                 children: [
-                                  Text("${controller.singleBookModel.value.data!.bookName}",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 16,color: Colors.black),),
-                                  Text("${controller.singleBookModel.value.data!.categoryName}",style: TextStyle(fontWeight: FontWeight.w400,fontSize: 13,color: Colors.black),),
+                                  Text("${bookData.bookName}",style: const TextStyle(fontWeight: FontWeight.w600,fontSize: 16,color: Colors.black),),
+                                  Text("${bookData.categoryName}",style:const TextStyle(fontWeight: FontWeight.w400,fontSize: 13,color: Colors.black),),
 
                                 ],
                               ),
@@ -128,7 +131,14 @@ class SingleBookScreen extends GetView<BookController> {
                                 bottom: 60,
                                 left: 0,
                                 right: 0,
-                                child: Image.asset(Assets.book3,height: 200,width: 200,fit: BoxFit.contain,)),
+                                child: CachedNetworkImage(
+                                  imageUrl:bookData.image,
+                                  height: 120,
+                                  width: 120,
+                                  fit: BoxFit.cover,
+                                  placeholder: (context, url) => const CircularProgressIndicator(),  // Loading indicator
+                                  errorWidget: (context, url, error) => Icon(Icons.error),     // Error indicator
+                                ),),
 
                             Positioned(
                               bottom: -30,
@@ -156,12 +166,12 @@ class SingleBookScreen extends GetView<BookController> {
 
                                     //rating
                                     Container(
-                                      padding: EdgeInsets.all(5),
+                                      padding: const EdgeInsets.all(5),
                                       height: 40,
                                       width: 90,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(30),
-                                        color: Color(0xFFFFF1BF),
+                                        color: const Color(0xFFFFF1BF),
                                       ),
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -211,7 +221,7 @@ class SingleBookScreen extends GetView<BookController> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              SizedBox(height: 60,),
+                              const SizedBox(height: 60,),
                               Text("Book description",
                                 style: TextStyle(fontWeight: FontWeight.w600,
                                     fontSize: 20,
@@ -219,8 +229,8 @@ class SingleBookScreen extends GetView<BookController> {
                               ),
 
                               const SizedBox(height: 20,),
-                              Text("${controller.singleBookModel.value.data!.sortDescription}",
-                                style: TextStyle(fontWeight: FontWeight.w400,
+                              Text("${bookData.sortDescription}",
+                                style: const TextStyle(fontWeight: FontWeight.w400,
                                     fontSize: 16,
                                     color: AppColors.textBlack)
                               ),

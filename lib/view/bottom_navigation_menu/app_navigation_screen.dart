@@ -6,6 +6,7 @@ import '../bottom_navigation_menu/home_screen/home_screen.dart';
 import '../bottom_navigation_menu/profile_screen/profile_screen.dart';
 import 'books_screen/screen/all_books_screen.dart';
 import 'controller/controller.dart';
+import 'favorite_screen/favorite_screen.dart';
 import 'save_screen/save_screen.dart';
 
 class AppNavigationScreen extends StatefulWidget {
@@ -29,6 +30,8 @@ class _AppNavigationScreenState extends State<AppNavigationScreen> {
           case 2:
             return const SaveScreen();
           case 3:
+            return  FavoriteScreen();
+          case 4:
             return const ProfileScreen();
           default:
             return HomeScreen();
@@ -81,9 +84,19 @@ class _AppNavigationScreenState extends State<AppNavigationScreen> {
             ),
             BottomNavigationBarItem(
               backgroundColor: AppColors.bottomNev,
+                icon: ColorFiltered(
+                  colorFilter: ColorFilter.mode(
+                      controller.currentIndex==3?Colors.white:AppColors.textBlack,
+                      BlendMode.srcIn
+                  ),
+                    child:const Icon(Icons.favorite_border,size: 30,)),
+                label: "",
+            ),
+            BottomNavigationBarItem(
+              backgroundColor: AppColors.bottomNev,
                 icon:ColorFiltered(
                   colorFilter: ColorFilter.mode(
-                    controller.currentIndex==3?Colors.white:AppColors.textBlack,
+                    controller.currentIndex==4?Colors.white:AppColors.textBlack,
                     BlendMode.srcIn,
                   ),
 

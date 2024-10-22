@@ -44,4 +44,9 @@ class AppConfig {
   static const String SUBTOPIC_GET_BY_ID = '$BASE_URL/sub-toc/';
 
 
+  //Shipping Address
+  static const String ADD_SHIPPING_ADDRESS ="$BASE_URL/delivery-address/create"; //POST
+  static const String GET_SHIPPING_ADDRESS ="$BASE_URL/delivery-address"; //GET
+
+
 }
