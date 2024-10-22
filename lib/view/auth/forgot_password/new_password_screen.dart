@@ -1,7 +1,6 @@
 import 'package:ebook_reader/routes/route_name.dart';
 import 'package:ebook_reader/widgets/app_button.dart';
 import 'package:ebook_reader/widgets/app_input.dart';
-import 'package:ebook_reader/widgets/bg_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
