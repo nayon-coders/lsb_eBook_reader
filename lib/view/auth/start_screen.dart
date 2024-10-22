@@ -16,7 +16,7 @@ class StartScreen extends StatelessWidget {
       body: Padding(
         padding:const EdgeInsets.all(20),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
 
           children: [
@@ -65,7 +65,7 @@ class StartScreen extends StatelessWidget {
             AppButton(
                 name: "Stay your journey",
                 width: 200,
-                onClick: ()=>Get.toNamed(RouteName.login)),
+                onClick: ()=>Get.toNamed(AppRoute.login)),
 
            const SizedBox(height: 20,),
 

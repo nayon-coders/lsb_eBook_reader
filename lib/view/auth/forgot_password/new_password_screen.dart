@@ -31,7 +31,7 @@ class NewPasswordScreen extends StatelessWidget {
             AppInput(hint: "New Password", controller: _newPass),
 
            const SizedBox(height: 30,),
-            Center(child: AppButton(name: "Save", onClick: ()=>Get.toNamed(RouteName.login)))
+            Center(child: AppButton(name: "Save", onClick: ()=>Get.toNamed(AppRoute.login)))
 
           ],
         ),

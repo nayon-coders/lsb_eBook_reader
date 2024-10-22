@@ -3,10 +3,15 @@ import 'package:ebook_reader/routes/route_page.dart';
 import 'package:ebook_reader/utility/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-void main() {
+import 'package:shared_preferences/shared_preferences.dart';
+SharedPreferences? sharedPreferences;
+void main()async {
+   WidgetsFlutterBinding.ensureInitialized();
+  sharedPreferences = await SharedPreferences.getInstance() as SharedPreferences;
   runApp(const MyApp());
 }
+
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -20,7 +25,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: AppColors.bgColor,
       ),
       getPages: RoutePage.routes,
-      initialRoute: RouteName.start,
+      initialRoute: AppRoute.start,
 
 
     );

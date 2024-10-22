@@ -1,10 +1,10 @@
-import 'package:ebook_reader/view/home_screen/screen/single_book_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import '../../../routes/route_name.dart';
 import '../../../utility/app_assets.dart';
 import '../../../utility/app_color.dart';
+import '../bottom_navigation_menu/books_screen/screen/single_book_screen.dart';
 
 
 class AdmissionScreen extends StatelessWidget {
@@ -16,7 +16,7 @@ class AdmissionScreen extends StatelessWidget {
       backgroundColor: AppColors.bgColor,
       appBar: AppBar(
         leading: IconButton(
-          onPressed: ()=>Get.toNamed(RouteName.appNavigation),
+          onPressed: ()=>Get.toNamed(AppRoute.appNavigation),
           icon:const Icon(Icons.arrow_back_ios,color: Colors.black,),
         ),
         backgroundColor: AppColors.bgColor,
@@ -37,7 +37,7 @@ class AdmissionScreen extends StatelessWidget {
             ),
             itemBuilder: (context,index){
               return GestureDetector(
-                onTap: ()=>Get.to(()=>const SingleBookScreen()),
+                onTap: ()=>Get.to(()=> SingleBookScreen()),
                 child: Container(
                   margin:const EdgeInsets.all(10),
                   //height: 220,
