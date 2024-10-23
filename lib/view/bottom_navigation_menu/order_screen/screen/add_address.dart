@@ -45,12 +45,7 @@ class AddAddress extends GetView<ShippingAddressController> {
 
                 ),
 
-                const SizedBox(height: 15,),
 
-                AppInput(
-                    hint: "Address",
-                    controller:controller.address.value
-                ),
                 const SizedBox(height: 15,),
 
                 //city
@@ -71,6 +66,13 @@ class AddAddress extends GetView<ShippingAddressController> {
                 AppInput(
                     hint: "Division Name",
                     controller:controller.division.value
+                ),
+                const SizedBox(height: 15,),
+
+                AppInput(
+                    hint: "Address",
+                    controller:controller.address.value,
+                  maxLine: 3,
                 ),
 
               ],

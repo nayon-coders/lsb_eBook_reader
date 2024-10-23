@@ -49,4 +49,8 @@ class AppConfig {
   static const String GET_SHIPPING_ADDRESS ="$BASE_URL/delivery-address"; //GET
 
 
+  //My Order
+  static const String GET_MY_ORDER ="$BASE_URL/order/my"; //GET USER
+
+
 }

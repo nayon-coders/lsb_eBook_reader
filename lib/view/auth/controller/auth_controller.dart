@@ -4,6 +4,7 @@ import 'package:ebook_reader/routes/route_name.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../app_config.dart';
 import '../../../data/model/my_profile_model.dart';
@@ -102,6 +103,17 @@ class AuthController extends GetxController{
       Get.snackbar("Error", "Invalid email or password",
           snackPosition: SnackPosition.TOP, backgroundColor: Colors.red);
     }
+  }
+
+
+
+  // logout
+  logout()async{
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    _pref.remove("token");
+    _pref.remove("id");
+    Get.offAllNamed(AppRoute.login);
+
   }
 
   //clear all input feild

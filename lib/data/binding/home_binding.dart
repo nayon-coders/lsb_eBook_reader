@@ -6,6 +6,8 @@ import 'package:ebook_reader/view/bottom_navigation_menu/profile_screen/controll
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
+import '../../view/bottom_navigation_menu/my_order_screen/controller/my_order_controller.dart';
+
 //home binding
 class HomeBinding extends Bindings {
   @override
@@ -14,5 +16,6 @@ class HomeBinding extends Bindings {
     Get.lazyPut<ProfileController>(() => ProfileController());
     Get.lazyPut<BookController>(() => BookController());
     Get.lazyPut<FavoriteBookController>(() => FavoriteBookController());
+    Get.lazyPut<MyOrderController>(() => MyOrderController());
   }
 }

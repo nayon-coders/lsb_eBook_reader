@@ -1,5 +1,7 @@
 import 'package:ebook_reader/routes/route_name.dart';
 import 'package:ebook_reader/utility/app_color.dart';
+import 'package:ebook_reader/view/auth/controller/auth_controller.dart';
+import 'package:ebook_reader/widgets/alert_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../favorite_screen/favorite_screen.dart';
@@ -8,7 +10,8 @@ import 'widget/list_menu.dart';
 import 'widget/profile_info_widgets.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+   ProfileScreen({super.key});
+  final logoutController = Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +61,22 @@ class ProfileScreen extends StatelessWidget {
          const Divider(),
 
           ListMenu(onClick: (){}, name: "Delete Account", icon: Icons.delete),
-          ListMenu(onClick: ()=>Get.offAllNamed(AppRoute.login), name: "Logout", icon: Icons.login),
+          ListMenu(onClick: ()async{
+            Get.defaultDialog(
+              title: "Confirm Logout",
+              middleText: "Are you sure you want to logout?",
+              textConfirm: "Yes",
+              textCancel: "No",
+              confirmTextColor: Colors.white,
+              onConfirm: () {
+                logoutController.logout();  // Logout function call korchi
+              },
+              onCancel: () {
+                Get.back();  // Popup ta bandho korchi
+              },
+            );
+
+          }, name: "Logout", icon: Icons.login),
 
 
         ],

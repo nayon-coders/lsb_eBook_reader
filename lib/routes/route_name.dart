@@ -14,4 +14,5 @@ class AppRoute{
   static const String readingScreen = "/read-book";
   static const String favoriteBooks = "/favorite-books";
   static const String addShippingAddress = "/addShipping-address";
+  static const String myOrderScreen = "/my_order_screen";
 }

@@ -1,15 +1,20 @@
 import 'dart:convert';
+import 'dart:ffi';
+import 'dart:io';
 
 import 'package:ebook_reader/data/global_controller/global_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../app_config.dart';
 import '../../../../data/model/my_profile_model.dart';
 import '../../../../data/services/api_services.dart';
 import '../../../../main.dart';
 import '../../../../routes/route_name.dart';
+import 'package:http/http.dart' as http;
 import '../../../../utility/app_assets.dart';
 class ProfileController extends GetxController{
 
@@ -48,6 +53,11 @@ class ProfileController extends GetxController{
   RxList  items = ["student","teacher","banker"].obs;
   RxString selectedItem = "student".obs;
   RxBool show = false.obs;
+
+  //image
+  File? selectedImage;
+  final picker = ImagePicker();
+
 
   //loading rx
   var isLoading = false.obs;
@@ -121,6 +131,9 @@ class ProfileController extends GetxController{
           snackPosition: SnackPosition.TOP, backgroundColor: Colors.red);
     }
   }
+
+  //image selected
+
 
 
   //update user password
