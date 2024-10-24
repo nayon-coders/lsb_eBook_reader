@@ -1,20 +1,30 @@
 import 'package:ebook_reader/routes/route_name.dart';
 import 'package:ebook_reader/utility/app_assets.dart';
+import 'package:ebook_reader/view/bottom_navigation_menu/order_screen/widget/delivery_address_view.dart';
+import 'package:ebook_reader/view/bottom_navigation_menu/order_screen/widget/payment_method_view.dart';
+import 'package:ebook_reader/view/bottom_navigation_menu/my_order_screen/controller/payment_controller.dart';
 import 'package:ebook_reader/widgets/app_button.dart';
 import 'package:ebook_reader/widgets/app_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 
-import '../../../utility/app_color.dart';
-import 'controller/shipping_address_controller.dart';
-import 'widget/custom_bottom_sheet.dart';
-import 'widget/order_rice_text.dart';
+import '../../../../data/model/single_book_model.dart';
+import '../../../../utility/app_color.dart';
+import '../controller/shipping_address_controller.dart';
+import '../widget/custom_bottom_sheet.dart';
+import '../widget/order_rice_text.dart';
 
 class OrderScreen extends GetView<ShippingAddressController> {
    OrderScreen({super.key});
   final _coupon = TextEditingController();
-  final bottomSheetContro = Get.put(CustomBottomSheet());
+
+  //find controller
+   final ShippingAddressController shippingAddressController = Get.find<ShippingAddressController>();
+   final PaymentController paymentController = Get.find<PaymentController>();
+
+   //argument store
+   BookInfo? bookInfo = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +38,7 @@ class OrderScreen extends GetView<ShippingAddressController> {
           onPressed: ()=>Get.toNamed(AppRoute.appNavigation),
           icon:const Icon(Icons.arrow_back_ios,color: Colors.black,),
         ),
-        title: Text("Book Night - Order",style:const TextStyle(fontWeight: FontWeight.w600,fontSize: 18,color: AppColors.textBlack),),
+        title: Text("${bookInfo!.bookName} - Order",style:const TextStyle(fontWeight: FontWeight.w600,fontSize: 18,color: AppColors.textBlack),)
       ),
       body: SingleChildScrollView(
         padding:const EdgeInsets.all(20),
@@ -38,7 +48,7 @@ class OrderScreen extends GetView<ShippingAddressController> {
           children: [
             //book details
             Container(
-              height: 80,
+              height: 100,
               width:size.width ,
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -54,43 +64,37 @@ class OrderScreen extends GetView<ShippingAddressController> {
                       color: AppColors.cardAmber,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Image.asset(Assets.book1,height:40,width:20,fit: BoxFit.cover,),
+                    child: Image.network(bookInfo!.image!,fit: BoxFit.cover,),
                   ),
                   const SizedBox(width: 10,),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
 
                         //book name
-                        Text("Book Night",style: TextStyle(
+                        Text("${bookInfo!.bookName}",style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w500,
                             color: AppColors.textBlack),
                         ),
+                        SizedBox(height: 5,),
 
                         //rating
-                        Padding(
-                          padding: const EdgeInsets.only(left: 6.0),
-                          child: RatingBar(
-                            itemSize: 13,
-                            minRating: 1,
-                            maxRating: 5,
-                            initialRating: 3,
-                            allowHalfRating: true,
-                            ratingWidget: RatingWidget(
-                                full:const Icon(Icons.star,color: Colors.amber,size: 13,),
-                                half: const Icon(Icons.star_half, color: Colors.amber,size: 13,),
-                                empty:const Icon(Icons.star,color: Colors.grey,size: 13,)),
-                            onRatingUpdate: (v){},
-                            updateOnDrag: true,
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Icon(Icons.star,color: Colors.amber,size: 17,),
+                            Text("(${bookInfo!.averageRating!.toStringAsFixed(2)})")
+                          ],
                         ),
+                        SizedBox(height: 5,),
 
                         //Price
-                        Text("\$ 90.45",style: TextStyle(
+                        Text("৳ ${bookInfo!.price!.toStringAsFixed(2)}",style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                             color: AppColors.textBlack),
@@ -113,87 +117,15 @@ class OrderScreen extends GetView<ShippingAddressController> {
                   fontSize: 18,color: AppColors.textBlack),
             ),
            const SizedBox(height: 10,),
-            //bikash
-            Container(
-              padding:const EdgeInsets.only(left: 10,right: 10),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: ListTile(
-                contentPadding: EdgeInsets.zero,
-                tileColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                leading: Image.asset(Assets.bikash,height: 50,width: 60,fit: BoxFit.cover,),
-                title:const Text("Bikash",style: TextStyle(fontSize: 15,fontWeight: FontWeight.w600,color: AppColors.textBlack),),
 
-              ),
-            ),
+            //payment method view
+            PaymentMethodView(),
 
-            const SizedBox(height: 10,),
-            //Nagad
-            Container(
-              padding:const EdgeInsets.only(left: 10,right: 10),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: ListTile(
-                contentPadding: EdgeInsets.zero,
-                tileColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                leading: Image.asset(Assets.nagad,height: 50,width: 60,fit: BoxFit.cover,),
-                title:const Text("Nagod",style: TextStyle(fontSize: 15,fontWeight: FontWeight.w600,color: AppColors.textBlack),),
-
-              ),
-            ),
 
             const SizedBox(height:20,),
             //Shopping address
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text("Shipping Address",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18,
-                      color: AppColors.textBlack,
-                  ),
-                ),
-                InkWell(
-                  onTap: ()=>bottomSheetContro.openBottomSheet(),
-                    child: const Text("Change",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w500,color: AppColors.linkColor),))
+            ShippingAddressView(),
 
-              ],
-            ),
-
-           const SizedBox(height: 10,),
-
-            //address
-            Container(
-              padding:const EdgeInsets.all(10),
-              width: size.width,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.white,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Home",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 16,color: AppColors.textBlack),),
-                  SizedBox(
-                    width: 300,
-                      child: Text("mukda,dhaka,Bangladesh",
-                        style: TextStyle(fontWeight: FontWeight.w400,fontSize: 15,color: AppColors.textBlack),)),
-                ],
-              ),
-            ),
 
             const SizedBox(height: 50,),
             AppInput(

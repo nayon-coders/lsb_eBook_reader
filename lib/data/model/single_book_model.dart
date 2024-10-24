@@ -40,9 +40,9 @@ class BookInfo {
   final String? title;
   final String? language;
   final String? publisher;
-  final String? publicationYear;
-  final String? firstEditionYear;
-  final String? lastEditionYear;
+  final DateTime? publicationYear;
+  final DateTime? firstEditionYear;
+  final DateTime? lastEditionYear;
   final String? publisherName;
   final String? freeOrPaid;
   final int? price;
@@ -57,6 +57,9 @@ class BookInfo {
   final String? categoryName;
   final int? mainToc;
   final int? subToc;
+  final int? totalRating;
+  final double? averageRating;
+  final List<Rating>? rating;
 
   BookInfo({
     this.bookId,
@@ -83,6 +86,9 @@ class BookInfo {
     this.categoryName,
     this.mainToc,
     this.subToc,
+    this.totalRating,
+    this.averageRating,
+    this.rating,
   });
 
   factory BookInfo.fromJson(Map<String, dynamic> json) => BookInfo(
@@ -93,9 +99,9 @@ class BookInfo {
     title: json["title"],
     language: json["language"],
     publisher: json["publisher"],
-    publicationYear: json["publication_year"],
-    firstEditionYear: json["first_edition_year"],
-    lastEditionYear: json["last_edition_year"],
+    publicationYear: json["publication_year"] == null ? null : DateTime.parse(json["publication_year"]),
+    firstEditionYear: json["first_edition_year"] == null ? null : DateTime.parse(json["first_edition_year"]),
+    lastEditionYear: json["last_edition_year"] == null ? null : DateTime.parse(json["last_edition_year"]),
     publisherName: json["publisher_name"],
     freeOrPaid: json["free_or_paid"],
     price: json["price"],
@@ -110,6 +116,9 @@ class BookInfo {
     categoryName: json["category_name"],
     mainToc: json["main_toc"],
     subToc: json["sub_toc"],
+    totalRating: json["total_rating"],
+    averageRating: json["average_rating"]?.toDouble(),
+    rating: json["rating"] == null ? [] : List<Rating>.from(json["rating"]!.map((x) => Rating.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -120,9 +129,9 @@ class BookInfo {
     "title": title,
     "language": language,
     "publisher": publisher,
-    "publication_year": publicationYear,
-    "first_edition_year": firstEditionYear,
-    "last_edition_year": lastEditionYear,
+    "publication_year": publicationYear?.toIso8601String(),
+    "first_edition_year": firstEditionYear?.toIso8601String(),
+    "last_edition_year": lastEditionYear?.toIso8601String(),
     "publisher_name": publisherName,
     "free_or_paid": freeOrPaid,
     "price": price,
@@ -137,5 +146,40 @@ class BookInfo {
     "category_name": categoryName,
     "main_toc": mainToc,
     "sub_toc": subToc,
+    "total_rating": totalRating,
+    "average_rating": averageRating,
+    "rating": rating == null ? [] : List<dynamic>.from(rating!.map((x) => x.toJson())),
+  };
+}
+
+class Rating {
+  final int? id;
+  final int? userId;
+  final int? bookId;
+  final double? rating;
+  final String? feedback;
+
+  Rating({
+    this.id,
+    this.userId,
+    this.bookId,
+    this.rating,
+    this.feedback,
+  });
+
+  factory Rating.fromJson(Map<String, dynamic> json) => Rating(
+    id: json["id"],
+    userId: json["user_id"],
+    bookId: json["book_id"],
+    rating: json["rating"]?.toDouble(),
+    feedback: json["feedback"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "user_id": userId,
+    "book_id": bookId,
+    "rating": rating,
+    "feedback": feedback,
   };
 }

@@ -10,10 +10,12 @@ import '../category_screen/controller/book_controller.dart';
 
 class AllBooks extends GetView<BookController> {
    AllBooks({super.key});
-  final controller = Get.put(BookController());
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      controller.getAllBooks();
+    });
     return Scaffold(
       backgroundColor: AppColors.bgColor,
       appBar: AppBar(
@@ -55,7 +57,7 @@ class AllBooks extends GetView<BookController> {
                   return SingleBookWidgets(
                     onTap: (){
                       controller.bookId.value = data.bookId!.toString();
-                      controller.getBookById();
+
                       Get.toNamed(AppRoute.singleBook,arguments: data);
                     },
                     index: index,

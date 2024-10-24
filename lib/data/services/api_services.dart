@@ -10,6 +10,7 @@ class ApiServices{
   static Future<http.Response> getApi(String url) async {
     var data = await http.get(Uri.parse(url),
       headers: {
+        'Content-Type': 'application/json',
         'Authorization': 'Bearer ${sharedPreferences!.getString("token")}'
       }
     );
@@ -51,13 +52,18 @@ class ApiServices{
 
   //delete api
   static Future<http.Response> deleteApi(String url) async {
-    return await http.delete(Uri.parse(url),
+    var data = await http.delete(Uri.parse(url),
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
         'Authorization': 'Bearer ${sharedPreferences!.getString("token")}'
       }
     );
+    print("DELETE API RESPONSE TOKEN: ${url}");
+    print("DELETE API RESPONSE RESPONSE: ${data.body}");
+    print("DELETE API RESPONSE RESPONSE: ${data.statusCode}");
+
+    return data;
+
   }
 
 

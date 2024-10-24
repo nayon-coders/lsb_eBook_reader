@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ebook_reader/view/admission/admission.dart';
+import 'package:ebook_reader/view/bottom_navigation_menu/app_navigation_screen.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/home_screen/controller/menu_button_controller.dart';
 import 'package:ebook_reader/view/my_books/my_books.dart';
 import 'package:ebook_reader/widgets/app_shimmer_pro.dart';
@@ -129,10 +130,11 @@ class HomeScreen extends GetView<HomeController> {
   //CardMenu List
   List<Map<String,dynamic>> menuItems=[
     {"name": "পড়াশোনা", "image": Assets.study, "screen": const StudyScreen()},
-    {"name": "আমার বই", "image": Assets.mybook, "screen": const MyBooks()},
-    {"name": "এডমিশন", "image": Assets.admission, "screen": const AdmissionScreen()},
-    {"name": "পড়াশোনা", "image": Assets.study, "screen": const StudyScreen()},
-    {"name": "আমার বই", "image": Assets.mybook, "screen": const MyBooks()},
-    {"name": "এডমিশন", "image": Assets.admission, "screen": const AdmissionScreen()},
+    {"name": "আমার বই", "image": Assets.mybook, "screen": const AppNavigationScreen()},
+   // {"name": "আমার বই", "image": Assets.mybook, "screen": const MyBooks()},
+    // {"name": "এডমিশন", "image": Assets.admission, "screen": const AdmissionScreen()},
+    // {"name": "পড়াশোনা", "image": Assets.study, "screen": const StudyScreen()},
+    // {"name": "আমার বই", "image": Assets.mybook, "screen": const MyBooks()},
+    // {"name": "এডমিশন", "image": Assets.admission, "screen": const AdmissionScreen()},
   ];
 }

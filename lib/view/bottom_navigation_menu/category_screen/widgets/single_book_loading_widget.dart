@@ -20,7 +20,7 @@ class SingleBookLoadingWidget extends StatelessWidget {
           height: size.height*0.4,
           width: size.width,
           decoration:const BoxDecoration(
-            color: AppColors.cardAmber,
+            color: AppColors.bottomNev ,
             borderRadius: BorderRadius.only(bottomLeft: Radius.circular(6),bottomRight: Radius.circular(6)),
           ),
           child: AppShimmerPro.circularShimmer(

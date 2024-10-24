@@ -1,8 +1,11 @@
 import 'dart:convert';
-
 import 'package:ebook_reader/app_config.dart';
 import 'package:ebook_reader/data/services/api_services.dart';
+import 'package:ebook_reader/view/bottom_navigation_menu/category_screen/controller/mark_text_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:html/parser.dart' as html_parser;
+import 'package:html/dom.dart' as dom;
 import 'package:get/get.dart';
 
 import '../../../../data/model/peragraphModel.dart';
@@ -37,6 +40,7 @@ class ReadingController extends GetxController {
   RxBool isLoading = true.obs;
 
   RxInt currentPage = 1.obs;
+  RxString peraId = "".obs;
   
   //get peragraph 
   getParagraph(ID)async{
@@ -44,31 +48,71 @@ class ReadingController extends GetxController {
     var response = await ApiServices.getApi(AppConfig.PERAGRAPH_GET_BY_ID+"$ID");
     if(response.statusCode == 200){
       peragraphModel.value = PeragraphModel.fromJson(jsonDecode(response.body));
-      totalPageWithText(peragraphModel.value.data!.first!.content!, 5);
+      splitHtmlByWords(peragraphModel.value.data!.first!.content!, 150);
+      peraId.value = peragraphModel.value.data!.first!.paraId!.toString();
     }
     isLoading.value = false;
   }
 
 
+  List<String> splitHtmlByWords(String htmlContent, int wordsPerPage) {
+    // Parse the HTML content
+    dom.Document document = html_parser.parse(htmlContent);
 
-  List<String> totalPageWithText(String text, int linesPerPage) {
-    print("totalPageWithText called with linesPerPage: $linesPerPage");
-    List<String> lines = text.split('\n');
     List<String> result = [];
+    StringBuffer pageContent = StringBuffer();
+    int wordCount = 0;
 
-    for (int i = 0; i < lines.length; i += linesPerPage) {
-      int end = (i + linesPerPage < lines.length) ? i + linesPerPage : lines.length;
-      result.add(lines.sublist(i, end).join('\n'));
+    // Recursively process each node
+    void processNode(dom.Node node) {
+      if (node is dom.Text) {
+        // Split text content by words
+        List<String> words = node.text.split(RegExp(r'\s+'));
+
+        for (var word in words) {
+          if (word.trim().isNotEmpty) {
+            pageContent.write(word + ' ');
+            wordCount++;
+          }
+          if (wordCount >= wordsPerPage) {
+            // Add the current content as a page and reset
+            result.add(pageContent.toString());
+            pageContent.clear();
+            wordCount = 0;
+          }
+        }
+      } else if (node is dom.Element) {
+        // Write the opening tag
+        pageContent.write('<${node.localName}');
+
+        // Add attributes if any
+        node.attributes.forEach((key, value) {
+          pageContent.write(' $key="$value"');
+        });
+        pageContent.write('>');
+
+        // Process child nodes
+        node.nodes.forEach(processNode);
+
+        // Write the closing tag
+        pageContent.write('</${node.localName}>');
+      }
     }
 
-    print("pages --- ${result.length}"); // Print the number of pages created
+    document.body?.nodes.forEach(processNode);
+
+    // Add any remaining content as the last page
+    if (pageContent.isNotEmpty) {
+      result.add(pageContent.toString());
+    }
+
     totalBookPages.value = result;
     return result;
   }
 
 
 
-  //clear all static data
+//clear all static data
   clearAllData(){
     currentPage.value = 1;
     fontSize.value = 16; // Reset the font size to 14

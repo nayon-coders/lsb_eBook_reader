@@ -18,6 +18,7 @@ import 'package:get/get.dart';
 import '../data/binding/auth_binding.dart';
 import '../data/binding/book_controller_binding.dart';
 import '../data/binding/home_binding.dart';
+import '../data/binding/order_create_binding.dart';
 import '../data/binding/profile_binding.dart';
 import '../view/bottom_navigation_menu/app_navigation_screen.dart';
 import '../view/bottom_navigation_menu/category_screen/screen/capter_screen.dart';
@@ -25,7 +26,7 @@ import '../view/bottom_navigation_menu/category_screen/screen/catagory_books.dar
 import '../view/bottom_navigation_menu/category_screen/screen/reading_screen.dart';
 import '../view/bottom_navigation_menu/category_screen/screen/single_book_screen.dart';
 import '../view/bottom_navigation_menu/category_screen/screen/topics_screen.dart';
-import '../view/bottom_navigation_menu/order_screen/order_screen.dart';
+import '../view/bottom_navigation_menu/order_screen/screen/order_screen.dart';
 class RoutePage{
   static List<GetPage<dynamic>> routes=[
 
@@ -50,7 +51,7 @@ class RoutePage{
     GetPage(
         name: AppRoute.appNavigation,
         page: ()=>AppNavigationScreen(),
-        binding: HomeBinding()
+        bindings: [HomeBinding(), OrderBinding()]
     ),
     GetPage(
         name: AppRoute.myOrderScreen,
@@ -90,7 +91,7 @@ class RoutePage{
     GetPage(
         name: AppRoute.orderScreen,
         page: ()=>OrderScreen(),
-      binding: OrderBinding(),
+      binding: OrderCreateBinding(),
 
     ),
 
@@ -135,7 +136,7 @@ class RoutePage{
     GetPage(
       name: AppRoute.addShippingAddress,
       page: ()=>AddAddress(),
-      binding: OrderBinding(),
+      binding: OrderCreateBinding(),
 
     ),
   ];

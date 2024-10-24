@@ -15,6 +15,10 @@ class ChapterScreen extends GetView<BookController> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      controller.bookId.value = bookInfo.bookId.toString();
+      controller.getAllTopic();
+    });
     Size size = MediaQuery.sizeOf(context);
     return Scaffold(
       appBar: AppBar(
@@ -50,7 +54,7 @@ class ChapterScreen extends GetView<BookController> {
 
   ListView _buildChapterListView() {
     return ListView.builder(
-        padding:const EdgeInsets.all(15.0),
+       // padding:const EdgeInsets.all(5.0),
         itemCount: controller.chapterTopicModel.value.data!.length,
         itemBuilder: (context,index){
           var data = controller.chapterTopicModel.value.data![index];

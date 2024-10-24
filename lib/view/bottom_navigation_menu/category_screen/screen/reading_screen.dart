@@ -1,11 +1,15 @@
 import 'package:ebook_reader/data/model/single_book_model.dart';
 import 'package:ebook_reader/utility/app_color.dart';
+import 'package:ebook_reader/view/bottom_navigation_menu/category_screen/screen/fav_this_book_view.dart';
 import 'package:ebook_reader/widgets/app_shimmer_pro.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:get/get.dart';
 import 'package:turn_page_transition/turn_page_transition.dart';
 
 import '../../../../widgets/not-find.dart';
+import '../controller/mark_text_controller.dart';
 import '../controller/reading_controller.dart';
 
 class ReadingScreen extends StatefulWidget {
@@ -17,6 +21,7 @@ class ReadingScreen extends StatefulWidget {
 
 class _ReadingScreenState extends State<ReadingScreen> {
   final ReadingController controller = Get.find<ReadingController>();
+  final MarkTextController markTextController = Get.find<MarkTextController>();
   final TurnPageController turnController = TurnPageController();
 
   late BookInfo bookInfo;
@@ -29,11 +34,11 @@ class _ReadingScreenState extends State<ReadingScreen> {
     bookInfo = Get.arguments["bookInfo"] as BookInfo;
     topicId = Get.arguments["id"] as String;
 
-    print("topicId --- ${topicId}");
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       if (bookInfo.bookId != null) {
         controller.getParagraph(topicId.toString());
+        markTextController.getAllMarkTextFromFave();
       } else {
         // Handle the case where bookId is null
       }
@@ -60,6 +65,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
       child: Scaffold(
         backgroundColor: Colors.grey.shade200,
         appBar: AppBar(
+          centerTitle: true,
           backgroundColor: AppColors.bgColor,
 
           leading: IconButton(
@@ -77,39 +83,45 @@ class _ReadingScreenState extends State<ReadingScreen> {
               color: Colors.black,
             ),
           ),
+          actions: [
+            IconButton(
+              onPressed: () =>Get.to(FavThisBookView()),
+              icon: const Icon(Icons.favorite),
+            ),
+            SizedBox(width: 10,),
+          ],
         ),
         body: Obx(() {
+          // Check if data is loading
           if (controller.isLoading.value) {
             return _buildBookLoading();
-          } else if (controller.peragraphModel.value.data == null || controller.peragraphModel.value.data!.isEmpty) {
-            return  NotFind();
-          } else {
+          }
+          // Check if the data is null or empty
+          else if (controller.peragraphModel.value.data == null || controller.peragraphModel.value.data!.isEmpty) {
+            return NotFind(); // Show "Not Found" if no content is available
+          }
+          // Check if totalBookPages is populated
+          else if (controller.totalBookPages.value == null || controller.totalBookPages.value!.isEmpty) {
+            return Center(child: Text("No pages available."));
+          }
+          else {
             return SizedBox(
               height: Get.height,
               width: Get.width,
-
               child: Column(
                 children: [
                   TurnPageView.builder(
-                    useOnTap: true,
+                    useOnTap: false,
                     useOnSwipe: true,
                     onSwipe: (isForward) {
                       print('Tapped on page isForward $isForward');
-                      if (isForward ) {
+                      if (isForward) {
                         controller.currentPage.value++;
                       } else {
                         controller.currentPage.value--;
                       }
                     },
-                    onTap: (index) {
-                      print('Tapped on page $index');
-                      if (index) { // Check if the index is forward
-                        controller.currentPage.value ++;
-                      } else {
-                        controller.currentPage.value--;
-                      }
-                      //controller.currentPage.value = index;
-                    },
+
                     controller: turnController,
                     itemCount: controller.totalBookPages.value!.length,
                     itemBuilder: (context, index) {
@@ -125,7 +137,8 @@ class _ReadingScreenState extends State<ReadingScreen> {
           }
         }),
 
-         bottomNavigationBar: _buildBottomBar(),
+
+        bottomNavigationBar: _buildBottomBar(),
       ),
     );
   }
@@ -149,24 +162,45 @@ class _ReadingScreenState extends State<ReadingScreen> {
 
   Container _buildBookWidgets(int index, String data) {
    // controller.currentPage.value = index;
+    print("data 00000 ${data}");
     return Container(
       height: MediaQuery.of(context).size.height*0.76,
       padding: const EdgeInsets.all(15),
-      color: Colors.grey.shade200,
+      color: Colors.white,
       child: Obx(() {
-        return Text(
-          '$data',
-          style: TextStyle(
-            fontSize: controller.fontSize.value, // ব্যবহারকারীর নির্ধারিত ফন্ট সাইজ
-            fontWeight: FontWeight.w400, // মাঝারি ওজন
-            height: 1.7, // লাইন হাইট
-            color: Colors.black, // পাঠ্যের রঙ
-            fontFamily: 'NotoSans', // বাংলার জন্য উপযুক্ত ফন্ট পরিবার
-          ),
-          textAlign: TextAlign.justify, // টেক্সট আলাইনমেন্ট
-        );
+          return HtmlWidget(
+            data,
+            textStyle: TextStyle(
+              fontSize: controller.fontSize.value,
+              color: Colors.black,
+              letterSpacing: 0.5,
+              height: 1.7,
+
+            ),
+            onTapUrl: (url)  {
+              print("yes you click on url $url");
+              return true; // Return null to let the widget handle the URL
+            },
+            // Apply padding and alignment to fit the text nicely within the screen
+            customStylesBuilder: (element) {
+              return {
+                'text-align': 'justify',  // Justify text for a book-like effect
+              };
+            },
+
+            // Custom render for specific tags (like bold, italics, etc.)
+            customWidgetBuilder: (element) {
+              if (element.localName == 'b') {
+                return Text(
+                  element.text,  // Render bold text
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                );
+              }
+              return null;
+            },
+          );
         }
-      ),
+      )
     );
   }
 
@@ -244,6 +278,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
   }
   //show the vocabulary list
   void _showVocabularyList() {
+
     showModalBottomSheet(
         context: context,
         builder: (context) {
@@ -277,6 +312,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
                           itemCount: controller.peragraphModel.value.markTextData!.length,
                           itemBuilder: (context, index) {
                             var data = controller.peragraphModel.value.markTextData![index];
+                        //    markTextController.checkMarkTextIsAdded(data.id.toString());
                             return Container(
                               margin: const EdgeInsets.only(bottom: 10),
                               decoration: BoxDecoration(
@@ -291,27 +327,36 @@ class _ReadingScreenState extends State<ReadingScreen> {
                                   ),
                                 ],
                               ),
-                              child: ListTile(
-                                title: Text("${data.text}",
-                                  style: const TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.textBlack,
-                                  ),
-                                ),
-                                subtitle: Text("${data.definition}",
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                    color: AppColors.textBlack,
-                                  ),
-                                ),
-                                trailing: IconButton(
-                                  onPressed: (){
+                              child: Obx(() {
+                                  return ListTile(
+                                    title: Text("${data.text}",
+                                      style: const TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600,
+                                        color: AppColors.textBlack,
+                                      ),
+                                    ),
+                                    subtitle: Text("${data.definition}",
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                        color: AppColors.textBlack,
+                                      ),
+                                    ),
+                                    trailing: IconButton(
+                                      onPressed: (){
+                                        if( markTextController.markTextFavModel.value.data!.any((item) => item.id == data.id)){
+                                          //markTextController.removeMarkTextFromFave(data.id.toString());
+                                        }else{
+                                          markTextController.addMarkTextToFave(data.id.toString());
+                                        }
 
-                                  },
-                                  icon: Icon(Icons.favorite_border),
-                                ),
+                                      },
+                                      icon: Icon(
+                                          markTextController.markTextFavModel.value.data!.any((item) => item.id == data.id) ? Icons.favorite : Icons.favorite_border),
+                                    ),
+                                  );
+                                }
                               ),
                             );
                           },

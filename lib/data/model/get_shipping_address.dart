@@ -12,7 +12,7 @@ String shippingAddressModelToJson(ShippingAddressModel data) => json.encode(data
 class ShippingAddressModel {
   final bool? success;
   final String? message;
-  final List<Datum>? data;
+  final List<SingleAddressModel>? data;
 
   ShippingAddressModel({
     this.success,
@@ -23,7 +23,7 @@ class ShippingAddressModel {
   factory ShippingAddressModel.fromJson(Map<String, dynamic> json) => ShippingAddressModel(
     success: json["success"],
     message: json["message"],
-    data: json["data"] == null ? [] : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+    data: json["data"] == null ? [] : List<SingleAddressModel>.from(json["data"]!.map((x) => SingleAddressModel.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -33,7 +33,7 @@ class ShippingAddressModel {
   };
 }
 
-class Datum {
+class SingleAddressModel {
   final int? id;
   final int? userId;
   final String? phone;
@@ -46,7 +46,7 @@ class Datum {
   final String? division;
   final String? district;
 
-  Datum({
+  SingleAddressModel({
     this.id,
     this.userId,
     this.phone,
@@ -60,7 +60,7 @@ class Datum {
     this.district,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory SingleAddressModel.fromJson(Map<String, dynamic> json) => SingleAddressModel(
     id: json["id"],
     userId: json["user_id"],
     phone: json["phone"],

@@ -183,7 +183,7 @@ class FavoriteScreen extends GetView<FavoriteBookController> {
                                 Container(
                                   padding: const EdgeInsets.all(10),
                                   height: 80,
-                                  width: 120,
+                                  width: 115,
                                   decoration: BoxDecoration(
                                     color: AppColors.cardAmber,
                                     borderRadius: BorderRadius.circular(10),

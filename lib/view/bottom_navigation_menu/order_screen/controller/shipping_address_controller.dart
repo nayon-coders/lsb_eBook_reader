@@ -2,8 +2,7 @@ import 'dart:convert';
 
 import 'package:ebook_reader/app_config.dart';
 import 'package:ebook_reader/data/services/api_services.dart';
-import 'package:ebook_reader/view/bottom_navigation_menu/order_screen/model/get_shipping_address.dart';
-import 'package:ebook_reader/view/bottom_navigation_menu/order_screen/order_screen.dart';
+import 'package:ebook_reader/data/model/get_shipping_address.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -19,7 +18,6 @@ class ShippingAddressController extends GetxController{
 
 
   //Model
-  Rx<ShippingAddressModel> getAddressModel = ShippingAddressModel().obs;
 
 
 
@@ -28,6 +26,8 @@ class ShippingAddressController extends GetxController{
   RxBool isLoading = false.obs;
   RxBool isGetting = false.obs;
   RxBool isDeleting = false.obs;
+
+  RxString id = "".obs;
 
   @override
   onInit(){
@@ -47,6 +47,8 @@ class ShippingAddressController extends GetxController{
     super.onClose();
   }
 
+  Rx<ShippingAddressModel> getAddressModel = ShippingAddressModel().obs;
+
 
 
   //add shipping address
@@ -61,6 +63,8 @@ class ShippingAddressController extends GetxController{
     };
     final res = await ApiServices.postApi(AppConfig.ADD_SHIPPING_ADDRESS, body);
     if(res.statusCode == 200){
+      getShippingAddress();
+      Get.back();
       Get.snackbar("Successful", "Address Add Successful",backgroundColor: Colors.green,colorText: Colors.white);
     }else{
       Get.snackbar("Failed", "${jsonDecode(res.body)["message"]}",backgroundColor: Colors.green,colorText: Colors.white);
@@ -76,9 +80,8 @@ class ShippingAddressController extends GetxController{
     isGetting.value = true;
     final res = await ApiServices.getApi(AppConfig.GET_SHIPPING_ADDRESS);
     if(res.statusCode ==200){
-      getAddressModel.value = shippingAddressModelFromJson(res.body);
+      getAddressModel.value = ShippingAddressModel.fromJson(jsonDecode(res.body));
       print("Address Get Successful");
-
     }else{
       print("Failed :${jsonDecode(res.body)["message"]}");
     }
@@ -90,12 +93,62 @@ class ShippingAddressController extends GetxController{
     isDeleting.value = true;
     final res = await ApiServices.deleteApi(AppConfig.DELETE_SHIPPING_ADDRESS+id);
     if(res.statusCode == 200){
-      Get.snackbar("Successful", "Delete Successful",backgroundColor: Colors.red);
+      getShippingAddress();
+      Get.snackbar("Successful", "Delete Successful",backgroundColor: Colors.green);
     }else{
       Get.snackbar("Failed", "${jsonDecode(res.body)["message"]}");
     }
     isDeleting.value = false;
 
+  }
+
+
+  //edit shipping address
+  editShippingAddress(data)async{
+    isLoading.value = true;
+    var res = await ApiServices.putApi(AppConfig.UPDATE_SHIPPING_ADDRESS+id.value, {
+      "phone":phone.value.text,
+      "address":address.value.text,
+      "city":city.value.text,
+      "district":district.value.text,
+      "division":division.value.text,
+    });
+
+    if(res.statusCode == 200) {
+      isEditing.value = false;
+      id.value = "";
+      clearAll();
+      getShippingAddress();
+      Get.back();
+      Get.snackbar("Successful", "Address Update Successful",
+          backgroundColor: Colors.green, colorText: Colors.white);
+    }else{
+      Get.snackbar("Failed", "${jsonDecode(res.body)["message"]}",
+          backgroundColor: Colors.green, colorText: Colors.white);
+    }
+
+    isLoading.value = false;
+  }
+
+  RxBool isEditing = false.obs;
+  //edit value save
+  editValueSave(data){
+    id.value = data.id.toString();
+    isEditing.value = true;
+    phone.value.text = data.phone!;
+    address.value.text = data.address!;
+    city.value.text = data.city!;
+    district.value.text = data.district!;
+    division.value.text = data.division!;
+  }
+
+  //clear all text field
+  clearAll(){
+    phone.value.clear();
+    address.value.clear();
+    city.value.clear();
+    district.value.clear();
+    division.value.clear();
   }
 
 

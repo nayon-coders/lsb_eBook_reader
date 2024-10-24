@@ -4,6 +4,7 @@ import 'package:ebook_reader/view/bottom_navigation_menu/profile_screen/controll
 import 'package:ebook_reader/widgets/app_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../data/model/all_book_model.dart';
 import '../../../../utility/app_color.dart';
 import '../controller/book_controller.dart';
 import '../widgets/single_book_loading_widget.dart';
@@ -15,14 +16,14 @@ class SingleBookScreen extends GetView<BookController> {
 
   @override
   Widget build(BuildContext context) {
-    final bookData = Get.arguments;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      controller.getBookById();
       favroitController.checkFavList(controller.bookId.value); //check favorite list
     });
 
     Size size = MediaQuery.sizeOf(context);
     return Container(
-      color: AppColors.cardAmber,
+      color: AppColors.bottomNev,
       child: SafeArea(
         child: Scaffold(
           backgroundColor: AppColors.bgColor,
@@ -42,7 +43,7 @@ class SingleBookScreen extends GetView<BookController> {
                               height: size.height*0.45,
                               width: size.width,
                               decoration:const BoxDecoration(
-                                color: AppColors.cardAmber,
+                                color: AppColors.bottomNev,
                                 borderRadius: BorderRadius.only(bottomLeft: Radius.circular(6),bottomRight: Radius.circular(6)),
                               ),
                             ),
@@ -73,8 +74,8 @@ class SingleBookScreen extends GetView<BookController> {
                               right: 0,
                               child: Column(
                                 children: [
-                                  Text("${bookData.bookName}",style: const TextStyle(fontWeight: FontWeight.w600,fontSize: 16,color: Colors.black),),
-                                  Text("${bookData.categoryName}",style:const TextStyle(fontWeight: FontWeight.w400,fontSize: 13,color: Colors.black),),
+                                  Text("${controller.singleBookModel.value.data!.bookName}",style: const TextStyle(fontWeight: FontWeight.w600,fontSize: 16,color: Colors.black),),
+                                  Text("${controller.singleBookModel.value.data!.categoryName}",style:const TextStyle(fontWeight: FontWeight.w400,fontSize: 13,color: Colors.black),),
 
                                 ],
                               ),
@@ -126,7 +127,7 @@ class SingleBookScreen extends GetView<BookController> {
                                 left: 40,
                                 right: 40,
                                 child: CachedNetworkImage(
-                                  imageUrl:bookData.image,
+                                  imageUrl:controller.singleBookModel.value.data!.image!,
                                   height: 180,
                                   width: 180,
                                   fit: BoxFit.contain,
@@ -160,9 +161,9 @@ class SingleBookScreen extends GetView<BookController> {
 
                                     //rating
                                     Container(
-                                      padding: const EdgeInsets.all(5),
+                                      padding: const EdgeInsets.all(10),
                                       height: 40,
-                                      width: 90,
+                                      width: 80,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(30),
                                         color: const Color(0xFFFFF1BF),
@@ -172,16 +173,27 @@ class SingleBookScreen extends GetView<BookController> {
                                         crossAxisAlignment: CrossAxisAlignment.center,
                                         children: [
                                           const Icon(Icons.star,color: Colors.deepOrange,size: 20,),
-                                          Text("4.5",style:const  TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: Colors.black),)
+                                          Text("${controller.singleBookModel.value.data!.averageRating!.toStringAsFixed(2)}",style:const  TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: Colors.black),)
                                         ],
                                       ),
 
                                     ),
 
                                     //page number
-                                    Text("13 Page",
-                                      style:const TextStyle(fontWeight: FontWeight.w600,
-                                          fontSize: 16,color: Colors.black),
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+
+                                      children: [
+                                        Text( "${controller.singleBookModel.value.data!.mainToc} Chapter's",
+                                          style:const TextStyle(fontWeight: FontWeight.w600,
+                                              fontSize: 13,color: Colors.black),
+                                        ),
+                                        Text( "${controller.singleBookModel.value.data!.subToc} Topic's",
+                                          style:const TextStyle(fontWeight: FontWeight.w600,
+                                              fontSize: 13,color: Colors.black),
+                                        ),
+                                      ],
                                     ),
 
                                     //language
@@ -223,7 +235,7 @@ class SingleBookScreen extends GetView<BookController> {
                               ),
 
                               const SizedBox(height: 20,),
-                              Text("${bookData.sortDescription}",
+                              Text("${controller.singleBookModel.value.data!.sortDescription}",
                                 style: const TextStyle(fontWeight: FontWeight.w400,
                                     fontSize: 16,
                                     color: AppColors.textBlack)
@@ -248,8 +260,7 @@ class SingleBookScreen extends GetView<BookController> {
               children: [
                 InkWell(
                   onTap: (){
-                    controller.getAllTopic(); //call get all topic
-                    Get.toNamed(AppRoute.chapter,arguments: controller.singleBookModel.value.data!);
+                    Get.toNamed(AppRoute.chapter, arguments: controller.singleBookModel.value.data!);
                   },
                   child: Container(
                     height: 45,
@@ -264,7 +275,7 @@ class SingleBookScreen extends GetView<BookController> {
                 AppButton(
                   width: 140,
                     name: "Buy Now",
-                    onClick: ()=>Get.toNamed(AppRoute.orderScreen))
+                    onClick: ()=>Get.toNamed(AppRoute.orderScreen, arguments: controller.singleBookModel.value.data!),)
               ],
             ),
           ),

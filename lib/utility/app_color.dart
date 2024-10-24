@@ -12,7 +12,7 @@ class AppColors{
   static const Color cardAmber =  Color(0xFFF8C183);
   static const Color cardBlue =  Color(0xFF83A4F8);
   static const Color linkColor =  Color(0xFF1858A3);
-  static const Color bottomNev =  Color(0xFFC75B7A);
+  static const Color bottomNev =  Color(0xFFFB98A2);
   static const Color menuColor =  Color(0xFFF4D9D0);
 
 

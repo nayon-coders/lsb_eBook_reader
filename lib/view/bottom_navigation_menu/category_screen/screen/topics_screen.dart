@@ -1,4 +1,5 @@
 import 'package:ebook_reader/routes/route_name.dart';
+import 'package:ebook_reader/utility/app_const.dart';
 
 import 'package:ebook_reader/widgets/not-find.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,7 @@ class TopicsScreen extends GetView<BookController> {
           return NotFind();
         }else{
           return ListView.builder(
-              padding:const EdgeInsets.all(15),
+             // padding:const EdgeInsets.all(15),
               itemCount: controller.topicList.value.length,
               itemBuilder: (context,index){
                 var data = controller.topicList.value[index];
@@ -45,14 +46,14 @@ class TopicsScreen extends GetView<BookController> {
                           blurRadius: 0,
                           spreadRadius: 0,
                           offset:const Offset(0,1.5),
-                          color: Colors.grey.shade400
+                          color: data.lookStatus == AppConst.lock ?  Colors.grey.shade400  : Colors.white
                       )
                     ],
 
-                    color: Colors.grey.shade200,
+                    color:  data.lookStatus == AppConst.lock ?  Colors.grey.shade200  : Colors.white
                   ),
                   child: ListTile(
-                    onTap: ()=>Get.toNamed(AppRoute.readingScreen,arguments: {"bookInfo":bookInfo,"id":data.id.toString()}),
+                    onTap: ()=>data.lookStatus == AppConst.lock ? null : Get.toNamed(AppRoute.readingScreen,arguments: {"bookInfo":bookInfo,"id":data.id.toString()}),
                     contentPadding: EdgeInsets.zero,
                     tileColor: Colors.white,
                     leading: Container(
@@ -66,7 +67,7 @@ class TopicsScreen extends GetView<BookController> {
                     ),
                     title: Text("${data.name}",style:const TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: AppColors.textBlack),),
                     subtitle: Text("${data.pageNumber} Page",style: const TextStyle(fontWeight: FontWeight.w400,fontSize: 14,color: AppColors.textBlack),),
-                    trailing: const Icon(Icons.double_arrow,color: AppColors.buttonGreen,),
+                    trailing:  Icon(data.lookStatus == AppConst.lock ? Icons.lock : Icons.double_arrow,color: AppColors.buttonGreen,),
                   ),
                 );
 

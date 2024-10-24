@@ -12,7 +12,7 @@ class AllBooksModel {
   final bool? success;
   final String? message;
   final int? totalBooks;
-  final List<Datum>? data;
+  final List<SingleBooksList>? data;
 
   AllBooksModel({
     this.success,
@@ -25,7 +25,7 @@ class AllBooksModel {
     success: json["success"],
     message: json["message"],
     totalBooks: json["totalBooks"],
-    data: json["data"] == null ? [] : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+    data: json["data"] == null ? [] : List<SingleBooksList>.from(json["data"]!.map((x) => SingleBooksList.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -36,7 +36,7 @@ class AllBooksModel {
   };
 }
 
-class Datum {
+class SingleBooksList {
   final int? bookId;
   final String? bookName;
   final String? image;
@@ -60,7 +60,7 @@ class Datum {
   final int? categoryId;
   final String? categoryName;
 
-  Datum({
+  SingleBooksList({
     this.bookId,
     this.bookName,
     this.image,
@@ -85,7 +85,7 @@ class Datum {
     this.categoryName,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory SingleBooksList.fromJson(Map<String, dynamic> json) => SingleBooksList(
     bookId: json["book_id"],
     bookName: json["book_name"],
     image: json["image"],

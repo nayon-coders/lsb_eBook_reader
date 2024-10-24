@@ -14,6 +14,9 @@ class MyOrderScreen extends GetView<MyOrderController> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      controller.getMyOrder();
+    });
     return Scaffold(
       appBar: AppBar(
         surfaceTintColor:Colors.transparent,
@@ -36,7 +39,7 @@ class MyOrderScreen extends GetView<MyOrderController> {
               );
             });
           }
-          if (controller.getOrderModel.value.ordersData!.isEmpty) {
+          if (controller.getOrderModel.value != null) {
             return const Center(
               child: EmptyScreen()
             );

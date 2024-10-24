@@ -10,7 +10,7 @@ import 'favorite_screen/favorite_screen.dart';
 import 'my_order_screen/my_order_screen.dart';
 
 class AppNavigationScreen extends StatefulWidget {
-  const AppNavigationScreen({super.key});
+  const AppNavigationScreen({super.key,});
 
   @override
   State<AppNavigationScreen> createState() => _AppNavigationScreenState();
@@ -20,27 +20,13 @@ class _AppNavigationScreenState extends State<AppNavigationScreen> {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(NavController());
-    return Scaffold(
-      body: Obx((){
-        switch (controller.currentIndex.value){
-          case 0:
-            return HomeScreen();
-          case 1:
-            return  AllBooks(); //change it to AllBooksScreen();
-          case 2:
-            return const MyOrderScreen();
-          case 3:
-            return  FavoriteScreen();
-          case 4:
-            return  ProfileScreen();
-          default:
-            return HomeScreen();
 
-        }
+    return Scaffold(
+      body:  Obx((){
+        return controller.pages[controller.currentIndex.value];
       }),
       bottomNavigationBar: Obx((){
         return BottomNavigationBar(
-
           backgroundColor: AppColors.bottomNev,
           currentIndex: controller.currentIndex.value,
           selectedItemColor: Colors.white,
@@ -54,22 +40,38 @@ class _AppNavigationScreenState extends State<AppNavigationScreen> {
           items: [
             BottomNavigationBarItem(
               backgroundColor: AppColors.bottomNev,
-                icon: ColorFiltered(
-                  colorFilter: ColorFilter.mode(
-                      controller.currentIndex==0?Colors.white:AppColors.textBlack,
-                      BlendMode.srcIn
-                  ),
-                    child: Image.asset(Assets.home,height: 25,width: 25,fit: BoxFit.contain,)),
+                icon: Obx(() {
+                    return ColorFiltered(
+                      colorFilter: ColorFilter.mode(
+                          controller.currentIndex==0?Colors.white:AppColors.textBlack,
+                          BlendMode.srcIn
+                      ),
+                        child: Image.asset(Assets.home,height: 25,width: 25,fit: BoxFit.contain,));
+                  }
+                ),
                 label: "",
             ),
+            // BottomNavigationBarItem(
+            //   backgroundColor: AppColors.bottomNev,
+            //     icon: ColorFiltered(
+            //       colorFilter: ColorFilter.mode(
+            //           controller.currentIndex==1?Colors.white:AppColors.textBlack,
+            //           BlendMode.srcIn
+            //       ),
+            //         child: Image.asset(Assets.menu,height: 25,width: 25,fit: BoxFit.contain,)),
+            //     label: "",
+            // ),
             BottomNavigationBarItem(
               backgroundColor: AppColors.bottomNev,
-                icon: ColorFiltered(
-                  colorFilter: ColorFilter.mode(
-                      controller.currentIndex==1?Colors.white:AppColors.textBlack,
-                      BlendMode.srcIn
-                  ),
-                    child: Image.asset(Assets.menu,height: 25,width: 25,fit: BoxFit.contain,)),
+                icon: Obx((){
+                    return ColorFiltered(
+                      colorFilter: ColorFilter.mode(
+                          controller.currentIndex ==1?Colors.white:AppColors.textBlack,
+                          BlendMode.srcIn
+                      ),
+                        child: Image.asset(Assets.save,height: 25,width: 25,fit: BoxFit.contain,));
+                  }
+                ),
                 label: "",
             ),
             BottomNavigationBarItem(
@@ -79,16 +81,6 @@ class _AppNavigationScreenState extends State<AppNavigationScreen> {
                       controller.currentIndex==2?Colors.white:AppColors.textBlack,
                       BlendMode.srcIn
                   ),
-                    child: Image.asset(Assets.save,height: 25,width: 25,fit: BoxFit.contain,)),
-                label: "",
-            ),
-            BottomNavigationBarItem(
-              backgroundColor: AppColors.bottomNev,
-                icon: ColorFiltered(
-                  colorFilter: ColorFilter.mode(
-                      controller.currentIndex==3?Colors.white:AppColors.textBlack,
-                      BlendMode.srcIn
-                  ),
                     child:const Icon(Icons.favorite_border,size: 30,)),
                 label: "",
             ),
@@ -96,7 +88,7 @@ class _AppNavigationScreenState extends State<AppNavigationScreen> {
               backgroundColor: AppColors.bottomNev,
                 icon:ColorFiltered(
                   colorFilter: ColorFilter.mode(
-                    controller.currentIndex==4?Colors.white:AppColors.textBlack,
+                    controller.currentIndex==3?Colors.white:AppColors.textBlack,
                     BlendMode.srcIn,
                   ),
 

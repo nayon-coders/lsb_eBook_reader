@@ -62,7 +62,7 @@ class AuthController extends GetxController{
       isLogin.value = false;
       var data = jsonDecode(response.body);
       sharedPreferences!.setString("token", data["data"]["token"]);
-      sharedPreferences!.setString("token", data["data"]["user"]["id"]);
+      sharedPreferences!.setString("user_id", data["data"]["user"]["id"].toString());
       isLogin.value = false;
       clearAll();
       //show get.snackbar

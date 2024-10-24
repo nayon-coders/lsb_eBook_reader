@@ -2,6 +2,9 @@
 import 'package:get/get.dart';
 
 import '../../../../routes/route_name.dart';
+import '../../controller/navigation_controller.dart';
+
+NavController navController = Get.find();
 
 void homeMenuRouting(String text){
   switch(text){
@@ -9,7 +12,8 @@ void homeMenuRouting(String text){
       Get.toNamed(AppRoute.allBooks);
       break;
     case "আমার বই":
-      Get.toNamed("/read");
+      navController.changeIndex(1);
+    //  navController.currentIndex.value = 1;
       break;
     case "এডমিশন":
       Get.toNamed("/listen");

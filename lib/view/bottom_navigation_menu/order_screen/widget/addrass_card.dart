@@ -35,11 +35,9 @@ class AddressCard extends StatelessWidget {
               //home
               Text(home,style:const TextStyle(fontWeight: FontWeight.w600,fontSize: 16,color: AppColors.textBlack),),
 
-              SizedBox(
-                  width: 250,
-                  child: Text(addressName,
-                    overflow: TextOverflow.ellipsis,
-                    style:const TextStyle(fontWeight: FontWeight.w400,fontSize: 15,color: AppColors.textBlack),)),
+              Text(addressName,
+                overflow: TextOverflow.ellipsis,
+                style:const TextStyle(fontWeight: FontWeight.w400,fontSize: 15,color: AppColors.textBlack),),
             ],
           ),
           Row(

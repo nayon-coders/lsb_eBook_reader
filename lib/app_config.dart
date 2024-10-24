@@ -47,7 +47,8 @@ class AppConfig {
   //Shipping Address
   static const String ADD_SHIPPING_ADDRESS ="$BASE_URL/delivery-address/create"; //POST
   static const String GET_SHIPPING_ADDRESS ="$BASE_URL/delivery-address"; //GET
-  static const String DELETE_SHIPPING_ADDRESS ="$BASE_URL/delivery-address/delete"; //DELETE ID
+  static const String DELETE_SHIPPING_ADDRESS ="$BASE_URL/delivery-address/delete/"; //DELETE ID
+  static const String UPDATE_SHIPPING_ADDRESS ="$BASE_URL/delivery-address/update/"; //DELETE ID
 
 
   //My Order
@@ -56,6 +57,16 @@ class AppConfig {
 
   //banner
   static const String GET_ALL_BANNER = "$BASE_URL/banner/all";
+
+  //mark text
+  static const String MARK_TEXT = "$BASE_URL/mark-text/create";
+  static const String GET_MARK_TEXT = "$BASE_URL/mark-text/all";
+  static const String DELETE_MARK_TEXT = "$BASE_URL/mark-text/delete/";
+  static const String CHECK_MARK_TEXT_IS_ADDED = "$BASE_URL/mark-text/check/";
+
+
+  //payemt
+  static const String PAYMENT_GET = "$BASE_URL/payment-method/all";
 
 
 }
