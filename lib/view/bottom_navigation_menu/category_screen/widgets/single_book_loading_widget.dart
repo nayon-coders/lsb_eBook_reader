@@ -29,11 +29,11 @@ class SingleBookLoadingWidget extends StatelessWidget {
               borderRadius: 0
           ),
         ),
-        SizedBox(height: 10,),
+        const SizedBox(height: 10,),
         AppShimmerPro.TextShimmer(width: 200, maxLine: 3),
-        SizedBox(height: 10,),
+        const SizedBox(height: 10,),
         AppShimmerPro.TextShimmer(width: double.infinity, maxLine: 15),
-        SizedBox(height: 10,),
+        const SizedBox(height: 10,),
 
 
       ],

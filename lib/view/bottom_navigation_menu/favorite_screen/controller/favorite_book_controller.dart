@@ -46,4 +46,18 @@ class FavoriteBookController extends GetxController{
     }
     isLoading.value = false;
   }
+
+  //Favorite books delete
+  deleteFavorite(id)async{
+    isLoading.value = true;
+    final res = await ApiServices.deleteApi(AppConfig.FAVORITE_DELETE+id);
+    if(res.statusCode == 200){
+      Get.snackbar("Successful", "Delete Successful");
+    }else{
+      Get.snackbar("Failed", "${jsonDecode(res.body)["message"]}");
+    }
+    isLoading.value = false;
+  }
+
+
 }

@@ -1,12 +1,12 @@
 import 'package:ebook_reader/data/model/single_book_model.dart';
 import 'package:ebook_reader/utility/app_color.dart';
-import 'package:ebook_reader/view/bottom_navigation_menu/books_screen/controller/reading_controller.dart';
 import 'package:ebook_reader/widgets/app_shimmer_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:turn_page_transition/turn_page_transition.dart';
 
 import '../../../../widgets/not-find.dart';
+import '../controller/reading_controller.dart';
 
 class ReadingScreen extends StatefulWidget {
   const ReadingScreen({super.key});

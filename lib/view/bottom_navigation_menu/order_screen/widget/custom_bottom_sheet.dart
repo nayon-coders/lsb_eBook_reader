@@ -1,4 +1,5 @@
 import 'package:ebook_reader/routes/route_name.dart';
+import 'package:ebook_reader/widgets/empty_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../utility/app_color.dart';
@@ -27,7 +28,7 @@ class CustomBottomSheet extends GetxController {
               color: Colors.white,
             ),
             child: const Center(
-              child: Text("No addresses available", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: AppColors.textBlack)),
+              child: EmptyScreen(),
             ),
           );
         }
@@ -50,6 +51,7 @@ class CustomBottomSheet extends GetxController {
               ),
               const SizedBox(height: 10),
               // Expanded to ensure proper height for ListView.builder
+
               Expanded(
                 child: ListView.builder(
                   itemCount: addressController.getAddressModel.value.data!.length,
@@ -58,11 +60,15 @@ class CustomBottomSheet extends GetxController {
                     return Column(
                       children: [
                         AddressCard(
-                          home: data.city!,
+                          home: data.city ?? "Unknown City",
                           bgColor: const Color(0xFFEEEEEE),
-                          addressName: data.address!,
+                          addressName: data.address ?? "No Address",
+                          editIcon: IconButton(onPressed: (){}, icon: const Icon(Icons.edit,color: Colors.amber,)),
+                          deleteIcon: IconButton(onPressed: (){
+                            addressController.deleteShippingAddress(data.id.toString());
+                          }, icon:const Icon(Icons.delete,color: Colors.red,)),
                         ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 10,),
                       ],
                     );
                   },

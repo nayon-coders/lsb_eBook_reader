@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import '../../../routes/route_name.dart';
 import '../../../utility/app_assets.dart';
 import '../../../utility/app_color.dart';
-import '../bottom_navigation_menu/books_screen/screen/single_book_screen.dart';
+import '../bottom_navigation_menu/category_screen/screen/single_book_screen.dart';
 
 
 class MyBooks extends StatelessWidget {

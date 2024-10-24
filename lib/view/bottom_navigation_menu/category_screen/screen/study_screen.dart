@@ -1,10 +1,10 @@
-import 'package:ebook_reader/view/bottom_navigation_menu/books_screen/controller/book_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import '../../../../routes/route_name.dart';
 import '../../../../utility/app_assets.dart';
 import '../../../../utility/app_color.dart';
+import '../controller/book_controller.dart';
 import 'single_book_screen.dart';
 
 
@@ -89,7 +89,7 @@ class StudyScreen extends GetView<BookController> {
                               half: const Icon(Icons.star_half, color: Colors.amber,size: 13,),
                               empty:const Icon(Icons.star,color: Colors.grey,size: 13,)),
                           onRatingUpdate: (v){},
-                          updateOnDrag: true,
+                          updateOnDrag: false,
                         ),
                       ),
                       const  SizedBox(height: 5,),

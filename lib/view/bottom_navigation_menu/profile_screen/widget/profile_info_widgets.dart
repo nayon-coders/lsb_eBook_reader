@@ -1,15 +1,12 @@
-import 'package:ebook_reader/app_config.dart';
 import 'package:ebook_reader/routes/route_name.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/profile_screen/controller/profile_controller.dart';
 import 'package:ebook_reader/widgets/app_shimmer_pro.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
-
 import '../../../../utility/app_assets.dart';
 import '../../../../utility/app_color.dart';
 import '../../../../widgets/app_button.dart';
-import '../screen/edit_profile.dart';
+
 class TopProfileInfoWidget extends GetView<ProfileController> {
   const TopProfileInfoWidget({
     super.key,
@@ -26,7 +23,7 @@ class TopProfileInfoWidget extends GetView<ProfileController> {
               if(controller.isLoading.value){
                 return AppShimmerPro.circularShimmer(height: 110,width: 110, borderRadius: 100);
               }else{
-                if(controller.myProfileModel.value!.profilePic!.isNotEmpty){
+                if(controller.myProfileModel.value.profilePic!.isNotEmpty){
                   return Container(
                     height: 120,
                     width: 120,
@@ -34,7 +31,7 @@ class TopProfileInfoWidget extends GetView<ProfileController> {
                         shape: BoxShape.circle,
                         border: Border.all(color: Colors.grey),
                         image: DecorationImage(
-                            image: NetworkImage("${AppConfig.DOMAIN}${controller.myProfileModel.value!.profilePic}"),
+                            image: NetworkImage(controller.myProfileModel.value.profilePic.toString()),
                             fit: BoxFit.cover
                         )
                     ),
@@ -69,7 +66,7 @@ class TopProfileInfoWidget extends GetView<ProfileController> {
               children: [
 
                 //name
-                Text("${controller.myProfileModel.value!.name!}",style: const TextStyle(
+                Text(controller.myProfileModel.value.name!,style: const TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 16,
                   color: AppColors.textBlack,

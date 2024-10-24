@@ -18,4 +18,5 @@ class Assets{
   static const String study = "assets/images/study.png";
   static const String admission = "assets/images/admission.png";
   static const String mybook = "assets/images/mybook.png";
+  static const String empty = "assets/images/empty.png";
 }

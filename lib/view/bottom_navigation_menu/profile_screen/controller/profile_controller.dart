@@ -1,21 +1,17 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'dart:io';
-
 import 'package:ebook_reader/data/global_controller/global_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../../app_config.dart';
 import '../../../../data/model/my_profile_model.dart';
 import '../../../../data/services/api_services.dart';
 import '../../../../main.dart';
 import '../../../../routes/route_name.dart';
 import 'package:http/http.dart' as http;
-import '../../../../utility/app_assets.dart';
 class ProfileController extends GetxController{
 
   //oninit
@@ -125,6 +121,7 @@ class ProfileController extends GetxController{
       Get.snackbar(
           "Success", "Update success", snackPosition: SnackPosition.TOP,
           backgroundColor: Colors.green);
+      Get.back();
     } else {
       isLoading.value = false;
       Get.snackbar("Error", "Invalid email or password",
@@ -163,10 +160,13 @@ class ProfileController extends GetxController{
 
 
   //delete user
-  deleteUser(id)async {
+  deleteUser()async {
     isLoading.value = true;
+
+    SharedPreferences _pref =await SharedPreferences.getInstance();
+    final id =_pref.getString("id");
     //api call
-    var response = await ApiServices.deleteApi(AppConfig.USER_DELETE+id);
+    var response = await ApiServices.deleteApi(AppConfig.USER_DELETE+id!);
 
     //check response ans show error
     if (response.statusCode == 200) {

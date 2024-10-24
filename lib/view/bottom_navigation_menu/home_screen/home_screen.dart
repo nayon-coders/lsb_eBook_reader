@@ -2,23 +2,22 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ebook_reader/view/admission/admission.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/home_screen/controller/menu_button_controller.dart';
 import 'package:ebook_reader/view/my_books/my_books.dart';
+import 'package:ebook_reader/widgets/app_shimmer_pro.dart';
+import 'package:ebook_reader/widgets/empty_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../../utility/app_assets.dart';
 import '../../../utility/app_color.dart';
-import '../books_screen/screen/study_screen.dart';
+import '../category_screen/screen/study_screen.dart';
 import 'controller/controller.dart';
 import 'widget/menu_card.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends GetView<HomeController> {
    HomeScreen({super.key});
-   final controller = Get.put(HomeController());
 
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.sizeOf(context);
     return Scaffold(
         backgroundColor: AppColors.bgColor,
       appBar: AppBar(
@@ -51,7 +50,7 @@ class HomeScreen extends StatelessWidget {
 
         ],
       ),
-      body: SingleChildScrollView(
+      body: Padding(
         padding:const EdgeInsets.all(20),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -59,29 +58,51 @@ class HomeScreen extends StatelessWidget {
         children: [
 
           //Carouse Slider
-          Obx(()=>CarouselSlider(
-
-            options:CarouselOptions(
-
+          Obx((){
+            if(controller.isGetting.value){
+              return SizedBox(
                 height: 150,
-                autoPlay: true,
-                enlargeCenterPage: true,
-                viewportFraction: 1,
-                onPageChanged: (index,reason){
-                  controller.updateIndex(index);
-                }
-            ) ,
-            items:controller.imageList.map((imageUrl){
-              return Builder(builder: (BuildContext context){
-                return Image.asset(imageUrl,fit: BoxFit.cover,width: double.infinity,);
-              });
-            }).toList(),
+                child: ListView.builder(
+                  itemCount: 4,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context,index){
+                  return AppShimmerPro.circularShimmer(width: MediaQuery.of(context).size.width*.80, height: 150, borderRadius: 10,);
+                }),
+              );
+            }else if(controller.getBannerModel.value.data != null && controller.getBannerModel.value.data!.isNotEmpty ){
+              return SizedBox(
+                height: 150,
+                child: CarouselSlider(
 
-          )),
+                  options:CarouselOptions(
+
+                      height: 150,
+                      autoPlay: true,
+                      enlargeCenterPage: true,
+                      viewportFraction: 1,
+                      onPageChanged: (index,reason){
+                        controller.updateIndex(index);
+                      }
+                  ) ,
+
+                  items:controller.getBannerModel.value.data!.map((data){
+                    return Builder(builder: (BuildContext context){
+                      return Image.network(data.image.toString(),fit: BoxFit.cover,width: double.infinity,);
+                    });
+                  }).toList(),
+
+                ),
+              );
+            }else{
+              return const Center(child: EmptyScreen());
+            }
+          }),
           const SizedBox(height: 30,),
 
          const Text("Menus",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: AppColors.textBlack),),
          const SizedBox(height: 10,),
+
+          //Category Menu
           GridView.builder(
             itemCount: menuItems.length,
               shrinkWrap: true,

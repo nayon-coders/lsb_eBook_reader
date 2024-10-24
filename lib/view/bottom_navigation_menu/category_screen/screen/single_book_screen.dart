@@ -2,15 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ebook_reader/routes/route_name.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/profile_screen/controller/favroit_controller.dart';
 import 'package:ebook_reader/widgets/app_button.dart';
-import 'package:ebook_reader/widgets/app_shimmer_pro.dart';
-import 'package:ebook_reader/widgets/bg_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../../../../app_config.dart';
-import '../../../../utility/app_assets.dart';
 import '../../../../utility/app_color.dart';
-import 'capter_screen.dart';
 import '../controller/book_controller.dart';
 import '../widgets/single_book_loading_widget.dart';
 
@@ -22,7 +16,7 @@ class SingleBookScreen extends GetView<BookController> {
   @override
   Widget build(BuildContext context) {
     final bookData = Get.arguments;
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       favroitController.checkFavList(controller.bookId.value); //check favorite list
     });
 
@@ -125,19 +119,19 @@ class SingleBookScreen extends GetView<BookController> {
 
 
                             //book image
-                            ///TODO: image need to dynamic
+
                             Positioned(
-                                top: 80,
-                                bottom: 60,
-                                left: 0,
-                                right: 0,
+                                top: 60,
+                                bottom: 50,
+                                left: 40,
+                                right: 40,
                                 child: CachedNetworkImage(
                                   imageUrl:bookData.image,
-                                  height: 120,
-                                  width: 120,
-                                  fit: BoxFit.cover,
+                                  height: 180,
+                                  width: 180,
+                                  fit: BoxFit.contain,
                                   placeholder: (context, url) => const CircularProgressIndicator(),  // Loading indicator
-                                  errorWidget: (context, url, error) => Icon(Icons.error),     // Error indicator
+                                  errorWidget: (context, url, error) => const Icon(Icons.error),     // Error indicator
                                 ),),
 
                             Positioned(
@@ -177,8 +171,8 @@ class SingleBookScreen extends GetView<BookController> {
                                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                                         crossAxisAlignment: CrossAxisAlignment.center,
                                         children: [
-                                          Icon(Icons.star,color: Colors.deepOrange,size: 20,),
-                                          Text("4.5",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: Colors.black),)
+                                          const Icon(Icons.star,color: Colors.deepOrange,size: 20,),
+                                          Text("4.5",style:const  TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: Colors.black),)
                                         ],
                                       ),
 
@@ -186,7 +180,7 @@ class SingleBookScreen extends GetView<BookController> {
 
                                     //page number
                                     Text("13 Page",
-                                      style: TextStyle(fontWeight: FontWeight.w600,
+                                      style:const TextStyle(fontWeight: FontWeight.w600,
                                           fontSize: 16,color: Colors.black),
                                     ),
 
@@ -198,9 +192,9 @@ class SingleBookScreen extends GetView<BookController> {
                                       width: 90,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(30),
-                                        color: Color(0xFFDEFDD6),
+                                        color:const Color(0xFFDEFDD6),
                                       ),
-                                      child: Center(child: Text("Bangle",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: Colors.black),)),
+                                      child: Center(child: Text("Bangle",style:const TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: Colors.black),)),
 
                                     ),
 
@@ -223,7 +217,7 @@ class SingleBookScreen extends GetView<BookController> {
                             children: [
                               const SizedBox(height: 60,),
                               Text("Book description",
-                                style: TextStyle(fontWeight: FontWeight.w600,
+                                style:const TextStyle(fontWeight: FontWeight.w600,
                                     fontSize: 20,
                                     color: AppColors.textBlack),
                               ),
@@ -246,7 +240,7 @@ class SingleBookScreen extends GetView<BookController> {
             ),
           ),
           bottomNavigationBar: Container(
-            padding: EdgeInsets.all(10),
+            padding:const EdgeInsets.all(10),
             color:AppColors.bgColor,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -264,7 +258,7 @@ class SingleBookScreen extends GetView<BookController> {
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(color: AppColors.buttonGreen),
                     ),
-                    child: Center(child: Text("Read Sample",style: TextStyle(fontSize: 17,fontWeight: FontWeight.w600,color:AppColors.buttonGreen),)),
+                    child: Center(child: Text("Read Sample",style:const TextStyle(fontSize: 17,fontWeight: FontWeight.w600,color:AppColors.buttonGreen),)),
                   ),
                 ),
                 AppButton(

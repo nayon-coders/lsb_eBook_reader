@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../bottom_navigation_menu/home_screen/home_screen.dart';
 import '../bottom_navigation_menu/profile_screen/profile_screen.dart';
-import 'books_screen/screen/all_books_screen.dart';
-import 'controller/controller.dart';
+import 'all_books/all_books.dart';
+import 'controller/navigation_controller.dart';
 import 'favorite_screen/favorite_screen.dart';
 import 'my_order_screen/my_order_screen.dart';
 
@@ -26,7 +26,7 @@ class _AppNavigationScreenState extends State<AppNavigationScreen> {
           case 0:
             return HomeScreen();
           case 1:
-            return const AllBooksScreen(); //change it to AllBooksScreen();
+            return  AllBooks(); //change it to AllBooksScreen();
           case 2:
             return const MyOrderScreen();
           case 3:

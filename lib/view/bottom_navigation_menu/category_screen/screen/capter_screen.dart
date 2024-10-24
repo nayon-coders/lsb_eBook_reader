@@ -1,12 +1,12 @@
 import 'package:ebook_reader/routes/route_name.dart';
 import 'package:ebook_reader/utility/app_const.dart';
-import 'package:ebook_reader/view/bottom_navigation_menu/books_screen/controller/book_controller.dart';
 import 'package:ebook_reader/widgets/app_shimmer_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../data/model/single_book_model.dart';
 import '../../../../utility/app_color.dart';
 import '../../../../widgets/not-find.dart';
+import '../controller/book_controller.dart';
 
 class ChapterScreen extends GetView<BookController> {
    ChapterScreen({super.key});
@@ -73,7 +73,7 @@ class ChapterScreen extends GetView<BookController> {
             child: ListTile(
               onTap: (){
                 if( data.lookStatus != AppConst.lock){
-                  controller.topicList.value = data!.subTocs!;
+                  controller.topicList.value = data.subTocs!;
                   Get.toNamed(AppRoute.topics, arguments: bookInfo);
                 }else{
                   return null;

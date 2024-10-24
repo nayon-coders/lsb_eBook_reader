@@ -1,5 +1,5 @@
 import 'package:ebook_reader/routes/route_name.dart';
-import 'package:ebook_reader/view/bottom_navigation_menu/books_screen/controller/book_controller.dart';
+
 import 'package:ebook_reader/widgets/not-find.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import '../../../../data/model/single_book_model.dart';
 import '../../../../utility/app_color.dart';
 import '../../../../widgets/app_shimmer_pro.dart';
+import '../controller/book_controller.dart';
 
 class TopicsScreen extends GetView<BookController> {
    TopicsScreen({super.key});

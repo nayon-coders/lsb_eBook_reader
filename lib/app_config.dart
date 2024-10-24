@@ -47,10 +47,15 @@ class AppConfig {
   //Shipping Address
   static const String ADD_SHIPPING_ADDRESS ="$BASE_URL/delivery-address/create"; //POST
   static const String GET_SHIPPING_ADDRESS ="$BASE_URL/delivery-address"; //GET
+  static const String DELETE_SHIPPING_ADDRESS ="$BASE_URL/delivery-address/delete"; //DELETE ID
 
 
   //My Order
   static const String GET_MY_ORDER ="$BASE_URL/order/my"; //GET USER
+
+
+  //banner
+  static const String GET_ALL_BANNER = "$BASE_URL/banner/all";
 
 
 }

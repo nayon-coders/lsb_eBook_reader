@@ -27,6 +27,7 @@ class ShippingAddressController extends GetxController{
   RxBool isAdding = false.obs;
   RxBool isLoading = false.obs;
   RxBool isGetting = false.obs;
+  RxBool isDeleting = false.obs;
 
   @override
   onInit(){
@@ -84,6 +85,18 @@ class ShippingAddressController extends GetxController{
     isGetting.value = false;
   }
 
+  //DELETE SHIPPING ADDRESS
+  deleteShippingAddress(id)async{
+    isDeleting.value = true;
+    final res = await ApiServices.deleteApi(AppConfig.DELETE_SHIPPING_ADDRESS+id);
+    if(res.statusCode == 200){
+      Get.snackbar("Successful", "Delete Successful",backgroundColor: Colors.red);
+    }else{
+      Get.snackbar("Failed", "${jsonDecode(res.body)["message"]}");
+    }
+    isDeleting.value = false;
+
+  }
 
 
 }

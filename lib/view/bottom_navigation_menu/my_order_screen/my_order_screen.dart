@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ebook_reader/utility/app_color.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/my_order_screen/controller/my_order_controller.dart';
+import 'package:ebook_reader/widgets/empty_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -18,7 +19,9 @@ class MyOrderScreen extends GetView<MyOrderController> {
         surfaceTintColor:Colors.transparent,
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.bgColor,
-        title:const Text("My Order Books",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 18,color: AppColors.textBlack),),
+        title:const Text("My Order Books",
+          style: TextStyle(fontWeight: FontWeight.w600,fontSize: 18,color: AppColors.textBlack),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -32,6 +35,11 @@ class MyOrderScreen extends GetView<MyOrderController> {
                 child: AppShimmerPro.circularShimmer(width: double.infinity, height: 80, borderRadius: 10,),
               );
             });
+          }
+          if (controller.getOrderModel.value.ordersData!.isEmpty) {
+            return const Center(
+              child: EmptyScreen()
+            );
           }
             return ListView.builder(
                 itemCount: controller.getOrderModel.value.ordersData!.length,
@@ -106,7 +114,7 @@ class MyOrderScreen extends GetView<MyOrderController> {
                                         half: const Icon(Icons.star_half, color: Colors.amber,size: 13,),
                                         empty:const Icon(Icons.star,color: Colors.grey,size: 13,)),
                                     onRatingUpdate: (v){},
-                                    //updateOnDrag: true,
+                                    updateOnDrag: false,
                                   ),
 
                                   //Price

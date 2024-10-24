@@ -1,7 +1,7 @@
 import 'package:ebook_reader/routes/route_name.dart';
 import 'package:ebook_reader/utility/app_color.dart';
 import 'package:ebook_reader/view/auth/controller/auth_controller.dart';
-import 'package:ebook_reader/widgets/alert_popup.dart';
+import 'package:ebook_reader/view/bottom_navigation_menu/profile_screen/controller/profile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../favorite_screen/favorite_screen.dart';
@@ -12,6 +12,7 @@ import 'widget/profile_info_widgets.dart';
 class ProfileScreen extends StatelessWidget {
    ProfileScreen({super.key});
   final logoutController = Get.put(AuthController());
+  final profileController = Get.put(ProfileController());
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +46,8 @@ class ProfileScreen extends StatelessWidget {
 
           const SizedBox(height: 20,),
 
-          ListMenu(onClick: ()=>Get.to(()=>EditProfile()), name: "Edit Profile", icon: Icons.edit),
-         const SizedBox(height: 20,),
+          ListMenu(onClick: ()=>Get.to(()=>Get.toNamed(AppRoute.editProfile)), name: "Edit Profile", icon: Icons.edit),
+         const SizedBox(height: 10,),
 
           ListMenu(onClick: ()=>Get.to(()=>FavoriteScreen()), name: "Favorite", icon: Icons.favorite),
           ListMenu(onClick: (){}, name: "Downloads (My books)", icon: Icons.cloud_download),
@@ -60,7 +61,22 @@ class ProfileScreen extends StatelessWidget {
           ListMenu(onClick: (){}, name: "Subscribe Now", icon: Icons.subscriptions_sharp),
          const Divider(),
 
-          ListMenu(onClick: (){}, name: "Delete Account", icon: Icons.delete),
+          ListMenu(onClick: (){
+            Get.defaultDialog(
+              title: "Confirm Delete Account",
+              middleText: "Are you sure you want to delete account?",
+              textConfirm: "Yes",
+              textCancel: "No",
+              confirmTextColor: Colors.white,
+              onConfirm: () {
+               profileController.deleteUser();
+              },
+              onCancel: () {
+                Get.back();
+              },
+
+            );
+          }, name: "Delete Account", icon: Icons.delete),
           ListMenu(onClick: ()async{
             Get.defaultDialog(
               title: "Confirm Logout",
@@ -69,10 +85,10 @@ class ProfileScreen extends StatelessWidget {
               textCancel: "No",
               confirmTextColor: Colors.white,
               onConfirm: () {
-                logoutController.logout();  // Logout function call korchi
+                logoutController.logout();
               },
               onCancel: () {
-                Get.back();  // Popup ta bandho korchi
+                Get.back();
               },
             );
 

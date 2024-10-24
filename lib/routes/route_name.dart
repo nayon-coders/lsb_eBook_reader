@@ -6,7 +6,10 @@ class AppRoute{
   static const String signup = "/signup_screen";
   static const String appNavigation = "/appNavigation_screen";
   static const String orderScreen = "/orderScreen";
+  static const String homeScreen = "/homeScreen";
   static const String editProfile = "/profile-edit";
+  static const String profileScreen = "/profile-screen";
+  static const String categoryBook = "/categoryBook";
   static const String allBooks = "/allBooks";
   static const String singleBook = "/single-book";
   static const String chapter = "/chapter";
