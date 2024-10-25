@@ -58,8 +58,8 @@ class ShippingAddressController extends GetxController{
       "phone":phone.value.text,
       "address":address.value.text,
       "city":city.value.text,
-      "district":district.value.text,
-      "division":division.value.text,
+      "district": district.value.text,
+      "division": division.value.text,
     };
     final res = await ApiServices.postApi(AppConfig.ADD_SHIPPING_ADDRESS, body);
     if(res.statusCode == 200){
@@ -110,8 +110,8 @@ class ShippingAddressController extends GetxController{
       "phone":phone.value.text,
       "address":address.value.text,
       "city":city.value.text,
-      "district":district.value.text,
-      "division":division.value.text,
+      "district": district.value.text,
+      "division": division.value.text,
     });
 
     if(res.statusCode == 200) {
@@ -140,6 +140,8 @@ class ShippingAddressController extends GetxController{
     city.value.text = data.city!;
     district.value.text = data.district!;
     division.value.text = data.division!;
+
+    print("district --- ${district.value.text}");
   }
 
   //clear all text field

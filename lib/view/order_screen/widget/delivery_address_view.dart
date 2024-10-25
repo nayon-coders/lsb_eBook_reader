@@ -1,5 +1,4 @@
-import 'package:ebook_reader/view/bottom_navigation_menu/order_screen/controller/create_order_controller.dart';
-import 'package:ebook_reader/view/bottom_navigation_menu/order_screen/controller/shipping_address_controller.dart';
+
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +6,8 @@ import '../../../../routes/route_name.dart';
 import '../../../../utility/app_color.dart';
 import '../../../../widgets/app_button.dart';
 import '../../../../widgets/empty_screen.dart';
+import '../controller/create_order_controller.dart';
+import '../controller/shipping_address_controller.dart';
 import 'addrass_card.dart';
 class ShippingAddressView extends GetView<ShippingAddressController> {
    ShippingAddressView({super.key});
@@ -43,8 +44,10 @@ class ShippingAddressView extends GetView<ShippingAddressController> {
 
         //address
         Obx(() {
-          if(orderController.selectedShippingAddress.value == null){
-            return Container();
+    // Check if selectedShippingAddress has a valid value
+          if (orderController.selectedShippingAddress.value == null ||
+              orderController.selectedShippingAddress.value.address == null) {
+              return Text("No shipping address selected."); // Or some default widget
           }else{
             var address = "${orderController.selectedShippingAddress.value!.address}, ${orderController.selectedShippingAddress.value!.city}, ${orderController.selectedShippingAddress.value!.district}, ${orderController.selectedShippingAddress.value!.division}";
             return Container(
@@ -140,6 +143,7 @@ class ShippingAddressView extends GetView<ShippingAddressController> {
                           InkWell(
                             onTap: () {
                               orderController.selectedShippingAddress.value = data!;
+                              orderController.calculateTotalAmount();
                               Get.back();
                             },
                             child: AddressCard(

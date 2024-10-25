@@ -1,8 +1,6 @@
-import 'package:ebook_reader/routes/route_name.dart';
-import 'package:ebook_reader/utility/app_assets.dart';
-import 'package:ebook_reader/view/bottom_navigation_menu/order_screen/widget/delivery_address_view.dart';
-import 'package:ebook_reader/view/bottom_navigation_menu/order_screen/widget/payment_method_view.dart';
+
 import 'package:ebook_reader/view/bottom_navigation_menu/my_order_screen/controller/payment_controller.dart';
+import 'package:ebook_reader/view/order_screen/controller/create_order_controller.dart';
 import 'package:ebook_reader/widgets/app_button.dart';
 import 'package:ebook_reader/widgets/app_input.dart';
 import 'package:flutter/material.dart';
@@ -12,10 +10,11 @@ import 'package:get/get.dart';
 import '../../../../data/model/single_book_model.dart';
 import '../../../../utility/app_color.dart';
 import '../controller/shipping_address_controller.dart';
-import '../widget/custom_bottom_sheet.dart';
-import '../widget/order_rice_text.dart';
+import '../widget/bottom_calculation.dart';
+import '../widget/delivery_address_view.dart';
+import '../widget/payment_method_view.dart';
 
-class OrderScreen extends GetView<ShippingAddressController> {
+class OrderScreen extends GetView<CreateOrderController> {
    OrderScreen({super.key});
   final _coupon = TextEditingController();
 
@@ -28,6 +27,9 @@ class OrderScreen extends GetView<ShippingAddressController> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      controller.productPrice.value = double.parse("${bookInfo!.price!}");
+    });
     Size size = MediaQuery.sizeOf(context);
     return Scaffold(
       backgroundColor: AppColors.bgColor,
@@ -35,7 +37,10 @@ class OrderScreen extends GetView<ShippingAddressController> {
         surfaceTintColor: Colors.transparent,
         backgroundColor: AppColors.bgColor,
         leading: IconButton(
-          onPressed: ()=>Get.toNamed(AppRoute.appNavigation),
+          onPressed: (){
+            controller.clearAll();
+            Get.back();
+          },
           icon:const Icon(Icons.arrow_back_ios,color: Colors.black,),
         ),
         title: Text("${bookInfo!.bookName} - Order",style:const TextStyle(fontWeight: FontWeight.w600,fontSize: 18,color: AppColors.textBlack),)
@@ -145,34 +150,8 @@ class OrderScreen extends GetView<ShippingAddressController> {
           ],
         ),
       ),
-      bottomNavigationBar: Container(
-        padding:const EdgeInsets.all(20),
-        height: 210,
-        width: size.width,
-        decoration:const BoxDecoration(
-          borderRadius: BorderRadius.only(topRight: Radius.circular(20),topLeft: Radius.circular(20)),
-          color: Colors.white,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-           const OrderRiceText(name: "Sub Total", price: 20),
-            const SizedBox(height: 6,),
-           const OrderRiceText(name: "Delivery Fee", price: 10),
-           const SizedBox(height: 6,),
-            const OrderRiceText(name: "Discount", price: 10),
-           const SizedBox(height: 6,),
-            const OrderRiceText(name: "Total", price: 10),
-            const SizedBox(height: 15,),
-            AppButton(
-              width: size.width,
-                name: "Order Now", onClick: (){})
-
-
-          ],
-        ),
-      ),
+      bottomNavigationBar: BottomCalculationView(size: size, bookInfo: bookInfo),
     );
   }
 }
+

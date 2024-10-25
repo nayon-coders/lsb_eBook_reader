@@ -18,17 +18,15 @@ class PaymentMethodView extends GetView<PaymentController> {
       controller.getPaymentInfo();
     });
     return Obx((){
-      if(controller.paymentModel.value.data!.isEmpty){
-        if(controller.isLoading.value){
-          return ListView.builder(
-            itemCount: 2,
-            itemBuilder: (_, index){
-              return AppShimmerPro.circularShimmer(width: Get.width, height: 40, borderRadius: 5);
-            },
-          );
-        }else{
-          return const Center(child: Text("No Payment Method Found"),);
-        }
+      if(controller.isLoading.value){
+        return ListView.builder(
+          itemCount: 2,
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemBuilder: (_, index){
+            return AppShimmerPro.circularShimmer(width: Get.width, height: 50, borderRadius: 5);
+          },
+        );
       }else if(controller.paymentModel.value.data!.isNotEmpty) {
         return ListView.builder(
           shrinkWrap: true,
@@ -58,6 +56,30 @@ class PaymentMethodView extends GetView<PaymentController> {
                   return orderController.selectedPaymentMethod.value.id == data.id ? Icon(Icons.check_circle,color: Colors.green,) : const SizedBox();
                 }),
 
+                subtitle:  Obx((){
+                    return orderController.selectedPaymentMethod.value.id != data.id ? Text("Pay with ${data.methodName}") : Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 10,),
+                        Row(
+                          children: [
+                            Text("${data.methodName} number: ",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w400,color: AppColors.textBlack),),
+                            Text("${data.acocuntNumber}",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w600,color: Colors.blue),),
+                            SizedBox(width: 5,),
+                            Icon(Icons.copy, color: Colors.blue, size: 15,)
+                          ],
+                        ),
+                        SizedBox(height: 7,),
+                        Text("Account Type: ${data.accountType}",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w600,color: AppColors.textBlack),),
+                        SizedBox(height: 7,),
+                        Text("Fee: ${data.charge}%",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w600,color: AppColors.textBlack),),
+
+                      ],
+                    );
+                  }
+                ),
+
               ),
             );
           },
@@ -65,6 +87,7 @@ class PaymentMethodView extends GetView<PaymentController> {
       }else{
         return const Center(child: Text("No Payment Method Found"),);
       }
+
 
       }
     );

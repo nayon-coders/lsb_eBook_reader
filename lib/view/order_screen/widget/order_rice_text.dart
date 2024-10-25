@@ -13,7 +13,7 @@ class OrderRiceText extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(name,style: const TextStyle(fontWeight: FontWeight.w600,fontSize: 15,color: AppColors.textBlack),),
-        Text("${price}",style:const TextStyle(fontWeight: FontWeight.w500,fontSize: 14,color: AppColors.textBlack),),
+        Text("${price!.toStringAsFixed(2)}",style:const TextStyle(fontWeight: FontWeight.w500,fontSize: 14,color: AppColors.textBlack),),
       ],
     );
   }

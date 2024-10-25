@@ -1,7 +1,6 @@
 import 'package:ebook_reader/view/bottom_navigation_menu/favorite_screen/favorite_screen.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/home_screen/home_screen.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/my_order_screen/my_order_screen.dart';
-import 'package:ebook_reader/view/bottom_navigation_menu/order_screen/screen/order_screen.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/profile_screen/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

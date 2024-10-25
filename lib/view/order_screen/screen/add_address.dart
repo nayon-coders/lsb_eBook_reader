@@ -1,12 +1,12 @@
 import 'package:ebook_reader/routes/route_name.dart';
 import 'package:ebook_reader/utility/app_color.dart';
-import 'package:ebook_reader/view/bottom_navigation_menu/order_screen/controller/create_order_controller.dart';
-import 'package:ebook_reader/view/bottom_navigation_menu/order_screen/controller/shipping_address_controller.dart';
 import 'package:ebook_reader/widgets/app_input.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../widgets/app_button.dart';
+import '../controller/create_order_controller.dart';
+import '../controller/shipping_address_controller.dart';
 import 'order_screen.dart';
 
 class AddAddress extends GetView<ShippingAddressController> {
