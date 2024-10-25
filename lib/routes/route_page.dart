@@ -11,7 +11,12 @@ import 'package:ebook_reader/view/bottom_navigation_menu/home_screen/home_screen
 import 'package:ebook_reader/view/bottom_navigation_menu/my_order_screen/screen/my_order_screen.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/my_order_screen/screen/my_single_book.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/profile_screen/profile_screen.dart';
+import 'package:ebook_reader/view/bottom_navigation_menu/profile_screen/screen/about_us.dart';
+import 'package:ebook_reader/view/bottom_navigation_menu/profile_screen/screen/contact_us.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/profile_screen/screen/edit_profile.dart';
+import 'package:ebook_reader/view/bottom_navigation_menu/profile_screen/screen/privacy_policy.dart';
+import 'package:ebook_reader/view/bottom_navigation_menu/profile_screen/screen/return_policy.dart';
+import 'package:ebook_reader/view/bottom_navigation_menu/profile_screen/screen/terms_condition.dart';
 import 'package:get/get.dart';
 
 import '../data/binding/auth_binding.dart';
@@ -144,5 +149,12 @@ class RoutePage{
       binding: OrderCreateBinding(),
 
     ),
+
+
+    GetPage(name: AppRoute.aboutUs, page: ()=>AboutUs()),
+    GetPage(name: AppRoute.contactUs, page: ()=>ContactUs()),
+    GetPage(name: AppRoute.privacyPolicy, page: ()=>PrivacyPolicy()),
+    GetPage(name: AppRoute.returnPolicy, page: ()=>ReturnPolicy()),
+    GetPage(name: AppRoute.termsCondition, page: ()=>TermsCondition()),
   ];
 }

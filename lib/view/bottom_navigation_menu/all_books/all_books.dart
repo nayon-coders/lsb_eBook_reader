@@ -64,7 +64,7 @@ class AllBooks extends GetView<BookController> {
                     bookName: data.bookName! ?? "Book Name",
                     bookImage: data.image!,
                     bookPrice: "৳ ${data.price ?? 0.00}",
-                    bookRating: 3,
+                    bookRating:double.parse(data.averageRating!.toStringAsFixed(1)) ,
 
                   );
                 }),
@@ -139,19 +139,15 @@ class SingleBookWidgets extends StatelessWidget {
 
             //Rating
             Padding(
-              padding: const EdgeInsets.only(left: 6.0),
-              child: RatingBar(
-                itemSize: 13,
-                minRating: 1,
-                maxRating: 5,
-                initialRating: 3,
-                allowHalfRating: true,
-                ratingWidget: RatingWidget(
-                    full:const Icon(Icons.star,color: Colors.amber,size: 13,),
-                    half: const Icon(Icons.star_half, color: Colors.amber,size: 13,),
-                    empty:const Icon(Icons.star,color: Colors.grey,size: 13,)),
-                onRatingUpdate: (v){},
-                updateOnDrag: true,
+              padding: const EdgeInsets.only(left: 5.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Icon(Icons.star,color: Colors.deepOrange,size: 20,),
+                  //SizedBox(width: 10,),
+                  Text("($bookRating)",style:const  TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: Colors.black),)
+                ],
               ),
             ),
             const  SizedBox(height: 5,),

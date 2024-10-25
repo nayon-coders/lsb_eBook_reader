@@ -23,7 +23,7 @@ class PaymentScreen extends GetView<CreateOrderController> {
         title:const Text("Payment"),
         centerTitle: true,
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(15.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,

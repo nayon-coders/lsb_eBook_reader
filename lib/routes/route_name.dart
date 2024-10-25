@@ -19,4 +19,10 @@ class AppRoute{
   static const String addShippingAddress = "/addShipping-address";
   static const String myOrderScreen = "/my_order_screen";
   static const String mySingleBook = "/my-single-book";
+
+  static const String aboutUs = "/about_us";
+  static const String contactUs = "/contact_us";
+  static const String privacyPolicy = "/privacy_policy";
+  static const String returnPolicy = "/return_policy";
+  static const String termsCondition = "/terms_condition";
 }
