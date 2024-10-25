@@ -35,7 +35,7 @@ class MyOrderController extends GetxController{
     final res = await ApiServices.getApi(AppConfig.GET_MY_ORDER);
     if(res.statusCode == 200){
       print("Order get Successful");
-      getOrderModel.value = getMyOrderModelFromJson(res.body);
+      getOrderModel.value = GetMyOrderModel.fromJson(jsonDecode(res.body));
     }else{
       print("Failed :${jsonDecode(res.body)}");
     }

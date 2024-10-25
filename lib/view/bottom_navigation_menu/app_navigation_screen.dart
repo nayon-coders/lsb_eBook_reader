@@ -7,7 +7,7 @@ import '../bottom_navigation_menu/profile_screen/profile_screen.dart';
 import 'all_books/all_books.dart';
 import 'controller/navigation_controller.dart';
 import 'favorite_screen/favorite_screen.dart';
-import 'my_order_screen/my_order_screen.dart';
+import 'my_order_screen/screen/my_order_screen.dart';
 
 class AppNavigationScreen extends StatefulWidget {
   const AppNavigationScreen({super.key,});
@@ -17,9 +17,12 @@ class AppNavigationScreen extends StatefulWidget {
 }
 
 class _AppNavigationScreenState extends State<AppNavigationScreen> {
+  final controller = Get.put(NavController());
+
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(NavController());
+
+
 
     return Scaffold(
       body:  Obx((){

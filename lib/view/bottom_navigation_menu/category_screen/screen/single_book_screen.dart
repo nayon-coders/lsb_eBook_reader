@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../data/model/all_book_model.dart';
 import '../../../../utility/app_color.dart';
+import '../../favorite_screen/controller/favorite_book_controller.dart';
 import '../controller/book_controller.dart';
 import '../widgets/single_book_loading_widget.dart';
 
@@ -29,7 +30,7 @@ class SingleBookScreen extends GetView<BookController> {
           backgroundColor: AppColors.bgColor,
           body:SingleChildScrollView(
             child: Obx((){
-                  if(controller.isLoading.value){
+                  if(controller.isGettingSingleProduct.value){
                     return SingleBookLoadingWidget(size: size);
                   }else{
                     return Column(
@@ -251,33 +252,52 @@ class SingleBookScreen extends GetView<BookController> {
               }
             ),
           ),
-          bottomNavigationBar: Container(
-            padding:const EdgeInsets.all(10),
-            color:AppColors.bgColor,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                InkWell(
-                  onTap: (){
-                    Get.toNamed(AppRoute.chapter, arguments: controller.singleBookModel.value.data!);
-                  },
-                  child: Container(
-                    height: 45,
-                    width: 140,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: AppColors.buttonGreen),
+          bottomNavigationBar: Obx(() {
+            if(controller.singleBookModel.value.data == null) {
+              return SizedBox(height: 1,);
+            }else{
+              return Container(
+                padding:const EdgeInsets.all(30),
+                color:AppColors.bgColor,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      onTap: (){
+                        Get.toNamed(AppRoute.chapter, arguments: controller.singleBookModel.value.data!);
+                      },
+                      child: Container(
+                        height: 45,
+                        width: 140,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: AppColors.buttonGreen),
+                        ),
+                        child: Center(child: Text("Read Sample",style:const TextStyle(fontSize: 17,fontWeight: FontWeight.w600,color:AppColors.buttonGreen),)),
+                      ),
                     ),
-                    child: Center(child: Text("Read Sample",style:const TextStyle(fontSize: 17,fontWeight: FontWeight.w600,color:AppColors.buttonGreen),)),
-                  ),
+                    Obx(() {
+                      if(controller.singleBookModel.value.data == null) {
+                        return Center();
+                      }
+                      if(controller.singleBookModel.value.data!.freeOrPaid!.toLowerCase() == "free"){
+                        return Center();
+                      }else{
+                        return AppButton(
+                          width: 140,
+                          name: "Buy Now",
+                          onClick: ()=>Get.toNamed(AppRoute.orderScreen, arguments: controller.singleBookModel.value.data!),);
+                      }
+
+                    }
+                    )
+                  ],
                 ),
-                AppButton(
-                  width: 140,
-                    name: "Buy Now",
-                    onClick: ()=>Get.toNamed(AppRoute.orderScreen, arguments: controller.singleBookModel.value.data!),)
-              ],
-            ),
+              );
+            }
+
+            }
           ),
         ),
       ),

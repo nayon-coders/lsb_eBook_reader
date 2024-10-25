@@ -4,7 +4,7 @@ import 'package:ebook_reader/app_config.dart';
 import 'package:ebook_reader/data/services/api_services.dart';
 import 'package:get/get.dart';
 
-import '../../../../data/model/payment_model.dart';
+import '../../../data/model/payment_model.dart';
 
 class PaymentController extends GetxController {
 

@@ -1,4 +1,4 @@
-import 'package:ebook_reader/view/bottom_navigation_menu/my_order_screen/controller/payment_controller.dart';
+import 'package:ebook_reader/view/order_screen/controller/payment_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

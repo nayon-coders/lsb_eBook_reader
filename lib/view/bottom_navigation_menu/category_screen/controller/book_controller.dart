@@ -42,6 +42,7 @@ class BookController extends GetxController{
   //text editing controller
   //loading rx
   var isLoading = false.obs;
+  var isGettingSingleProduct = true.obs;
   //get all books
   getAllBooks() async {
     isLoading.value = true;
@@ -49,18 +50,19 @@ class BookController extends GetxController{
     var res = await ApiServices.getApi(AppConfig.BOOK_GET);
     if(res.statusCode == 200){
       allBooksModel.value = AllBooksModel.fromJson(jsonDecode(res.body));
+      getMostTrandingBook(); //get most trading book
     }
     isLoading.value = false;
   } 
 
   //get book by id
   getBookById() async {
-    isLoading.value = true;
+    isGettingSingleProduct.value = true;
     var res = await ApiServices.getApi(AppConfig.BOOK_GET_BY_ID+bookId.value);
     if(res.statusCode == 200){
       singleBookModel.value = SingleBookModel.fromJson(jsonDecode(res.body));
     }
-    isLoading.value = false;
+    isGettingSingleProduct.value = false;
     //api call
   }
 
@@ -75,6 +77,13 @@ class BookController extends GetxController{
     }
     isLoading.value = false;
     //api call
+  }
+
+
+  //moast trading book  with avarege rating...
+  RxList <SingleBookList> mostTradingBook = <SingleBookList>[].obs;
+  getMostTrandingBook(){
+    mostTradingBook.value = allBooksModel.value.data!.where((element) => element.averageRating! > 4).toList();
   }
 
 

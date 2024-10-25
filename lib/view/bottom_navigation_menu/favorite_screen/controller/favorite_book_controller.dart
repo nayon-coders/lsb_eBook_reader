@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:ebook_reader/app_config.dart';
 import 'package:ebook_reader/data/services/api_services.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/favorite_screen/model/get_all_favoriite_book_model.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class FavoriteBookController extends GetxController{
@@ -40,7 +41,7 @@ class FavoriteBookController extends GetxController{
     final res = await ApiServices.getApi(AppConfig.FAVORITE_GET);
     if(res.statusCode == 200){
       print("successful : ${jsonDecode(res.body)["message"]}");
-      getAllBookModel.value = getAllFavoriteBookModelFromJson(res.body);
+      getAllBookModel.value = GetAllFavoriteBookModel.fromJson(jsonDecode(res.body));
     }else{
       print("Failed : ${jsonDecode(res.body)["message"]}");
     }
@@ -52,9 +53,10 @@ class FavoriteBookController extends GetxController{
     isLoading.value = true;
     final res = await ApiServices.deleteApi(AppConfig.FAVORITE_DELETE+id);
     if(res.statusCode == 200){
-      Get.snackbar("Successful", "Delete Successful");
+      getAllFavoriteBook();
+      Get.snackbar("Successful", "Delete Successful", backgroundColor: Colors.green);
     }else{
-      Get.snackbar("Failed", "${jsonDecode(res.body)["message"]}");
+      Get.snackbar("Failed", "${jsonDecode(res.body)["message"]}", backgroundColor: Colors.red);
     }
     isLoading.value = false;
   }

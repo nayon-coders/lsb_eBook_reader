@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ebook_reader/routes/route_name.dart';
 import 'package:ebook_reader/utility/app_color.dart';
+import 'package:ebook_reader/view/bottom_navigation_menu/category_screen/controller/book_controller.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/my_order_screen/controller/my_order_controller.dart';
 import 'package:ebook_reader/widgets/empty_screen.dart';
 
@@ -7,10 +9,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 
-import '../../../widgets/app_shimmer_pro.dart';
+import '../../../../widgets/app_shimmer_pro.dart';
 
 class MyOrderScreen extends GetView<MyOrderController> {
-  const MyOrderScreen({super.key});
+   MyOrderScreen({super.key});
+
+  final BookController bookController = Get.find<BookController>();
+
 
   @override
   Widget build(BuildContext context) {
@@ -20,14 +25,14 @@ class MyOrderScreen extends GetView<MyOrderController> {
     return Scaffold(
       appBar: AppBar(
         surfaceTintColor:Colors.transparent,
-        automaticallyImplyLeading: false,
+       //automaticallyImplyLeading: false,
         backgroundColor: AppColors.bgColor,
         title:const Text("My Order Books",
           style: TextStyle(fontWeight: FontWeight.w600,fontSize: 18,color: AppColors.textBlack),
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(15.0),
         child: Obx(() {
           if(controller.isGetting.value){
             return ListView.builder(
@@ -39,7 +44,7 @@ class MyOrderScreen extends GetView<MyOrderController> {
               );
             });
           }
-          if (controller.getOrderModel.value != null) {
+          if (controller.getOrderModel.value.ordersData!.isEmpty) {
             return const Center(
               child: EmptyScreen()
             );
@@ -52,7 +57,6 @@ class MyOrderScreen extends GetView<MyOrderController> {
                     margin:const EdgeInsets.only(bottom: 10),
                     padding:const EdgeInsets.only(right: 10),
                     height: 80,
-                    width:double.infinity ,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
@@ -68,7 +72,7 @@ class MyOrderScreen extends GetView<MyOrderController> {
                             Container(
                               padding: const EdgeInsets.all(10),
                               height: 80,
-                              width: 120,
+                              width: 100,
                               decoration: BoxDecoration(
                                 color: AppColors.cardAmber,
                                 borderRadius: BorderRadius.circular(10),
@@ -106,18 +110,11 @@ class MyOrderScreen extends GetView<MyOrderController> {
                                   ),
 
                                   //rating
-                                  RatingBar(
-                                    itemSize: 13,
-                                    minRating: 1,
-                                    maxRating: 5,
-                                    initialRating: data.totalRatings!.toDouble(),
-                                    allowHalfRating: true,
-                                    ratingWidget: RatingWidget(
-                                        full:const Icon(Icons.star,color: Colors.amber,size: 13,),
-                                        half: const Icon(Icons.star_half, color: Colors.amber,size: 13,),
-                                        empty:const Icon(Icons.star,color: Colors.grey,size: 13,)),
-                                    onRatingUpdate: (v){},
-                                    updateOnDrag: false,
+                                  Row(
+                                    children: [
+                                      Icon(Icons.star_half, color: Colors.amber,size: 13,),
+                                      Text("(${data.averageRating!.toStringAsFixed(2)})",style:const TextStyle(fontSize: 13,color: AppColors.textBlack),),
+                                    ],
                                   ),
 
                                   //Price
@@ -133,7 +130,10 @@ class MyOrderScreen extends GetView<MyOrderController> {
                           ],
                         ),
 
-                        TextButton(onPressed: (){},
+                        TextButton(onPressed: (){
+                          bookController.bookId.value = data.bookId.toString();
+                          Get.toNamed(AppRoute.mySingleBook);
+                        },
                           child: const Text("Read",style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: AppColors.linkColor),),)
 
 

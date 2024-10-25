@@ -8,7 +8,8 @@ import 'package:ebook_reader/view/auth/start_screen.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/all_books/all_books.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/favorite_screen/favorite_screen.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/home_screen/home_screen.dart';
-import 'package:ebook_reader/view/bottom_navigation_menu/my_order_screen/my_order_screen.dart';
+import 'package:ebook_reader/view/bottom_navigation_menu/my_order_screen/screen/my_order_screen.dart';
+import 'package:ebook_reader/view/bottom_navigation_menu/my_order_screen/screen/my_single_book.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/profile_screen/profile_screen.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/profile_screen/screen/edit_profile.dart';
 import 'package:get/get.dart';
@@ -60,7 +61,7 @@ class RoutePage{
     GetPage(
       name: AppRoute.favoriteBooks,
       page: ()=>FavoriteScreen(),
-      binding: HomeBinding(),
+    //  binding: HomeBinding(),
 
     ),
     GetPage(
@@ -113,6 +114,11 @@ class RoutePage{
     GetPage(
         name: AppRoute.singleBook,
         page: ()=>SingleBookScreen(),
+       binding: BookControllerBinding()
+    ),
+    GetPage(
+        name: AppRoute.mySingleBook,
+        page: ()=>MySingleBookScreen(),
        binding: BookControllerBinding()
     ),
     GetPage(

@@ -1,5 +1,5 @@
 
-import 'package:ebook_reader/view/bottom_navigation_menu/my_order_screen/controller/payment_controller.dart';
+import 'package:ebook_reader/view/order_screen/controller/payment_controller.dart';
 import 'package:ebook_reader/view/order_screen/controller/create_order_controller.dart';
 import 'package:ebook_reader/widgets/app_button.dart';
 import 'package:ebook_reader/widgets/app_input.dart';

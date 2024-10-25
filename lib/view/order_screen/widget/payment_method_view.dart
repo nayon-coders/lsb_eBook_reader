@@ -1,4 +1,4 @@
-import 'package:ebook_reader/view/bottom_navigation_menu/my_order_screen/controller/payment_controller.dart';
+import 'package:ebook_reader/view/order_screen/controller/payment_controller.dart';
 import 'package:ebook_reader/widgets/app_shimmer_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -44,6 +44,7 @@ class PaymentMethodView extends GetView<PaymentController> {
               child: ListTile(
                 onTap: (){
                   orderController.selectedPaymentMethod.value = data;
+                  orderController.setPaymentCharge(); // set payment charge
                 },
                 contentPadding: EdgeInsets.zero,
                 tileColor: Colors.white,

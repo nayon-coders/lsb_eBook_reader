@@ -44,8 +44,11 @@ class OrdersDatum {
   final int? deliveryAddressId;
   final int? deliveryFee;
   final int? quantity;
-  final int? totalPrice;
+  final dynamic totalPrice;
   final String? paymentMethod;
+  final String? transectionId;
+  final String? number;
+  final String? sendTo;
   final String? orderStatus;
   final String? bookName;
   final String? image;
@@ -53,9 +56,9 @@ class OrdersDatum {
   final String? title;
   final String? language;
   final String? publisher;
-  final String? publicationYear;
-  final String? firstEditionYear;
-  final String? lastEditionYear;
+  final DateTime? publicationYear;
+  final DateTime? firstEditionYear;
+  final DateTime? lastEditionYear;
   final String? publisherName;
   final String? freeOrPaid;
   final int? totalPages;
@@ -66,6 +69,15 @@ class OrdersDatum {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? categoryId;
+  final String? deliveryPhone;
+  final String? deliveryContact;
+  final String? deliveryAddress;
+  final String? deliveryAddressType;
+  final String? deliveryCity;
+  final String? deliveryPostCode;
+  final String? deliveryMessage;
+  final String? deliveryDivision;
+  final String? deliveryDistrict;
   final int? totalRatings;
   final double? averageRating;
 
@@ -79,6 +91,9 @@ class OrdersDatum {
     this.quantity,
     this.totalPrice,
     this.paymentMethod,
+    this.transectionId,
+    this.number,
+    this.sendTo,
     this.orderStatus,
     this.bookName,
     this.image,
@@ -99,6 +114,15 @@ class OrdersDatum {
     this.createdAt,
     this.updatedAt,
     this.categoryId,
+    this.deliveryPhone,
+    this.deliveryContact,
+    this.deliveryAddress,
+    this.deliveryAddressType,
+    this.deliveryCity,
+    this.deliveryPostCode,
+    this.deliveryMessage,
+    this.deliveryDivision,
+    this.deliveryDistrict,
     this.totalRatings,
     this.averageRating,
   });
@@ -113,6 +137,9 @@ class OrdersDatum {
     quantity: json["quantity"],
     totalPrice: json["total_price"],
     paymentMethod: json["payment_method"],
+    transectionId: json["transection_id"],
+    number: json["number"],
+    sendTo: json["send_to"],
     orderStatus: json["order_status"],
     bookName: json["book_name"],
     image: json["image"],
@@ -120,9 +147,9 @@ class OrdersDatum {
     title: json["title"],
     language: json["language"],
     publisher: json["publisher"],
-    publicationYear: json["publication_year"],
-    firstEditionYear: json["first_edition_year"],
-    lastEditionYear: json["last_edition_year"],
+    publicationYear: json["publication_year"] == null ? null : DateTime.parse(json["publication_year"]),
+    firstEditionYear: json["first_edition_year"] == null ? null : DateTime.parse(json["first_edition_year"]),
+    lastEditionYear: json["last_edition_year"] == null ? null : DateTime.parse(json["last_edition_year"]),
     publisherName: json["publisher_name"],
     freeOrPaid: json["free_or_paid"],
     totalPages: json["total_pages"],
@@ -133,6 +160,15 @@ class OrdersDatum {
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
     categoryId: json["category_id"],
+    deliveryPhone: json["delivery_phone"],
+    deliveryContact: json["delivery_contact"],
+    deliveryAddress: json["delivery_address"],
+    deliveryAddressType: json["delivery_address_type"],
+    deliveryCity: json["delivery_city"],
+    deliveryPostCode: json["delivery_post_code"],
+    deliveryMessage: json["delivery_message"],
+    deliveryDivision: json["delivery_division"],
+    deliveryDistrict: json["delivery_district"],
     totalRatings: json["total_ratings"],
     averageRating: json["average_rating"]?.toDouble(),
   );
@@ -147,6 +183,9 @@ class OrdersDatum {
     "quantity": quantity,
     "total_price": totalPrice,
     "payment_method": paymentMethod,
+    "transection_id": transectionId,
+    "number": number,
+    "send_to": sendTo,
     "order_status": orderStatus,
     "book_name": bookName,
     "image": image,
@@ -154,9 +193,9 @@ class OrdersDatum {
     "title": title,
     "language": language,
     "publisher": publisher,
-    "publication_year": publicationYear,
-    "first_edition_year": firstEditionYear,
-    "last_edition_year": lastEditionYear,
+    "publication_year": publicationYear?.toIso8601String(),
+    "first_edition_year": firstEditionYear?.toIso8601String(),
+    "last_edition_year": lastEditionYear?.toIso8601String(),
     "publisher_name": publisherName,
     "free_or_paid": freeOrPaid,
     "total_pages": totalPages,
@@ -167,6 +206,15 @@ class OrdersDatum {
     "created_at": createdAt?.toIso8601String(),
     "updated_at": updatedAt?.toIso8601String(),
     "category_id": categoryId,
+    "delivery_phone": deliveryPhone,
+    "delivery_contact": deliveryContact,
+    "delivery_address": deliveryAddress,
+    "delivery_address_type": deliveryAddressType,
+    "delivery_city": deliveryCity,
+    "delivery_post_code": deliveryPostCode,
+    "delivery_message": deliveryMessage,
+    "delivery_division": deliveryDivision,
+    "delivery_district": deliveryDistrict,
     "total_ratings": totalRatings,
     "average_rating": averageRating,
   };

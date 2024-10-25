@@ -1,6 +1,7 @@
 import 'package:ebook_reader/routes/route_name.dart';
 import 'package:ebook_reader/utility/app_color.dart';
 import 'package:ebook_reader/view/auth/controller/auth_controller.dart';
+import 'package:ebook_reader/view/bottom_navigation_menu/controller/navigation_controller.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/profile_screen/controller/profile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,7 +13,7 @@ import 'widget/profile_info_widgets.dart';
 class ProfileScreen extends StatelessWidget {
    ProfileScreen({super.key});
   final logoutController = Get.put(AuthController());
-  final profileController = Get.put(ProfileController());
+  final profileController = Get.find<ProfileController>();
 
   @override
   Widget build(BuildContext context) {
@@ -46,11 +47,13 @@ class ProfileScreen extends StatelessWidget {
 
           const SizedBox(height: 20,),
 
-          ListMenu(onClick: ()=>Get.to(()=>Get.toNamed(AppRoute.editProfile)), name: "Edit Profile", icon: Icons.edit),
-         const SizedBox(height: 10,),
+         //  ListMenu(onClick: ()=>Get.toNamed(AppRoute.editProfile), name: "Edit Profile", icon: Icons.edit),
+         // const SizedBox(height: 10,),
 
           ListMenu(onClick: ()=>Get.to(()=>FavoriteScreen()), name: "Favorite", icon: Icons.favorite),
-          ListMenu(onClick: (){}, name: "Downloads (My books)", icon: Icons.cloud_download),
+          ListMenu(onClick: (){
+            Get.toNamed(AppRoute.myOrderScreen);
+          }, name: "Downloads (My books)", icon: Icons.cloud_download),
          const Divider(),
           ListMenu(onClick: (){}, name: "About us", icon: Icons.clear_all_rounded),
           ListMenu(onClick: (){}, name: "Contact us", icon: Icons.contact_support),

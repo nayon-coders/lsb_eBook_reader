@@ -12,7 +12,7 @@ class AllBooksModel {
   final bool? success;
   final String? message;
   final int? totalBooks;
-  final List<SingleBooksList>? data;
+  final List<SingleBookList>? data;
 
   AllBooksModel({
     this.success,
@@ -25,7 +25,7 @@ class AllBooksModel {
     success: json["success"],
     message: json["message"],
     totalBooks: json["totalBooks"],
-    data: json["data"] == null ? [] : List<SingleBooksList>.from(json["data"]!.map((x) => SingleBooksList.fromJson(x))),
+    data: json["data"] == null ? [] : List<SingleBookList>.from(json["data"]!.map((x) => SingleBookList.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -36,7 +36,7 @@ class AllBooksModel {
   };
 }
 
-class SingleBooksList {
+class SingleBookList {
   final int? bookId;
   final String? bookName;
   final String? image;
@@ -44,9 +44,9 @@ class SingleBooksList {
   final String? title;
   final String? language;
   final String? publisher;
-  final String? publicationYear;
-  final String? firstEditionYear;
-  final String? lastEditionYear;
+  final DateTime? publicationYear;
+  final DateTime? firstEditionYear;
+  final DateTime? lastEditionYear;
   final String? publisherName;
   final String? freeOrPaid;
   final int? price;
@@ -59,8 +59,10 @@ class SingleBooksList {
   final DateTime? updatedAt;
   final int? categoryId;
   final String? categoryName;
+  final int? totalRatings;
+  final double? averageRating;
 
-  SingleBooksList({
+  SingleBookList({
     this.bookId,
     this.bookName,
     this.image,
@@ -83,9 +85,11 @@ class SingleBooksList {
     this.updatedAt,
     this.categoryId,
     this.categoryName,
+    this.totalRatings,
+    this.averageRating,
   });
 
-  factory SingleBooksList.fromJson(Map<String, dynamic> json) => SingleBooksList(
+  factory SingleBookList.fromJson(Map<String, dynamic> json) => SingleBookList(
     bookId: json["book_id"],
     bookName: json["book_name"],
     image: json["image"],
@@ -93,9 +97,9 @@ class SingleBooksList {
     title: json["title"],
     language: json["language"],
     publisher: json["publisher"],
-    publicationYear: json["publication_year"],
-    firstEditionYear: json["first_edition_year"],
-    lastEditionYear: json["last_edition_year"],
+    publicationYear: json["publication_year"] == null ? null : DateTime.parse(json["publication_year"]),
+    firstEditionYear: json["first_edition_year"] == null ? null : DateTime.parse(json["first_edition_year"]),
+    lastEditionYear: json["last_edition_year"] == null ? null : DateTime.parse(json["last_edition_year"]),
     publisherName: json["publisher_name"],
     freeOrPaid: json["free_or_paid"],
     price: json["price"],
@@ -108,6 +112,8 @@ class SingleBooksList {
     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
     categoryId: json["category_id"],
     categoryName: json["category_name"],
+    totalRatings: json["total_ratings"],
+    averageRating: json["average_rating"]?.toDouble(),
   );
 
   Map<String, dynamic> toJson() => {
@@ -118,9 +124,9 @@ class SingleBooksList {
     "title": title,
     "language": language,
     "publisher": publisher,
-    "publication_year": publicationYear,
-    "first_edition_year": firstEditionYear,
-    "last_edition_year": lastEditionYear,
+    "publication_year": publicationYear?.toIso8601String(),
+    "first_edition_year": firstEditionYear?.toIso8601String(),
+    "last_edition_year": lastEditionYear?.toIso8601String(),
     "publisher_name": publisherName,
     "free_or_paid": freeOrPaid,
     "price": price,
@@ -133,5 +139,7 @@ class SingleBooksList {
     "updated_at": updatedAt?.toIso8601String(),
     "category_id": categoryId,
     "category_name": categoryName,
+    "total_ratings": totalRatings,
+    "average_rating": averageRating,
   };
 }

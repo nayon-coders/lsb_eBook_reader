@@ -5,8 +5,10 @@ import 'package:get/get.dart';
 
 import '../../../../app_config.dart';
 import '../../../../data/services/api_services.dart';
+import '../../favorite_screen/controller/favorite_book_controller.dart';
 
 class FavroitController extends GetxController{
+  FavoriteBookController favoriteBookController = Get.find<FavoriteBookController>();
 
     //oninit
   @override
@@ -48,6 +50,7 @@ class FavroitController extends GetxController{
   addFavroit(id) async {
     var res = await ApiServices.postApi(AppConfig.FAVORITE_CREATE, {"book_id":id.toString()});
     if(res.statusCode == 200){
+      favoriteBookController.getAllFavoriteBook();
       isFav.value = true;
     }
     //api call
@@ -57,6 +60,7 @@ class FavroitController extends GetxController{
   removeFavroit(id) async {
     var res = await ApiServices.deleteApi(AppConfig.FAVORITE_DELETE+id);
     if(res.statusCode == 200){
+      favoriteBookController.getAllFavoriteBook();
       isFav.value = false;
     }
     //api call

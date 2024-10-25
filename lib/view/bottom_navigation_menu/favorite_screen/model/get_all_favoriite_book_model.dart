@@ -14,7 +14,7 @@ class GetAllFavoriteBookModel {
   final int? userId;
   final String? userName;
   final String? userEmail;
-  final List<Datum>? data;
+  final List<FavBook>? data;
 
   GetAllFavoriteBookModel({
     this.success,
@@ -31,7 +31,7 @@ class GetAllFavoriteBookModel {
     userId: json["userID"],
     userName: json["userName"],
     userEmail: json["userEmail"],
-    data: json["data"] == null ? [] : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+    data: json["data"] == null ? [] : List<FavBook>.from(json["data"]!.map((x) => FavBook.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -44,7 +44,7 @@ class GetAllFavoriteBookModel {
   };
 }
 
-class Datum {
+class FavBook {
   final int? favoriteId;
   final int? userId;
   final int? bookId;
@@ -69,7 +69,7 @@ class Datum {
   final DateTime? updatedAt;
   final int? categoryId;
 
-  Datum({
+  FavBook({
     this.favoriteId,
     this.userId,
     this.bookId,
@@ -95,7 +95,7 @@ class Datum {
     this.categoryId,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory FavBook.fromJson(Map<String, dynamic> json) => FavBook(
     favoriteId: json["favorite_id"],
     userId: json["user_id"],
     bookId: json["book_id"],

@@ -47,18 +47,24 @@ class BottomCalculationView extends GetView<CreateOrderController> {
               AppButton(
                   width: size.width,
                   name: "Order Now", onClick: (){
-                    //check address is selected or not
-                    if(controller.selectedShippingAddress.value == null){
-                      Get.snackbar("Error", "Please select shipping address", backgroundColor: Colors.red);
-                      return null;
-                    }
-                    //check payment method is selected or not
-                    if(controller.selectedPaymentMethod.value == null){
-                      Get.snackbar("Error", "Please select payment method", backgroundColor: Colors.red);
-                      return null;
-                    }
 
-                    Get.to(PaymentScreen(), arguments: bookInfo);
+// Check if the payment method is selected
+                if (controller.selectedPaymentMethod.value == null) {
+                  Get.snackbar("Error", "Please select a payment method",
+                      backgroundColor: Colors.red);
+                  return; // or return null if the return type allows it
+                }
+
+                // Check if the address is selected
+                if (controller.selectedShippingAddress.value == null ||
+                    controller.selectedShippingAddress.value.city == null) {
+                  Get.snackbar("Error", "Please select a shipping address",
+                      backgroundColor: Colors.red);
+                  return; // or return null if the return type allows it
+                }
+
+
+                Get.to(PaymentScreen(), arguments: bookInfo);
 
 
 

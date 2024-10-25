@@ -117,11 +117,12 @@ class ProfileController extends GetxController{
       var data = jsonDecode(response.body);
       getUserInfo();
       isLoading.value = false;
+      Get.back();
       //show get.snackbar
       Get.snackbar(
           "Success", "Update success", snackPosition: SnackPosition.TOP,
           backgroundColor: Colors.green);
-      Get.back();
+
     } else {
       isLoading.value = false;
       Get.snackbar("Error", "Invalid email or password",

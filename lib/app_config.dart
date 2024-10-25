@@ -53,6 +53,7 @@ class AppConfig {
 
   //My Order
   static const String GET_MY_ORDER ="$BASE_URL/order/my"; //GET USER
+  static const String PLACE_ORDER ="$BASE_URL/order/create"; //GET USER
 
 
   //banner
@@ -67,6 +68,7 @@ class AppConfig {
 
   //payemt
   static const String PAYMENT_GET = "$BASE_URL/payment-method/all";
+
 
 
 }
