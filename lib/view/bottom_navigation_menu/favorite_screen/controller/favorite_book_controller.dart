@@ -51,7 +51,7 @@ class FavoriteBookController extends GetxController{
   //Favorite books delete
   deleteFavorite(id)async{
     isLoading.value = true;
-    final res = await ApiServices.deleteApi(AppConfig.FAVORITE_DELETE+id);
+    final res = await ApiServices.deleteApi(AppConfig.FAVORITE_DELETE+id.toString());
     if(res.statusCode == 200){
       getAllFavoriteBook();
       Get.snackbar("Successful", "Delete Successful", backgroundColor: Colors.green);

@@ -1,9 +1,6 @@
 import 'dart:convert';
 import 'package:ebook_reader/app_config.dart';
 import 'package:ebook_reader/data/services/api_services.dart';
-import 'package:ebook_reader/view/bottom_navigation_menu/category_screen/controller/mark_text_controller.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:html/parser.dart' as html_parser;
 import 'package:html/dom.dart' as dom;
 import 'package:get/get.dart';

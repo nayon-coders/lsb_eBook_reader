@@ -1,12 +1,15 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ebook_reader/view/admission/admission.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/app_navigation_screen.dart';
+import 'package:ebook_reader/view/bottom_navigation_menu/category_screen/controller/book_controller.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/home_screen/controller/menu_button_controller.dart';
 import 'package:ebook_reader/view/my_books/my_books.dart';
 import 'package:ebook_reader/widgets/app_shimmer_pro.dart';
 import 'package:ebook_reader/widgets/empty_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../routes/route_name.dart';
 import '../../../utility/app_assets.dart';
 import '../../../utility/app_color.dart';
 import '../category_screen/screen/study_screen.dart';
@@ -16,6 +19,7 @@ import 'widget/menu_card.dart';
 class HomeScreen extends GetView<HomeController> {
    HomeScreen({super.key});
 
+   final BookController bookController = Get.put(BookController());
 
   @override
   Widget build(BuildContext context) {
@@ -51,8 +55,8 @@ class HomeScreen extends GetView<HomeController> {
 
         ],
       ),
-      body: Padding(
-        padding:const EdgeInsets.all(20),
+      body: SingleChildScrollView(
+        padding:const EdgeInsets.all(10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,17 +71,16 @@ class HomeScreen extends GetView<HomeController> {
                   itemCount: 4,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context,index){
-                  return AppShimmerPro.circularShimmer(width: MediaQuery.of(context).size.width*.80, height: 150, borderRadius: 10,);
+                  return AppShimmerPro.circularShimmer(width: Get.width, height: 200, borderRadius: 10,);
                 }),
               );
             }else if(controller.getBannerModel.value.data != null && controller.getBannerModel.value.data!.isNotEmpty ){
               return SizedBox(
-                height: 150,
+                height: 200,
                 child: CarouselSlider(
 
                   options:CarouselOptions(
-
-                      height: 150,
+                      height: 200,
                       autoPlay: true,
                       enlargeCenterPage: true,
                       viewportFraction: 1,
@@ -87,8 +90,10 @@ class HomeScreen extends GetView<HomeController> {
                   ) ,
 
                   items:controller.getBannerModel.value.data!.map((data){
-                    return Builder(builder: (BuildContext context){
-                      return Image.network(data.image.toString(),fit: BoxFit.cover,width: double.infinity,);
+                    return Builder(builder: (BuildContext context){ 
+                      return ClipRRect(
+                          borderRadius: BorderRadius.circular(5),
+                          child: Image.network(data.image.toString(),fit: BoxFit.cover,width: double.infinity,));
                     });
                   }).toList(),
 
@@ -100,8 +105,8 @@ class HomeScreen extends GetView<HomeController> {
           }),
           const SizedBox(height: 30,),
 
-         const Text("Menus",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: AppColors.textBlack),),
-         const SizedBox(height: 10,),
+         const Text("মেনু সমূহ",style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold,color: AppColors.textBlack),),
+         const SizedBox(height: 15,),
 
           //Category Menu
           GridView.builder(
@@ -121,6 +126,113 @@ class HomeScreen extends GetView<HomeController> {
                     onClick: ()=>homeMenuRouting(item["name"]),
                 );
               }),
+
+          SizedBox(height: 20,),
+          const Text("নতুন বই সমূহ    ",style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold,color: AppColors.textBlack),),
+          //Category Menu
+          SizedBox(height: 5,),
+          Obx(() {
+            if(bookController.mostTradingBook.value.isEmpty){
+              return Center(child:  EmptyScreen(),);
+            }else{
+              return GridView.builder(
+                  shrinkWrap: true,
+                  physics:const NeverScrollableScrollPhysics(),
+                  gridDelegate:const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 20,
+                    crossAxisSpacing: 20,
+                    mainAxisExtent: 240
+                  ),
+                  itemCount: bookController.mostTradingBook.value.length,
+                  itemBuilder: (context,index){
+                    final data = bookController.mostTradingBook.value[index];
+                    return InkWell(
+                      onTap: (){
+                        bookController.bookId.value = data.bookId.toString();
+                        Get.toNamed(AppRoute.singleBook);
+                      },
+                      child: Container(
+                        margin:const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              padding:const EdgeInsets.only(top: 20),
+                              alignment: Alignment.center,
+                              height: 130,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                //borderRadius: BorderRadius.circular(10),
+                                color:index.isEven? AppColors.cardAmber:AppColors.cardBlue,
+                              ),
+                              child: CachedNetworkImage(
+                                imageUrl: data.image!,
+                                height: 120,
+                                width: 120,
+                                fit: BoxFit.cover,
+                                placeholder: (context, url) => const CircularProgressIndicator(),  // Loading indicator
+                                errorWidget: (context, url, error) => const Icon(Icons.error),     // Error indicator
+                              ),
+                            ),
+
+                            const SizedBox(height: 6,),
+
+                            //book Name
+                            Padding(
+                              padding: const EdgeInsets.only(left: 6.0),
+                              child: Text(data.bookName.toString(),
+                                style:const TextStyle(fontWeight: FontWeight.w500,
+                                    fontSize: 12,
+                                    color: AppColors.textBlack),
+                              ),
+                            ),
+
+                            //Rating
+                            Padding(
+                              padding: const EdgeInsets.only(left: 6),
+                              child: Row(
+                                children: [
+                                  Icon(Icons.star, color: Colors.amber, size: 14,),
+                                  Text("(${data.averageRating!.toStringAsFixed(1)})",style:const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.textBlack),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const  SizedBox(height: 5,),
+
+                            //price
+                            Padding(
+                              padding: const EdgeInsets.only(left: 6.0),
+                              child: Text("\$${data.price.toString()}",style:const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.textBlack,
+                              ),
+                              ),
+                            )
+
+                          ],
+                        ),
+                      ),
+                    );
+
+                  }
+                  );
+
+
+            }
+
+          }
+          ),
         ],
       ),
       ),

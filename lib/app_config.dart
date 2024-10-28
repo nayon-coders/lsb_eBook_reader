@@ -68,6 +68,7 @@ class AppConfig {
 
   //payemt
   static const String PAYMENT_GET = "$BASE_URL/payment-method/all";
+  static const String RATING_POST = "$BASE_URL/rating/add";
 
 
 

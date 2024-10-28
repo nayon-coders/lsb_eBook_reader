@@ -26,7 +26,7 @@ class ApiServices{
 
   //post api
   static Future<http.Response> postApi(String url, dynamic body) async {
-    return await http.post(Uri.parse(url),
+    var data = await http.post(Uri.parse(url),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -34,6 +34,12 @@ class ApiServices{
       },
       body: jsonEncode(body)
     );
+    print("POST API RESPONSE TOKEN: ${sharedPreferences!.getString("token")}");
+    print("POST API RESPONSE URL: ${url}");
+    print("POST API RESPONSE BODY: ${data.body}");
+    print("POST API RESPONSE STATUS CODE: ${data.statusCode}");
+
+    return data;
   }
 
 
