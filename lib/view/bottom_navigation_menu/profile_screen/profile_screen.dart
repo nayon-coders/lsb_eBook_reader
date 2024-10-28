@@ -3,8 +3,10 @@ import 'package:ebook_reader/utility/app_color.dart';
 import 'package:ebook_reader/view/auth/controller/auth_controller.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/controller/navigation_controller.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/profile_screen/controller/profile_controller.dart';
+import 'package:ebook_reader/view/bottom_navigation_menu/profile_screen/screen/contact_us.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../favorite_screen/favorite_screen.dart';
 import 'screen/edit_profile.dart';
 import 'widget/list_menu.dart';
@@ -55,13 +57,20 @@ class ProfileScreen extends StatelessWidget {
             Get.toNamed(AppRoute.myOrderScreen);
           }, name: "Downloads (My books)", icon: Icons.cloud_download),
          const Divider(),
-          ListMenu(onClick: (){}, name: "About us", icon: Icons.clear_all_rounded),
-          ListMenu(onClick: (){}, name: "Contact us", icon: Icons.contact_support),
-          ListMenu(onClick: (){}, name: "Privacy Policy", icon: Icons.privacy_tip),
+          ListMenu(onClick: ()=>Get.toNamed(AppRoute.aboutUs), name: "About us", icon: Icons.clear_all_rounded),
+          ListMenu(onClick: ()=>Get.toNamed(AppRoute.contactUs), name: "Contact us", icon: Icons.contact_support),
+          ListMenu(onClick: ()=>Get.toNamed(AppRoute.privacyPolicy), name: "Privacy Policy", icon: Icons.privacy_tip),
+          ListMenu(onClick: ()=>Get.toNamed(AppRoute.returnPolicy), name: "Refund Policy", icon: Icons.recycling),
+          ListMenu(onClick: ()=>Get.toNamed(AppRoute.termsCondition), name: "Terms & Condition", icon: Icons.sticky_note_2_outlined),
+
 
          const Divider(),
-          ListMenu(onClick: (){}, name: "Join now", icon: Icons.facebook),
-          ListMenu(onClick: (){}, name: "Subscribe Now", icon: Icons.subscriptions_sharp),
+          ListMenu(onClick: (){
+            launchUrl(Uri.parse("https://www.facebook.com/ahmedsenglish.official"));
+          }, name: "Join now", icon: Icons.facebook),
+          ListMenu(onClick: (){
+            launchUrl(Uri.parse("https://www.youtube.com/@ahmed.english"));
+          }, name: "Subscribe Now", icon: Icons.subscriptions_sharp),
          const Divider(),
 
           ListMenu(onClick: (){
