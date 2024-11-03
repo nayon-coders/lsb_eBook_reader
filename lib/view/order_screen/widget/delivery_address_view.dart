@@ -61,7 +61,7 @@ class ShippingAddressView extends GetView<ShippingAddressController> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Selected addres",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 16,color: AppColors.textBlack),),
+                  Text("Selected address",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 16,color: AppColors.textBlack),),
                   SizedBox(
                       width: 300,
                       child: Text(
