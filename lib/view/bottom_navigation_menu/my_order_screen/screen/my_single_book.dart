@@ -3,11 +3,13 @@ import 'package:ebook_reader/routes/route_name.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/profile_screen/controller/favroit_controller.dart';
 import 'package:ebook_reader/widgets/app_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating/flutter_rating.dart';
 import 'package:get/get.dart';
 import '../../../../data/model/all_book_model.dart';
 import '../../../../utility/app_color.dart';
 import '../../category_screen/controller/book_controller.dart';
 import '../../category_screen/widgets/single_book_loading_widget.dart';
+import 'rating_view.dart';
 
 class MySingleBookScreen extends GetView<BookController> {
   MySingleBookScreen({super.key});
@@ -258,7 +260,18 @@ class MySingleBookScreen extends GetView<BookController> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             AppButton(
+              name: "Review",
+              width: Get.width*.40,
+              bgColor: AppColors.bottomNev,
+              onClick: ()=>Get.bottomSheet(
+                RatingView(id: controller.singleBookModel.value.data!.bookId!.toString(),),
+                backgroundColor: Colors.white,
+                elevation: 10,
+              )),
+
+            AppButton(
               name: "Read Book",
+              width: Get.width*.40,
               onClick: ()=>Get.toNamed(AppRoute.chapter, arguments: controller.singleBookModel.value.data!),),
 
 
@@ -268,3 +281,4 @@ class MySingleBookScreen extends GetView<BookController> {
     );
   }
 }
+

@@ -2,9 +2,10 @@ import 'package:ebook_reader/data/model/single_book_model.dart';
 import 'package:ebook_reader/utility/app_color.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/category_screen/screen/fav_this_book_view.dart';
 import 'package:ebook_reader/widgets/app_shimmer_pro.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:html/parser.dart' as html_parser;
 import 'package:get/get.dart';
 import 'package:turn_page_transition/turn_page_transition.dart';
 
@@ -168,39 +169,44 @@ class _ReadingScreenState extends State<ReadingScreen> {
       padding: const EdgeInsets.all(15),
       color: Colors.white,
       child: Obx(() {
-          return HtmlWidget(
-            data,
-            textStyle: TextStyle(
-              fontSize: controller.fontSize.value,
-              color: Colors.black,
-              letterSpacing: 0.5,
-              height: 1.7,
-
-            ),
-            onTapUrl: (url)  {
-              print("yes you click on url $url");
-              return true; // Return null to let the widget handle the URL
-            },
-            // Apply padding and alignment to fit the text nicely within the screen
-            customStylesBuilder: (element) {
-              return {
-                'text-align': 'justify',  // Justify text for a book-like effect
-              };
-            },
-
-            // Custom render for specific tags (like bold, italics, etc.)
-            customWidgetBuilder: (element) {
-              if (element.localName == 'b') {
-                return Text(
-                  element.text,  // Render bold text
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                );
-              }
-              return null;
-            },
-          );
+          return _buildHighlightedHtmlText(context, data, controller.peragraphModel.value.markTextData!.map((e) => e!.text!).toList());
         }
-      )
+      ),
+      // child: Obx(() {
+      //
+      //     // return HtmlWidget(
+      //     //   data,
+      //     //   textStyle: TextStyle(
+      //     //     fontSize: controller.fontSize.value,
+      //     //     color: Colors.black,
+      //     //     letterSpacing: 0.5,
+      //     //     height: 1.7,
+      //     //
+      //     //   ),
+      //     //   onTapUrl: (url)  {
+      //     //     print("yes you click on url $url");
+      //     //     return true; // Return null to let the widget handle the URL
+      //     //   },
+      //     //   // Apply padding and alignment to fit the text nicely within the screen
+      //     //   customStylesBuilder: (element) {
+      //     //     return {
+      //     //       'text-align': 'justify',  // Justify text for a book-like effect
+      //     //     };
+      //     //   },
+      //     //
+      //     //   // Custom render for specific tags (like bold, italics, etc.)
+      //     //   customWidgetBuilder: (element) {
+      //     //     if (element.localName == 'b') {
+      //     //       return Text(
+      //     //         element.text,  // Render bold text
+      //     //         style: TextStyle(fontWeight: FontWeight.bold),
+      //     //       );
+      //     //     }
+      //     //     return null;
+      //     //   },
+      //     // );
+      //   }
+      // )
     );
   }
 
@@ -376,5 +382,114 @@ class _ReadingScreenState extends State<ReadingScreen> {
   ////
   //
 
+
+  // Parse and highlight terms in the HTML content
+  RichText _buildHighlightedHtmlText(BuildContext context, String htmlContent, List<String> searchTerms) {
+    // Parse HTML to extract text content
+    final document = html_parser.parse(htmlContent);
+    final text = document.body?.text ?? "";
+
+    // Build highlighted text spans
+    return RichText(
+      textAlign: TextAlign.justify,
+      text: _buildHighlightedTextSpans(context, text, searchTerms),
+    );
+  }
+
+  // Helper to build highlighted text with clickable spans
+  TextSpan _buildHighlightedTextSpans(BuildContext context, String text, List<String> terms) {
+    List<TextSpan> spans = [];
+    int start = 0;
+
+    // Sort terms by length (longer first) to avoid nested term overlaps
+    terms.sort((a, b) => b.length.compareTo(a.length));
+
+    while (start < text.length) {
+      // Find the nearest matching term
+      int nearestIndex = text.length;
+      String? matchedTerm;
+      for (final term in terms) {
+        final index = text.indexOf(term, start);
+        if (index != -1 && index < nearestIndex) {
+          nearestIndex = index;
+          matchedTerm = term;
+        }
+      }
+
+      // If no match is found, add remaining text as a normal span
+      if (matchedTerm == null) {
+        spans.add(TextSpan(
+
+          text: text.substring(start),
+          style: TextStyle(
+              color: Colors.black,
+              fontSize: controller.fontSize.value,
+              wordSpacing: 1.5,
+              height: 1.6
+          ),
+        ));
+        break;
+      }
+
+      // Add normal text before the matched term
+      if (nearestIndex > start) {
+        spans.add(TextSpan(
+          text: text.substring(start, nearestIndex),
+          style: TextStyle(
+              color: Colors.black,
+              fontSize: controller.fontSize.value,
+              wordSpacing: 1.5,
+            height: 1.7
+          ),
+        ));
+      }
+
+      // Add highlighted, clickable text for the matched term
+      spans.add(TextSpan(
+        text: matchedTerm,
+        style: TextStyle(
+          fontSize: controller.fontSize.value,
+            color: Colors.red, fontWeight: FontWeight.bold
+        ),
+        recognizer: TapGestureRecognizer()
+          ..onTap = () {
+            print("বাসটা --- ${matchedTerm}");
+            for (var i in controller.peragraphModel.value.markTextData!) {
+              if (i.text == matchedTerm) {
+                Get.defaultDialog(
+                  barrierDismissible: false,
+                  backgroundColor: Colors.white,
+                  title: "${i!.text}",
+                  titleStyle: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textBlack,
+                  ),
+                  content: Text(i!.definition!),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      child: Text("Close"),
+                    ),
+                  ],
+                );
+              }
+              // ScaffoldMessenger.of(context).showSnackBar(
+              //   SnackBar(content: Text('Clicked on: $matchedTerm')),
+              // );
+            }
+          }
+      ));
+
+      // Move the start index past the matched term
+      start = nearestIndex + matchedTerm.length;
+    }
+
+    return TextSpan(
+
+        children: spans);
+  }
 
 }

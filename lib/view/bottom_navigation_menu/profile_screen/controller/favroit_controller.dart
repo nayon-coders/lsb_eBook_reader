@@ -8,7 +8,7 @@ import '../../../../data/services/api_services.dart';
 import '../../favorite_screen/controller/favorite_book_controller.dart';
 
 class FavroitController extends GetxController{
-  FavoriteBookController favoriteBookController = Get.find<FavoriteBookController>();
+  FavoriteBookController favoriteBookController = Get.put(FavoriteBookController());
 
     //oninit
   @override

@@ -49,7 +49,8 @@ class BottomCalculationView extends GetView<CreateOrderController> {
                   name: "Order Now", onClick: (){
 
 // Check if the payment method is selected
-                if (controller.selectedPaymentMethod.value == null) {
+                if (controller.selectedPaymentMethod.value == null ||
+                    controller.selectedPaymentMethod.value.methodName == null) {
                   Get.snackbar("Error", "Please select a payment method",
                       backgroundColor: Colors.red);
                   return; // or return null if the return type allows it
@@ -62,6 +63,7 @@ class BottomCalculationView extends GetView<CreateOrderController> {
                       backgroundColor: Colors.red);
                   return; // or return null if the return type allows it
                 }
+
 
 
                 Get.to(PaymentScreen(), arguments: bookInfo);
