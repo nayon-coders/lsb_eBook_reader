@@ -127,10 +127,11 @@ class HomeScreen extends GetView<HomeController> {
                 );
               }),
 
+
           SizedBox(height: 20,),
-          const Text("নতুন বই সমূহ    ",style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold,color: AppColors.textBlack),),
+          const Text("জনপ্রিয় বই সমূহ",style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold,color: AppColors.textBlack),),
           //Category Menu
-          SizedBox(height: 5,),
+          SizedBox(height: 10,),
           Obx(() {
             if(bookController.mostTradingBook.value.isEmpty){
               return Center(child:  EmptyScreen(),);
@@ -139,10 +140,10 @@ class HomeScreen extends GetView<HomeController> {
                   shrinkWrap: true,
                   physics:const NeverScrollableScrollPhysics(),
                   gridDelegate:const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 20,
-                    crossAxisSpacing: 20,
-                    mainAxisExtent: 240
+                    crossAxisCount: 3,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                    mainAxisExtent: 180,
                   ),
                   itemCount: bookController.mostTradingBook.value.length,
                   itemBuilder: (context,index){
@@ -153,7 +154,7 @@ class HomeScreen extends GetView<HomeController> {
                         Get.toNamed(AppRoute.singleBook);
                       },
                       child: Container(
-                        margin:const EdgeInsets.all(10),
+                      //  margin:const EdgeInsets.on(10),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             color: Colors.white
@@ -165,7 +166,7 @@ class HomeScreen extends GetView<HomeController> {
                             Container(
                               padding:const EdgeInsets.only(top: 20),
                               alignment: Alignment.center,
-                              height: 130,
+                              height: 100,
                               width: double.infinity,
                               decoration: BoxDecoration(
                                 //borderRadius: BorderRadius.circular(10),
@@ -173,8 +174,8 @@ class HomeScreen extends GetView<HomeController> {
                               ),
                               child: CachedNetworkImage(
                                 imageUrl: data.image!,
-                                height: 120,
-                                width: 120,
+                                height: 80,
+                                width: 80,
                                 fit: BoxFit.cover,
                                 placeholder: (context, url) => const CircularProgressIndicator(),  // Loading indicator
                                 errorWidget: (context, url, error) => const Icon(Icons.error),     // Error indicator
@@ -187,8 +188,8 @@ class HomeScreen extends GetView<HomeController> {
                             Padding(
                               padding: const EdgeInsets.only(left: 6.0),
                               child: Text(data.bookName.toString(),
-                                style:const TextStyle(fontWeight: FontWeight.w500,
-                                    fontSize: 12,
+                                style:const TextStyle(fontWeight: FontWeight.w400,
+                                    fontSize: 11,
                                     color: AppColors.textBlack),
                               ),
                             ),
@@ -200,7 +201,7 @@ class HomeScreen extends GetView<HomeController> {
                                 children: [
                                   Icon(Icons.star, color: Colors.amber, size: 14,),
                                   Text("(${data.averageRating!.toStringAsFixed(1)})",style:const TextStyle(
-                                      fontSize: 12,
+                                      fontSize: 11,
                                       fontWeight: FontWeight.w600,
                                       color: AppColors.textBlack),
                                   ),
@@ -213,7 +214,7 @@ class HomeScreen extends GetView<HomeController> {
                             Padding(
                               padding: const EdgeInsets.only(left: 6.0),
                               child: Text("\$${data.price.toString()}",style:const TextStyle(
-                                fontSize: 12,
+                                fontSize: 13,
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.textBlack,
                               ),

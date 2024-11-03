@@ -1,11 +1,14 @@
 import 'dart:convert';
 import 'package:ebook_reader/app_config.dart';
 import 'package:ebook_reader/data/services/api_services.dart';
+import 'package:flutter/material.dart';
 import 'package:html/parser.dart' as html_parser;
 import 'package:html/dom.dart' as dom;
 import 'package:get/get.dart';
 
+import '../../../../data/model/mark_fav_model.dart';
 import '../../../../data/model/peragraphModel.dart';
+import 'mark_text_controller.dart';
 class ReadingController extends GetxController {
   @override
   void onInit() {
@@ -23,13 +26,13 @@ class ReadingController extends GetxController {
   void onClose() {
     super.onReady();
     //reset fontSize.value
-    fontSize.value = 16.00;
+    fontSize.value = 16.5;
   }
 
   var containerWidth = 300.0; // Example width of the container
   var wordsPerLine = 0.obs; // Holds the number of words that can fit in a line
 
-  RxDouble fontSize = 16.00.obs;
+  RxDouble fontSize = 16.5.obs;
   
   //Rx model 
   Rx<PeragraphModel> peragraphModel = PeragraphModel().obs;
@@ -45,7 +48,7 @@ class ReadingController extends GetxController {
     var response = await ApiServices.getApi(AppConfig.PERAGRAPH_GET_BY_ID+"$ID");
     if(response.statusCode == 200){
       peragraphModel.value = PeragraphModel.fromJson(jsonDecode(response.body));
-      splitHtmlByWords(peragraphModel.value.data!.first!.content!, 150);
+      splitHtmlByWords(peragraphModel.value.data!.first!.content!, 130);
       peraId.value = peragraphModel.value.data!.first!.paraId!.toString();
     }
     isLoading.value = false;
@@ -105,6 +108,23 @@ class ReadingController extends GetxController {
 
     totalBookPages.value = result;
     return result;
+  }
+
+  //show a popup with the mark text with the match text
+  MarkTextDatum showMarkTextPopup(String text, markTextList){
+    MarkTextDatum? marktText;
+    print("text-----${text}");
+    var selectedText = text;
+    for(var i in markTextList){
+      if(i.text == selectedText){
+        marktText = i;
+      }else{
+        marktText = null;
+        Get.snackbar("Error", "Definition not found");
+      }
+    }
+    return marktText!;
+
   }
 
 
