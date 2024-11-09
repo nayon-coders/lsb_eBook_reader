@@ -70,6 +70,10 @@ class AppConfig {
   static const String PAYMENT_GET = "$BASE_URL/payment-method/all";
   static const String RATING_POST = "$BASE_URL/rating/add";
 
+  //coupon
+  static const String COUPON_ALL = "$BASE_URL/coupons";
+
+
 
 
 }

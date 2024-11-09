@@ -72,7 +72,7 @@ class MyOrderScreen extends GetView<MyOrderController> {
                             Container(
                               padding: const EdgeInsets.all(10),
                               height: 80,
-                              width: 100,
+                              width: 80,
                               decoration: BoxDecoration(
                                 color: AppColors.cardAmber,
                                 borderRadius: BorderRadius.circular(10),
@@ -118,7 +118,7 @@ class MyOrderScreen extends GetView<MyOrderController> {
                                   ),
 
                                   //Price
-                                  Text("\$ ${data.price}",style:const TextStyle(
+                                  Text("${data.price} TK",style:const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
                                       color: AppColors.textBlack),
@@ -130,11 +130,18 @@ class MyOrderScreen extends GetView<MyOrderController> {
                           ],
                         ),
 
-                        TextButton(onPressed: (){
-                          bookController.bookId.value = data.bookId.toString();
-                          Get.toNamed(AppRoute.mySingleBook);
-                        },
-                          child: const Text("Read",style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,color: AppColors.linkColor),),)
+                        SizedBox(
+                          width: 80,
+                          child: TextButton(onPressed: (){
+                            if(data.orderStatus == "pending" || data.orderStatus == "cancel"){
+                              return null;
+                            }else{
+                              bookController.bookId.value = data.bookId.toString();
+                              Get.toNamed(AppRoute.mySingleBook);
+                            }
+                          },
+                            child:   Text("${data.orderStatus == "pending" ? "Payment Verifying" : data.orderStatus == "cancel" ? "Canceled" : "Read"}",style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500,color: AppColors.linkColor),),),
+                        ),
 
 
 

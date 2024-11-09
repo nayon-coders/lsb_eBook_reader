@@ -1,3 +1,4 @@
+import 'package:ebook_reader/data/model/coupon_model.dart';
 import 'package:ebook_reader/data/model/single_book_model.dart';
 import 'package:ebook_reader/view/order_screen/controller/create_order_controller.dart';
 import 'package:ebook_reader/view/order_screen/screen/payment_screen.dart';
@@ -13,14 +14,17 @@ class BottomCalculationView extends GetView<CreateOrderController> {
     super.key,
     required this.size,
     required this.bookInfo,
+    required this.coupon,
   });
 
   final Size size;
-  final BookInfo? bookInfo; 
+  final BookInfo? bookInfo;
+  final SingleCoupon coupon;
 
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    //  controller.discountAmount.value = double.parse("${coupon.discountPrice}");
       controller.calculateTotalAmount();
     });
     return Obx(() {
@@ -36,13 +40,13 @@ class BottomCalculationView extends GetView<CreateOrderController> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-               OrderRiceText(name: "Sub Total", price: controller.subtotal.value!),
+               OrderRiceText(name: "Sub Total", price: controller.subtotal.value!.toStringAsFixed(2)),
                SizedBox(height: 6,),
-               OrderRiceText(name: "Delivery Fee", price: controller.deliveryCharge.value),
+               OrderRiceText(name: "Delivery Fee", price: "(+) ${controller.deliveryCharge.value.toStringAsFixed(2)}"),
               const SizedBox(height: 6,),
-               OrderRiceText(name: "Discount", price: controller.discountAmount.value),
+               OrderRiceText(name: "Discount", price: "(-) ${controller.discountAmount.value.toStringAsFixed(2)}"),
               const SizedBox(height: 6,),
-               OrderRiceText(name: "Total", price: controller.totalAmount.value) ,
+               OrderRiceText(name: "Total", price: controller.totalAmount.value!.toStringAsFixed(2)) ,
               const SizedBox(height: 15,),
               AppButton(
                   width: size.width,

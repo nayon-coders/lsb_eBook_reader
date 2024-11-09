@@ -40,7 +40,9 @@ class CreateOrderController extends GetxController {
   //calculate total amount
   void calculateTotalAmount(){
 
+
     print("Total Amount: ${totalAmount.value}");
+    print("discountAmount.value Amount: ${discountAmount.value}");
     if (selectedShippingAddress.value.city != null && selectedShippingAddress.value.division != null) {
       if (selectedShippingAddress.value.division!.toLowerCase().contains("dhaka")) {
         deliveryCharge.value = AppConst.deliveryFeeInsideDhaka;
@@ -79,9 +81,11 @@ class CreateOrderController extends GetxController {
       "payment_method" : selectedPaymentMethod.value.methodName!.toString(),
       "transection_id" : payTransId.value.text,
       "number" : payNumber.value.text,
-      "send_to" : selectedPaymentMethod.value.acocuntNumber!.toString()
+      "send_to" : selectedPaymentMethod.value.acocuntNumber!.toString(),
+      "discount_price" : discountAmount.value.toString(),
     };
-    var res = await ApiServices.postApi(AppConfig.PLACE_ORDER, data);
+    print("Place Order Data: ${data}");
+   var res = await ApiServices.postApi(AppConfig.PLACE_ORDER, data);
     if(res.statusCode == 200){
       clearAll(); //clear all
       myOrderController.getMyOrder(); //refresh my order

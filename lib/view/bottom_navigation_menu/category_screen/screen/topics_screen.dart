@@ -13,7 +13,8 @@ import '../controller/book_controller.dart';
 class TopicsScreen extends GetView<BookController> {
    TopicsScreen({super.key});
 
-   var bookInfo = Get.arguments as BookInfo;
+   var bookInfo = Get.arguments["data"] as BookInfo;
+    bool allPermission = Get.arguments["allPermission"] as bool;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +51,7 @@ class TopicsScreen extends GetView<BookController> {
                       )
                     ],
 
-                    color:  data.lookStatus == AppConst.lock ?  Colors.grey.shade200  : Colors.white
+                    color: allPermission ? Colors.white :  data.lookStatus == AppConst.lock ?  Colors.grey.shade200  : Colors.white
                   ),
                   child: ListTile(
                     onTap: ()=>data.lookStatus == AppConst.lock ? null : Get.toNamed(AppRoute.readingScreen,arguments: {"bookInfo":bookInfo,"id":data.id.toString()}),
@@ -67,7 +68,7 @@ class TopicsScreen extends GetView<BookController> {
                     ),
                     title: Text("${data.name}",style:const TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: AppColors.textBlack),),
                     subtitle: Text("${data.pageNumber} Page",style: const TextStyle(fontWeight: FontWeight.w400,fontSize: 14,color: AppColors.textBlack),),
-                    trailing:  Icon(data.lookStatus == AppConst.lock ? Icons.lock : Icons.double_arrow,color: AppColors.buttonGreen,),
+                    trailing:  Icon(allPermission ? Icons.double_arrow :  data.lookStatus == AppConst.lock ? Icons.lock : Icons.double_arrow,color: AppColors.buttonGreen,),
                   ),
                 );
 

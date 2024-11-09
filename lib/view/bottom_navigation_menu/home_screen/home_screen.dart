@@ -33,7 +33,7 @@ class HomeScreen extends GetView<HomeController> {
         title:const Text("Discover",style: TextStyle(fontWeight: FontWeight.w600,fontSize: 22,color: AppColors.textBlack),) ,
         actions: [
           InkWell(
-            onTap: (){},
+            onTap: ()=>Get.toNamed(AppRoute.allBooks),
             child: Container(
               height: 40,
               width: 40,

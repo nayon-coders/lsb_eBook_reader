@@ -207,7 +207,7 @@ class SingleBookScreen extends GetView<BookController> {
                                         borderRadius: BorderRadius.circular(30),
                                         color:const Color(0xFFDEFDD6),
                                       ),
-                                      child: Center(child: Text("Bangle",style:const TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: Colors.black),)),
+                                      child: Center(child: Text("${controller.singleBookModel.value!.data!.language!}",style:const TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: Colors.black),)),
 
                                     ),
 
@@ -265,7 +265,7 @@ class SingleBookScreen extends GetView<BookController> {
                   children: [
                     InkWell(
                       onTap: (){
-                        Get.toNamed(AppRoute.chapter, arguments: controller.singleBookModel.value.data!);
+                        Get.toNamed(AppRoute.chapter, arguments: {"data":controller.singleBookModel.value.data!, "allPermission":false});
                       },
                       child: Container(
                         height: 45,
