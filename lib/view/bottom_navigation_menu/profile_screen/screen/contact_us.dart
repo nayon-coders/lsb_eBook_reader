@@ -15,19 +15,25 @@ class ContactUs extends StatelessWidget {
     <title>Contact Us - Ahmed's English</title>
 </head>
 <body>
-    <h1>Contact Us</h1>
-    <p>Welcome to Ahmed’s English, an innovative online learning platform dedicated to helping students excel in English for various competitive exams, including SSC, HSC, university admission tests, BCS, and job exams in Bangladesh. Our mission is to provide high-quality English education, enabling learners to achieve their academic and professional goals. Founded by renowned English educator Ahmmad Ullah, the platform combines traditional teaching methods with modern technology to deliver a comprehensive learning experience.</p>
+    <header>
+        <h1>Contact Us</h1>
+    </header>
 
-    <p>You can contact us through several ways. Choose the option that is most convenient for you from the options below:</p>
+    <section>
+        <p>Welcome to Ahmed’s English, an innovative online learning platform dedicated to helping students excel in English for various competitive exams, including SSC, HSC, university admission tests, BCS, and job exams in Bangladesh. Our mission is to provide high-quality English education, enabling learners to achieve their academic and professional goals. Founded by renowned English educator Ahmmad Ullah, the platform combines traditional teaching methods with modern technology to deliver a comprehensive learning experience.</p>
 
-    <h2>Contact Information</h2>
-    <p><strong>Phone:</strong> 01701842233</p>
-    <p><strong>Email:</strong> <a href="mailto:fojent2015@gmail.com">fojent2015@gmail.com</a></p>
+        <p>You can contact us through several ways. Choose your comfortable one from the given below:</p>
+        
+        <h2>Contact Us</h2>
 
-    <h2>Follow Us</h2>
-    <p><strong>Facebook Page:</strong> <a href="https://www.facebook.com/ahmedsenglish.official" target="_blank">Ahmed’s English</a></p>
-    <p><strong>Facebook Group:</strong> <a href="https://www.facebook.com/groups/ahmedsenglish.official" target="_blank">Ahmed’s English Group</a></p>
-    <p><strong>YouTube Channel:</strong> <a href="https://www.youtube.com/@ahmed.english" target="_blank">Ahmed’s English</a></p>
+        <ul>
+            <li><strong>Our Contact Number:</strong> 01701842233</li>
+            <li><strong>Our Email Address:</strong> <a href="mailto:fojent2015@gmail.com">fojent2015@gmail.com</a></li>
+            <li><strong>Our Facebook Page:</strong> <a href="https://www.facebook.com/ahmedsenglish.official" target="_blank">Ahmed’s English</a></li>
+            <li><strong>Our Facebook Group:</strong> <a href="https://www.facebook.com/groups/ahmedsenglish.official" target="_blank">Ahmed’s English</a></li>
+            <li><strong>Our YouTube Channel:</strong> <a href="https://www.youtube.com/@ahmed.english" target="_blank">Ahmed’s English</a></li>
+        </ul>
+    </section>
 </body>
 </html>
 """;
@@ -48,7 +54,6 @@ class ContactUs extends StatelessWidget {
         child: HtmlWidget(
           htmlData,
           textStyle:const TextStyle(color: Colors.black, backgroundColor: AppColors.bgColor),
-
         ),
       ),
     );

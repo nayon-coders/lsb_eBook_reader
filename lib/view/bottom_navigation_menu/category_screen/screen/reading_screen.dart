@@ -4,7 +4,6 @@ import 'package:ebook_reader/view/bottom_navigation_menu/category_screen/screen/
 import 'package:ebook_reader/widgets/app_shimmer_pro.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:html/parser.dart' as html_parser;
 import 'package:get/get.dart';
 import 'package:turn_page_transition/turn_page_transition.dart';
@@ -89,7 +88,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
               onPressed: () =>Get.to(FavThisBookView()),
               icon: const Icon(Icons.favorite),
             ),
-            SizedBox(width: 10,),
+            const SizedBox(width: 10,),
           ],
         ),
         body: Obx(() {
@@ -103,7 +102,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
           }
           // Check if totalBookPages is populated
           else if (controller.totalBookPages.value == null || controller.totalBookPages.value!.isEmpty) {
-            return Center(child: Text("No pages available."));
+            return const Center(child: Text("No pages available."));
           }
           else {
             return SizedBox(
@@ -236,7 +235,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
               }
 
             },
-            icon: Icon(Icons.text_decrease_outlined)),
+            icon: const Icon(Icons.text_decrease_outlined)),
         IconButton(
             onPressed: () {
               if(controller.fontSize.value < 16.5) {
@@ -244,8 +243,8 @@ class _ReadingScreenState extends State<ReadingScreen> {
               }
               print(" controller.fontSize.value --- ${ controller.fontSize.value}");
             },
-            icon: Icon(Icons.text_increase_outlined)),
-        SizedBox(width: 20,),
+            icon: const Icon(Icons.text_increase_outlined)),
+        const SizedBox(width: 20,),
 
 
         InkWell(
@@ -292,9 +291,9 @@ class _ReadingScreenState extends State<ReadingScreen> {
               padding: const EdgeInsets.all(20),
               height: Get.height,
               width: Get.width,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: AppColors.bgColor,
-                borderRadius: const BorderRadius.only(
+                borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30),
                   topRight: Radius.circular(30),
                 ),
@@ -303,12 +302,12 @@ class _ReadingScreenState extends State<ReadingScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Definition", style: const TextStyle(
+                  const Text("Definition", style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                     color: AppColors.textBlack,
                   ),),
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   Expanded(
                     child: Obx(() {
                       if(controller.peragraphModel.value.markTextData == null || controller.peragraphModel.value.markTextData!.isEmpty){
@@ -471,7 +470,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
                       onPressed: () {
                         Get.back();
                       },
-                      child: Text("Close"),
+                      child: const Text("Close"),
                     ),
                   ],
                 );

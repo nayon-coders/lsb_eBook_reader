@@ -1,14 +1,11 @@
 import 'package:ebook_reader/routes/route_name.dart';
 import 'package:ebook_reader/utility/app_color.dart';
 import 'package:ebook_reader/view/auth/controller/auth_controller.dart';
-import 'package:ebook_reader/view/bottom_navigation_menu/controller/navigation_controller.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/profile_screen/controller/profile_controller.dart';
-import 'package:ebook_reader/view/bottom_navigation_menu/profile_screen/screen/contact_us.dart';
+import 'package:ebook_reader/widgets/app_input.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../favorite_screen/favorite_screen.dart';
-import 'screen/edit_profile.dart';
 import 'widget/list_menu.dart';
 import 'widget/profile_info_widgets.dart';
 
@@ -16,6 +13,8 @@ class ProfileScreen extends StatelessWidget {
    ProfileScreen({super.key});
   final logoutController = Get.put(AuthController());
   final profileController = Get.find<ProfileController>();
+  final _phone = TextEditingController();
+  final _key = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +51,7 @@ class ProfileScreen extends StatelessWidget {
          //  ListMenu(onClick: ()=>Get.toNamed(AppRoute.editProfile), name: "Edit Profile", icon: Icons.edit),
          // const SizedBox(height: 10,),
 
-          ListMenu(onClick: ()=>Get.to(()=>FavoriteScreen()), name: "Favorite", icon: Icons.favorite),
+          ListMenu(onClick: ()=>Get.toNamed(AppRoute.favoriteBooks), name: "Favorite", icon: Icons.favorite),
           ListMenu(onClick: (){
             Get.toNamed(AppRoute.myOrderScreen);
           }, name: "Downloads (My books)", icon: Icons.cloud_download),
@@ -89,6 +88,7 @@ class ProfileScreen extends StatelessWidget {
 
             );
           }, name: "Delete Account", icon: Icons.delete),
+
           ListMenu(onClick: ()async{
             Get.defaultDialog(
               title: "Confirm Logout",
@@ -97,14 +97,35 @@ class ProfileScreen extends StatelessWidget {
               textCancel: "No",
               confirmTextColor: Colors.white,
               onConfirm: () {
-                logoutController.logout();
+                Get.defaultDialog(
+                  title: "Please enter your Phone number",
+                  content: SizedBox(
+                    width: 300,
+                    child:Form(
+                      key: _key,
+                      child: AppInput(
+                          hint: "phone",
+                          controller:_phone,
+                        textType: TextInputType.phone,
+                        validator: (v){
+                            if(v!.isEmpty){
+                              return "Must be required";
+                            }
+                            return null;
+                        },
+                      ),
+                    ) ,
+                  ),
+                  onCancel: ()=>Get.back(),
+                  onConfirm: ()async{
+                    if(_key.currentState!.validate()){
+                      logoutController.logout();
+                    }});
               },
               onCancel: () {
                 Get.back();
-              },
-            );
-
-          }, name: "Logout", icon: Icons.login),
+              },);},
+              name: "Logout", icon: Icons.login),
 
 
         ],

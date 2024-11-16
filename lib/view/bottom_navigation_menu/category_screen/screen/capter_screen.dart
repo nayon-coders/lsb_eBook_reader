@@ -39,7 +39,7 @@ class ChapterScreen extends GetView<BookController> {
               return AppShimmerPro.circularShimmer(width: size.width, height: 70, borderRadius: 10,);
             },
           );
-        }else if(controller.chapterTopicModel.value.data!.isEmpty){
+        }else if(controller.chapterTopicModel.value.data == null ||  controller.chapterTopicModel.value.data!.isEmpty){
           return NotFind(
             title: "খুঁজে পাওয়া যাচ্ছে না!",
           );
@@ -47,8 +47,7 @@ class ChapterScreen extends GetView<BookController> {
           return _buildChapterListView();
         }
 
-        }
-      ),
+        }),
 
     );
   }

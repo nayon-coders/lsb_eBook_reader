@@ -44,8 +44,7 @@ class LoginScreen extends GetView<AuthController> {
 
          const SizedBox(height: 20,),
           AppInput(
-              hint: "Email",
-              textType: TextInputType.emailAddress,
+              hint: "Phone",
               controller: controller.email.value,
           ),
 
@@ -56,6 +55,7 @@ class LoginScreen extends GetView<AuthController> {
               return AppInput(
                 hint: "Password",
                 controller: controller.pass.value,
+                textType: TextInputType.visiblePassword,
                 obscureText: controller.show.value,
                 suffixIcon: InkWell(
                     onTap: ()=>controller.show.value = !controller.show.value,
