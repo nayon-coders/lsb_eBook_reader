@@ -3,7 +3,6 @@ import 'package:ebook_reader/routes/route_name.dart';
 import 'package:ebook_reader/widgets/app_shimmer_pro.dart';
 import 'package:ebook_reader/widgets/empty_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import '../../../../utility/app_color.dart';
 import '../category_screen/controller/book_controller.dart';
@@ -22,53 +21,105 @@ class AllBooks extends GetView<BookController> {
         backgroundColor: AppColors.bgColor,
         surfaceTintColor: Colors.transparent,
         title:const Text("All Books",style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600,color: AppColors.textBlack),),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(45),
+          child: Container(
+            height: 45,
+            margin: const EdgeInsets.only(left: 20,right: 20,bottom: 5),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5)
+            ),
+            child: TextField(
+              onChanged: (v){
+                controller.searchBook(v);
+              },
+              decoration: InputDecoration(
+                hintText: "Search book by name...",
+                border: InputBorder.none,
+                prefixIcon: const Icon(Icons.search),
+              ),
+            ),
+          ),
+        ),
       ),
       body:Obx(() {
         if(controller.isLoading.value){
           return GridView.builder(
             itemCount: 10,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              mainAxisSpacing:10 ,
-              crossAxisSpacing: 10,
-              childAspectRatio: 0.65,
+              mainAxisSpacing:5 ,
+              crossAxisSpacing: 5,
               crossAxisCount: 2,
-              mainAxisExtent: 180,
+              mainAxisExtent: 280,
             ),
             itemBuilder: (BuildContext context, int index) {
               return AppShimmerPro.circularShimmer(width: MediaQuery.of(context).size.width*.45, height: 180, borderRadius: 10,);
             },
           );
-        }if(controller.allBooksModel.value.data == null || controller.allBooksModel.value.data!.isEmpty){
+        }else if(controller.allBooksModel.value.data == null || controller.allBooksModel.value.data!.isEmpty){
           return const Center(child: EmptyScreen(),);
+        }else{
+          if(controller.searchBookList.isEmpty){
+            return Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: GridView.builder(
+                  itemCount: controller.allBooksModel.value.data!.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      mainAxisSpacing:10 ,
+                      crossAxisSpacing: 10,
+                      crossAxisCount: 2,
+                      mainAxisExtent: 280
+                  ),
+                  itemBuilder: (context,index){
+                    var data = controller.allBooksModel.value.data![index];
+                    return SingleBookWidgets(
+                      onTap: (){
+                        controller.bookId.value = data.bookId!.toString();
+
+                        Get.toNamed(AppRoute.singleBook,arguments: data);
+                      },
+                      index: index,
+                      bookName: data.bookName! ?? "Book Name",
+                      bookImage: data.image!,
+                      bookPrice: "৳ ${data.price ?? 0.00}",
+                      bookRating:double.parse(data.averageRating!.toStringAsFixed(1)) ,
+
+                    );
+                  }),
+            );
+          }else{
+            return Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: GridView.builder(
+                  itemCount: controller.searchBookList!.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      mainAxisSpacing:10 ,
+                      crossAxisSpacing: 10,
+                      crossAxisCount: 2,
+                      mainAxisExtent: 280
+                  ),
+                  itemBuilder: (context,index){
+                    var data = controller.searchBookList![index];
+                    return SingleBookWidgets(
+                      onTap: (){
+                        controller.bookId.value = data.bookId!.toString();
+
+                        Get.toNamed(AppRoute.singleBook,arguments: data);
+                      },
+                      index: index,
+                      bookName: data.bookName! ?? "Book Name",
+                      bookImage: data.image!,
+                      bookPrice: "৳ ${data.price ?? 0.00}",
+                      bookRating:double.parse(data.averageRating!.toStringAsFixed(1)) ,
+
+                    );
+                  }),
+            );
+          }
+
         }
-          return Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: GridView.builder(
-                itemCount: controller.allBooksModel.value.data!.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    mainAxisSpacing:10 ,
-                    crossAxisSpacing: 10,
-                    childAspectRatio: 0.65,
-                    crossAxisCount: 2,
-                    mainAxisExtent: 280
-                ),
-                itemBuilder: (context,index){
-                  var data = controller.allBooksModel.value.data![index];
-                  return SingleBookWidgets(
-                    onTap: (){
-                      controller.bookId.value = data.bookId!.toString();
 
-                      Get.toNamed(AppRoute.singleBook,arguments: data);
-                    },
-                    index: index,
-                    bookName: data.bookName! ?? "Book Name",
-                    bookImage: data.image!,
-                    bookPrice: "৳ ${data.price ?? 0.00}",
-                    bookRating:double.parse(data.averageRating!.toStringAsFixed(1)) ,
-
-                  );
-                }),
-          );
 
 
       }
@@ -95,11 +146,11 @@ class SingleBookWidgets extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin:const EdgeInsets.all(10),
+       // margin:const EdgeInsets.all(10),
         //height: 220,
-        width: MediaQuery.of(context).size.width*.45,
+       // width: MediaQuery.of(context).size.width*.45,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(5),
             color: Colors.white
         ),
         child: Column(
@@ -107,20 +158,19 @@ class SingleBookWidgets extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              padding:const EdgeInsets.all(5),
+              padding:const EdgeInsets.all(20),
               alignment: Alignment.center,
-              height: 170,
+              height: 180,
               width: double.infinity,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(5),
                 color: AppColors.cardAmber,
               ),
               child: CachedNetworkImage(
                 imageUrl:bookImage,
-                height: 130,
-                width: 130,
+                height: 180,
                 fit: BoxFit.cover,
-                placeholder: (context, url) => const CircularProgressIndicator(),  // Loading indicator
+                placeholder: (context, url) => AppShimmerPro.circularShimmer(width: 100, height: 120, borderRadius: 3),  // Loading indicator
                 errorWidget: (context, url, error) => Icon(Icons.error),     // Error indicator
               ),
             ),
@@ -131,32 +181,31 @@ class SingleBookWidgets extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 6.0),
               child: Text("${bookName}",
-                style:const TextStyle(fontWeight: FontWeight.w600,
-                    fontSize: 13,
+                style:const TextStyle(fontWeight: FontWeight.w400,
+                    fontSize: 14,
                     color: AppColors.textBlack),
               ),
             ),
 
             //Rating
             Padding(
-              padding: const EdgeInsets.only(left: 5.0),
+              padding: const EdgeInsets.only(left: 5.0, top: 5),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Icon(Icons.star,color: Colors.deepOrange,size: 20,),
+                  const Icon(Icons.star,color: Colors.deepOrange,size: 15,),
                   //SizedBox(width: 10,),
-                  Text("($bookRating)",style:const  TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: Colors.black),)
+                  Text("($bookRating)",style:const  TextStyle(fontSize: 12,fontWeight: FontWeight.w400,color: Colors.black),)
                 ],
               ),
             ),
-            const  SizedBox(height: 5,),
 
             //price
             Padding(
-              padding:const  EdgeInsets.only(left: 6.0),
+              padding:const  EdgeInsets.only(left: 6.0,top: 7),
               child: Text("${bookPrice}",style:const TextStyle(
-                fontSize: 14,
+                fontSize: 17,
                 fontWeight: FontWeight.w600,
                 color: AppColors.textBlack,
               ),

@@ -16,6 +16,7 @@ class BookController extends GetxController{
   void onInit() {
     super.onInit();
     getAllBooks();
+
   }
   //onReady
   @override
@@ -84,6 +85,20 @@ class BookController extends GetxController{
   RxList <SingleBookList> mostTradingBook = <SingleBookList>[].obs;
   getMostTrandingBook(){
     mostTradingBook.value = allBooksModel.value.data!.where((element) => element.averageRating! > 4).toList();
+  }
+
+  //search book
+  RxList<SingleBookList> searchBookList = <SingleBookList>[].obs;
+  searchBook(String searchKey){
+    print("seacrh typting --- ${searchKey}");
+    searchBookList.clear();
+    if(searchKey.isNotEmpty){
+      searchBookList = allBooksModel.value.data!.where((element) => element.bookName!.toLowerCase().contains(searchKey.toLowerCase())).toList().obs;
+    }else{
+      getAllBooks();
+    }
+
+    print("search list length ${searchBookList.length}");
   }
 
 

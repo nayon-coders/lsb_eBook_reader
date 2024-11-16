@@ -4,7 +4,7 @@ import '../../../../utility/app_color.dart';
 class OrderRiceText extends StatelessWidget {
   const OrderRiceText({super.key, required this.name, required this.price});
   final String name;
-  final double price;
+  final String price;
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,7 @@ class OrderRiceText extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(name,style: const TextStyle(fontWeight: FontWeight.w600,fontSize: 15,color: AppColors.textBlack),),
-        Text("${price!.toStringAsFixed(2)}",style:const TextStyle(fontWeight: FontWeight.w500,fontSize: 14,color: AppColors.textBlack),),
+        Text("${price!}",style:const TextStyle(fontWeight: FontWeight.w500,fontSize: 14,color: AppColors.textBlack),),
       ],
     );
   }

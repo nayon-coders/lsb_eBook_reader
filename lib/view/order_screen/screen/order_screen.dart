@@ -1,4 +1,5 @@
 
+import 'package:ebook_reader/view/bottom_navigation_menu/category_screen/controller/coupon_controller.dart';
 import 'package:ebook_reader/view/order_screen/controller/payment_controller.dart';
 import 'package:ebook_reader/view/order_screen/controller/create_order_controller.dart';
 import 'package:ebook_reader/widgets/app_button.dart';
@@ -16,11 +17,11 @@ import '../widget/payment_method_view.dart';
 
 class OrderScreen extends GetView<CreateOrderController> {
    OrderScreen({super.key});
-  final _coupon = TextEditingController();
 
   //find controller
    final ShippingAddressController shippingAddressController = Get.find<ShippingAddressController>();
    final PaymentController paymentController = Get.find<PaymentController>();
+   final CouponController couponController = Get.find<CouponController>();
 
    //argument store
    BookInfo? bookInfo = Get.arguments;
@@ -135,22 +136,39 @@ class OrderScreen extends GetView<CreateOrderController> {
             const SizedBox(height: 50,),
             AppInput(
                 hint: "Coupon",
-                controller:_coupon,
-              suffixIcon: Container(
-                margin:const EdgeInsets.all(6),
-                padding:const EdgeInsets.all(4),
-                width: 80,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: AppColors.buttonGreen,
+                controller: couponController.coupon.value,
+                suffixIcon: Obx((){
+                    return InkWell(
+                      onTap: (){
+                        if ( couponController.coupon.value.text.isNotEmpty) {
+                          couponController.applyCoupon();
+                          if(couponController.selectedCoupon.value.discountPrice != null){
+                            controller.discountAmount.value = double.parse("${couponController.selectedCoupon.value.discountPrice}");
+                          }else{
+                            controller.discountAmount.value = 0.0;
+                          }
+                          controller.calculateTotalAmount();
+                        }
+                      },
+                      child: Container(
+                      margin:const EdgeInsets.all(6),
+                      padding:const EdgeInsets.all(4),
+                      width: 80,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: AppColors.buttonGreen,
+                      ),
+                      child: Center(
+                          child: couponController.isLoading.value ? CircularProgressIndicator(color: Colors.white,) : Text("Apply",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w400,color: Colors.white),)),
+                                    ),
+                    );
+                  }
                 ),
-                child:const Center(child: Text("Apply",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w400,color: Colors.white),)),
-              ),
             )
           ],
         ),
       ),
-      bottomNavigationBar: BottomCalculationView(size: size, bookInfo: bookInfo),
+      bottomNavigationBar: BottomCalculationView(size: size, bookInfo: bookInfo, coupon: couponController.selectedCoupon.value,),
     );
   }
 }

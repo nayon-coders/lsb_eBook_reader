@@ -11,7 +11,8 @@ import '../controller/book_controller.dart';
 class ChapterScreen extends GetView<BookController> {
    ChapterScreen({super.key});
 
-  var bookInfo = Get.arguments as BookInfo;
+  var bookInfo = Get.arguments["data"] as BookInfo;
+  bool allPermission = Get.arguments["allPermission"] as bool;
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +59,6 @@ class ChapterScreen extends GetView<BookController> {
         itemCount: controller.chapterTopicModel.value.data!.length,
         itemBuilder: (context,index){
           var data = controller.chapterTopicModel.value.data![index];
-          print("data.lookStatus all stqatus -- ${data.lookStatus}");
           return Container(
             padding:const EdgeInsets.only(left: 10,right: 10),
             margin:const EdgeInsets.all(10),
@@ -72,13 +72,16 @@ class ChapterScreen extends GetView<BookController> {
                     color: Colors.grey.shade400
                 )
               ],
-              color: data.lookStatus.toString().toLowerCase() != AppConst.lock.toLowerCase() ? Colors.white : Colors.grey.shade200,
+              color: allPermission ?  Colors.white : data.lookStatus.toString().toLowerCase() != AppConst.lock.toLowerCase() ? Colors.white : Colors.grey.shade200,
             ),
             child: ListTile(
               onTap: (){
-                if( data.lookStatus != AppConst.lock){
+                if(allPermission ){
                   controller.topicList.value = data.subTocs!;
-                  Get.toNamed(AppRoute.topics, arguments: bookInfo);
+                  Get.toNamed(AppRoute.topics, arguments: {"data":bookInfo, "allPermission":allPermission});
+                }else if( data.lookStatus != AppConst.lock){
+                  controller.topicList.value = data.subTocs!;
+                  Get.toNamed(AppRoute.topics, arguments: {"data":bookInfo, "allPermission":allPermission});
                 }else{
                   return null;
                 }
@@ -96,7 +99,7 @@ class ChapterScreen extends GetView<BookController> {
               ),
               title: Text("${data.name}",style:const TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: AppColors.textBlack),),
               subtitle: Text("${data.subTocs!.length} Topics",style: const TextStyle(fontWeight: FontWeight.w400,fontSize: 14,color: AppColors.textBlack),),
-              trailing: Icon( data.lookStatus.toString().toLowerCase() != AppConst.lock.toLowerCase() ? Icons.double_arrow :  Icons.lock,color: AppColors.buttonGreen,),
+              trailing: Icon( allPermission ?  Icons.double_arrow :  data.lookStatus.toString().toLowerCase() != AppConst.lock.toLowerCase() ? Icons.double_arrow :  Icons.lock,color: AppColors.buttonGreen,),
             ),
           );
         });

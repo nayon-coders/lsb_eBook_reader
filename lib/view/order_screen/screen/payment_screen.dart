@@ -115,7 +115,7 @@ class PaymentScreen extends GetView<CreateOrderController> {
               ),
             ),
             SizedBox(height: 10,),
-            AppInput(hint: "Pay Number", controller: controller.payNumber.value),
+            AppInput(hint: "Payment Number", controller: controller.payNumber.value),
             SizedBox(height: 15,),
             AppInput(hint: "Transaction ID", controller: controller.payTransId.value),
           ],

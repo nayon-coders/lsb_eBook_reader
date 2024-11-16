@@ -272,7 +272,7 @@ class MySingleBookScreen extends GetView<BookController> {
             AppButton(
               name: "Read Book",
               width: Get.width*.40,
-              onClick: ()=>Get.toNamed(AppRoute.chapter, arguments: controller.singleBookModel.value.data!),),
+              onClick: ()=>Get.toNamed(AppRoute.chapter, arguments: {"data": controller.singleBookModel.value.data!, "allPermission" : true}),),
 
 
           ],
