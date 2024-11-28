@@ -173,7 +173,7 @@ class MySingleBookScreen extends GetView<BookController> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     const Icon(Icons.star,color: Colors.deepOrange,size: 20,),
-                                    Text("${controller.singleBookModel.value.data!.averageRating!.toStringAsFixed(2)}",style:const  TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: Colors.black),)
+                                    Text(controller.singleBookModel.value.data!.averageRating!.toStringAsFixed(2),style:const  TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: Colors.black),)
                                   ],
                                 ),
         
@@ -206,7 +206,7 @@ class MySingleBookScreen extends GetView<BookController> {
                                   borderRadius: BorderRadius.circular(30),
                                   color:const Color(0xFFDEFDD6),
                                 ),
-                                child: Center(child: Text("Bangle",style:const TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: Colors.black),)),
+                                child: const Center(child: Text("Bangle",style:TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: Colors.black),)),
         
                               ),
         
@@ -228,8 +228,8 @@ class MySingleBookScreen extends GetView<BookController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 60,),
-                        Text("Book description",
-                          style:const TextStyle(fontWeight: FontWeight.w600,
+                        const Text("Book description",
+                          style:TextStyle(fontWeight: FontWeight.w600,
                               fontSize: 20,
                               color: AppColors.textBlack),
                         ),

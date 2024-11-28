@@ -2,12 +2,7 @@ import 'package:ebook_reader/utility/app_assets.dart';
 import 'package:ebook_reader/utility/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../bottom_navigation_menu/home_screen/home_screen.dart';
-import '../bottom_navigation_menu/profile_screen/profile_screen.dart';
-import 'all_books/all_books.dart';
 import 'controller/navigation_controller.dart';
-import 'favorite_screen/favorite_screen.dart';
-import 'my_order_screen/screen/my_order_screen.dart';
 
 class AppNavigationScreen extends StatefulWidget {
   const AppNavigationScreen({super.key,});

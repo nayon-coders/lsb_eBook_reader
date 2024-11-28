@@ -2,10 +2,8 @@ import 'package:ebook_reader/view/bottom_navigation_menu/favorite_screen/favorit
 import 'package:ebook_reader/view/bottom_navigation_menu/home_screen/home_screen.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/my_order_screen/screen/my_order_screen.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/profile_screen/profile_screen.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../profile_screen/controller/profile_controller.dart';
 
 class NavController extends GetxController{
 

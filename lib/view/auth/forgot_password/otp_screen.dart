@@ -1,7 +1,6 @@
 import 'package:ebook_reader/utility/app_color.dart';
 import 'package:ebook_reader/view/auth/forgot_password/new_password_screen.dart';
 import 'package:ebook_reader/widgets/app_button.dart';
-import 'package:ebook_reader/widgets/bg_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
 import 'package:get/get.dart';

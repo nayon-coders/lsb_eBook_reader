@@ -2,12 +2,9 @@
 import 'package:ebook_reader/view/bottom_navigation_menu/category_screen/controller/coupon_controller.dart';
 import 'package:ebook_reader/view/order_screen/controller/payment_controller.dart';
 import 'package:ebook_reader/view/order_screen/controller/create_order_controller.dart';
-import 'package:ebook_reader/widgets/app_button.dart';
 import 'package:ebook_reader/widgets/app_input.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
-
 import '../../../../data/model/single_book_model.dart';
 import '../../../../utility/app_color.dart';
 import '../controller/shipping_address_controller.dart';
@@ -28,7 +25,7 @@ class OrderScreen extends GetView<CreateOrderController> {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       controller.productPrice.value = double.parse("${bookInfo!.price!}");
     });
     Size size = MediaQuery.sizeOf(context);
@@ -81,26 +78,26 @@ class OrderScreen extends GetView<CreateOrderController> {
                       children: [
 
                         //book name
-                        Text("${bookInfo!.bookName}",style: TextStyle(
+                        Text("${bookInfo!.bookName}",style: const TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w500,
                             color: AppColors.textBlack),
                         ),
-                        SizedBox(height: 5,),
+                        const SizedBox(height: 5,),
 
                         //rating
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Icon(Icons.star,color: Colors.amber,size: 17,),
+                            const Icon(Icons.star,color: Colors.amber,size: 17,),
                             Text("(${bookInfo!.averageRating!.toStringAsFixed(2)})")
                           ],
                         ),
-                        SizedBox(height: 5,),
+                        const SizedBox(height: 5,),
 
                         //Price
-                        Text("৳ ${bookInfo!.price!.toStringAsFixed(2)}",style: TextStyle(
+                        Text("৳ ${bookInfo!.price!.toStringAsFixed(2)}",style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                             color: AppColors.textBlack),
@@ -159,7 +156,7 @@ class OrderScreen extends GetView<CreateOrderController> {
                         color: AppColors.buttonGreen,
                       ),
                       child: Center(
-                          child: couponController.isLoading.value ? CircularProgressIndicator(color: Colors.white,) : Text("Apply",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w400,color: Colors.white),)),
+                          child: couponController.isLoading.value ? const CircularProgressIndicator(color: Colors.white,) : const Text("Apply",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w400,color: Colors.white),)),
                                     ),
                     );
                   }

@@ -4,7 +4,7 @@ import 'package:ebook_reader/view/auth/controller/auth_controller.dart';
 import 'package:ebook_reader/view/auth/forgot_password/enter_email.dart';
 import 'package:ebook_reader/widgets/app_button.dart';
 import 'package:ebook_reader/widgets/app_input.dart';
-import 'package:ebook_reader/widgets/logo.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -21,7 +21,7 @@ class LoginScreen extends GetView<AuthController> {
   @override
   Widget build(BuildContext context) {
     //widget binding
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       controller.clearAll();
     });
     return  Scaffold(

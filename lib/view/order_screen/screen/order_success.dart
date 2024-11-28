@@ -15,10 +15,10 @@ class OrderSuccess extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Icon(Icons.check_circle, color: Colors.green, size: 80,),
-            SizedBox(height: 10,),
-            Text("Order Placed Successfully", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),),
-            SizedBox(height: 20,),
+            const Icon(Icons.check_circle, color: Colors.green, size: 80,),
+            const SizedBox(height: 10,),
+            const Text("Order Placed Successfully", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),),
+            const SizedBox(height: 20,),
             AppButton(
               name: "Back to Home",
               onClick: (){

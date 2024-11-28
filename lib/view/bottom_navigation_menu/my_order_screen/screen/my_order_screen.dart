@@ -6,7 +6,6 @@ import 'package:ebook_reader/view/bottom_navigation_menu/my_order_screen/control
 import 'package:ebook_reader/widgets/empty_screen.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 
 import '../../../../widgets/app_shimmer_pro.dart';
@@ -19,7 +18,7 @@ class MyOrderScreen extends GetView<MyOrderController> {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       controller.getMyOrder();
     });
     return Scaffold(
@@ -83,7 +82,7 @@ class MyOrderScreen extends GetView<MyOrderController> {
                                 width: 20,
                                 fit: BoxFit.cover,
                                 placeholder: (context, url) => const CircularProgressIndicator(),  // Loading indicator
-                                errorWidget: (context, url, error) => Icon(Icons.error),     // Error indicator
+                                errorWidget: (context, url, error) => const Icon(Icons.error),     // Error indicator
                               ),
                               //child: Image.asset(Assets.book1,height:40,width:20,fit: BoxFit.cover,),
                             ),
@@ -112,7 +111,7 @@ class MyOrderScreen extends GetView<MyOrderController> {
                                   //rating
                                   Row(
                                     children: [
-                                      Icon(Icons.star_half, color: Colors.amber,size: 13,),
+                                      const Icon(Icons.star_half, color: Colors.amber,size: 13,),
                                       Text("(${data.averageRating!.toStringAsFixed(2)})",style:const TextStyle(fontSize: 13,color: AppColors.textBlack),),
                                     ],
                                   ),
@@ -134,13 +133,13 @@ class MyOrderScreen extends GetView<MyOrderController> {
                           width: 80,
                           child: TextButton(onPressed: (){
                             if(data.orderStatus == "pending" || data.orderStatus == "cancel"){
-                              return null;
+                              return;
                             }else{
                               bookController.bookId.value = data.bookId.toString();
                               Get.toNamed(AppRoute.mySingleBook);
                             }
                           },
-                            child:   Text("${data.orderStatus == "pending" ? "Payment Verifying" : data.orderStatus == "cancel" ? "Canceled" : "Read"}",style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500,color: AppColors.linkColor),),),
+                            child:   Text(data.orderStatus == "pending" ? "Payment Verifying" : data.orderStatus == "cancel" ? "Canceled" : "Read",style: const TextStyle(fontSize: 12,fontWeight: FontWeight.w500,color: AppColors.linkColor),),),
                         ),
 
 

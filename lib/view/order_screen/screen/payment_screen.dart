@@ -5,9 +5,8 @@ import 'package:ebook_reader/view/order_screen/controller/create_order_controlle
 import 'package:ebook_reader/widgets/app_input.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../../widgets/app_button.dart';
-import '../widget/payment_method_view.dart';
+
 
 class PaymentScreen extends GetView<CreateOrderController> {
    PaymentScreen({super.key});
@@ -36,11 +35,11 @@ class PaymentScreen extends GetView<CreateOrderController> {
               ),
               child: ListTile(
                 leading: Image.network(controller.selectedPaymentMethod.value.logoImage!, height: 60, width: 60,),
-                title: Text("${controller.selectedPaymentMethod!.value.methodName!}",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),),
-                subtitle: Text("Pay with ${controller.selectedPaymentMethod!.value.methodName!}"),
+                title: Text(controller.selectedPaymentMethod.value.methodName!,style: const TextStyle(fontSize: 16,fontWeight: FontWeight.w600),),
+                subtitle: Text("Pay with ${controller.selectedPaymentMethod.value.methodName!}"),
               ),
             ),
-            SizedBox(height: 20,),
+            const SizedBox(height: 20,),
             Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -54,7 +53,7 @@ class PaymentScreen extends GetView<CreateOrderController> {
                         amount: "${controller.totalAmount.value.toStringAsFixed(2)} TK",
                         text: "Total order amount",
                       ),
-                      SizedBox(width: 20,),
+                      const SizedBox(width: 20,),
                       PaymentBoxWiodget(
                         amount: "${controller.paymentCharge.value.toStringAsFixed(2)} TK",
                         text: "Charge",
@@ -73,20 +72,20 @@ class PaymentScreen extends GetView<CreateOrderController> {
                 ],
               ),
             ),
-            SizedBox(height: 20,),
+            const SizedBox(height: 20,),
             InkWell(
               onTap: (){
                 AppConst.copyToClipboard(controller.selectedPaymentMethod.value.acocuntNumber.toString());
               },
               child: Container(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10)
                 ),
                 child: Row(
                   children: [
-                    Text("Account Number: ",
+                    const Text("Account Number: ",
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 15,
@@ -94,29 +93,29 @@ class PaymentScreen extends GetView<CreateOrderController> {
                       ),
                     ),
                     Text("${controller.selectedPaymentMethod.value.acocuntNumber}",
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
                         color: Colors.blue,
                       ),
                     ),
-                    SizedBox(width: 5,),
-                    Icon(Icons.copy, color: Colors.blue, size: 20,)
+                    const SizedBox(width: 5,),
+                    const Icon(Icons.copy, color: Colors.blue, size: 20,)
                   ],
                 ),
               ),
             ),
-            SizedBox(height: 40,),
-            Text("Confirm your payment",
+            const SizedBox(height: 40,),
+            const Text("Confirm your payment",
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 18,
                 color: AppColors.textBlack,
               ),
             ),
-            SizedBox(height: 10,),
+            const SizedBox(height: 10,),
             AppInput(hint: "Payment Number", controller: controller.payNumber.value),
-            SizedBox(height: 15,),
+            const SizedBox(height: 15,),
             AppInput(hint: "Transaction ID", controller: controller.payTransId.value),
           ],
         )
@@ -162,8 +161,8 @@ final String text;
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        padding: EdgeInsets.all(20),
-        decoration: BoxDecoration(
+        padding: const EdgeInsets.all(20),
+        decoration: const BoxDecoration(
           border: Border(
             bottom: BorderSide(width: 1, color: AppColors.bottomNev)
           )
@@ -171,15 +170,15 @@ final String text;
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("${amount}",
-              style: TextStyle(
+            Text(amount,
+              style: const TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 18
               ),
             ),
-            SizedBox(height: 5,),
-            Text("$text",
-              style: TextStyle(
+            const SizedBox(height: 5,),
+            Text(text,
+              style: const TextStyle(
                   fontWeight: FontWeight.w400,
                   fontSize: 12,
                 color: Colors.red

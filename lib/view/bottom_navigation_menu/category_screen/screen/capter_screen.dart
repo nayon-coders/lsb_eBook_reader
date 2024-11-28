@@ -16,7 +16,7 @@ class ChapterScreen extends GetView<BookController> {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       controller.bookId.value = bookInfo.bookId.toString();
       controller.getAllTopic();
     });
@@ -67,7 +67,7 @@ class ChapterScreen extends GetView<BookController> {
                 BoxShadow(
                     blurRadius: 0,
                     spreadRadius: 0,
-                    offset:  Offset(0,1.5),
+                    offset:  const Offset(0,1.5),
                     color: Colors.grey.shade400
                 )
               ],
@@ -82,7 +82,7 @@ class ChapterScreen extends GetView<BookController> {
                   controller.topicList.value = data.subTocs!;
                   Get.toNamed(AppRoute.topics, arguments: {"data":bookInfo, "allPermission":allPermission});
                 }else{
-                  return null;
+                  return;
                 }
 
               },

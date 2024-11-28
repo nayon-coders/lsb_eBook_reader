@@ -10,14 +10,14 @@ import '../../widgets/app_input.dart';
 
 
 class SignupScreen extends GetView<AuthController> {
-   SignupScreen({super.key});
+   const SignupScreen({super.key});
   //slider
 
 
   @override
   Widget build(BuildContext context) {
     //clear text field
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       controller.clearAll();
     });
     return Scaffold(

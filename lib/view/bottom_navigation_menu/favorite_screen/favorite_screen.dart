@@ -102,7 +102,7 @@ class FavoriteScreen extends GetView<FavoriteBookController> {
                                       padding: const EdgeInsets.only(left: 6),
                                       child: Row(
                                         children: [
-                                          Icon(Icons.star, color: Colors.amber, size: 14,),
+                                          const Icon(Icons.star, color: Colors.amber, size: 14,),
                                           Text("(${data.averageRating!.toStringAsFixed(1)})",style:const TextStyle(
                                               fontSize: 12,
                                               fontWeight: FontWeight.w600,

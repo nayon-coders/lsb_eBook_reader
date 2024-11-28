@@ -445,41 +445,41 @@ class _ReadingScreenState extends State<ReadingScreen> {
 
       // Add highlighted, clickable text for the matched term
       spans.add(TextSpan(
-        text: matchedTerm,
-        style: TextStyle(
-          fontSize: controller.fontSize.value,
-            color: Colors.red, fontWeight: FontWeight.bold
-        ),
-        recognizer: TapGestureRecognizer()
-          ..onTap = () {
-            print("বাসটা --- ${matchedTerm}");
-            for (var i in controller.peragraphModel.value.markTextData!) {
-              if (i.text == matchedTerm) {
-                Get.defaultDialog(
-                  barrierDismissible: false,
-                  backgroundColor: Colors.white,
-                  title: "${i!.text}",
-                  titleStyle: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textBlack,
-                  ),
-                  content: Text(i!.definition!),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Get.back();
-                      },
-                      child: const Text("Close"),
+          text: matchedTerm,
+          style: TextStyle(
+              fontSize: controller.fontSize.value,
+              color: Colors.red, fontWeight: FontWeight.bold
+          ),
+          recognizer: TapGestureRecognizer()
+            ..onTap = () {
+              print("বাসটা --- ${matchedTerm}");
+              for (var i in controller.peragraphModel.value.markTextData!) {
+                if (i.text == matchedTerm) {
+                  Get.defaultDialog(
+                    barrierDismissible: false,
+                    backgroundColor: Colors.white,
+                    title: "${i!.text}",
+                    titleStyle: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.textBlack,
                     ),
-                  ],
-                );
+                    content: Text(i!.definition!),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        child: const Text("Close"),
+                      ),
+                    ],
+                  );
+                }
+                // ScaffoldMessenger.of(context).showSnackBar(
+                //   SnackBar(content: Text('Clicked on: $matchedTerm')),
+                // );
               }
-              // ScaffoldMessenger.of(context).showSnackBar(
-              //   SnackBar(content: Text('Clicked on: $matchedTerm')),
-              // );
             }
-          }
       ));
 
       // Move the start index past the matched term

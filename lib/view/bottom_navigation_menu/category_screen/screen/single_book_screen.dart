@@ -75,8 +75,8 @@ class SingleBookScreen extends GetView<BookController> {
                               right: 0,
                               child: Column(
                                 children: [
-                                  Text("${controller.singleBookModel.value.data!.bookName}",style: const TextStyle(fontWeight: FontWeight.w600,fontSize: 16,color: Colors.black),),
-                                  Text("${controller.singleBookModel.value.data!.categoryName}",style:const TextStyle(fontWeight: FontWeight.w400,fontSize: 13,color: Colors.black),),
+                                  Text("${controller.singleBookModel.value.data!.bookName??""}",style: const TextStyle(fontWeight: FontWeight.w600,fontSize: 16,color: Colors.black),),
+                                  Text("${controller.singleBookModel.value.data!.categoryName??""}",style:const TextStyle(fontWeight: FontWeight.w400,fontSize: 13,color: Colors.black),),
 
                                 ],
                               ),

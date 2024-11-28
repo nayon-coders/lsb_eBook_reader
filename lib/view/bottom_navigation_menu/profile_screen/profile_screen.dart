@@ -80,7 +80,41 @@ class ProfileScreen extends StatelessWidget {
               textCancel: "No",
               confirmTextColor: Colors.white,
               onConfirm: () {
-               profileController.deleteUser();
+                Get.defaultDialog(
+                    title: "Please enter your Phone number",
+                    content: SizedBox(
+                      width: 300,
+                      child:Form(
+                        key: _key,
+                        child: AppInput(
+                          hint: "phone",
+                          controller:_phone,
+                          textType: TextInputType.phone,
+                          validator: (v){
+                            if(v!.isEmpty){
+                              return "Must be required";
+                            }
+                            return null;
+                          },
+                        ),
+                      ) ,
+                    ),
+                    onCancel: ()=>Get.back(),
+                    onConfirm: ()async{
+                      if(logoutController.phone.value ==_phone){
+                        if(_key.currentState!.validate()){
+                          profileController.deleteUser();
+                        }
+                        logoutController.clearAll();
+
+                      }else{
+                        Get.snackbar(
+                          snackPosition:SnackPosition.BOTTOM,
+                            backgroundColor: Colors.red,
+                            "Failed", "Phone number does not match!");
+                      }
+                    });
+
               },
               onCancel: () {
                 Get.back();
@@ -118,9 +152,19 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   onCancel: ()=>Get.back(),
                   onConfirm: ()async{
-                    if(_key.currentState!.validate()){
-                      logoutController.logout();
-                    }});
+                    if(logoutController.phone.value ==_phone){
+                      if(_key.currentState!.validate()){
+                        logoutController.logout();
+                      }
+                      logoutController.clearAll();
+
+                    }else{
+                      Get.snackbar(
+                          snackPosition:SnackPosition.BOTTOM,
+                          backgroundColor: Colors.red,
+                          "Failed", "Phone number does not match!");
+                    }
+                    });
               },
               onCancel: () {
                 Get.back();

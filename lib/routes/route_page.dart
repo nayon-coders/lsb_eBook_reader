@@ -66,7 +66,7 @@ class RoutePage{
     GetPage(
       name: AppRoute.favoriteBooks,
       page: ()=>FavoriteScreen(),
-    //  binding: HomeBinding(),
+      bindings:[HomeBinding(),ProfileBinding()],
 
     ),
     GetPage(

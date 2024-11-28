@@ -8,11 +8,11 @@ import '../../../../utility/app_color.dart';
 import '../category_screen/controller/book_controller.dart';
 
 class AllBooks extends GetView<BookController> {
-   AllBooks({super.key});
+   const AllBooks({super.key});
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       controller.getAllBooks();
     });
     return Scaffold(
@@ -34,10 +34,10 @@ class AllBooks extends GetView<BookController> {
               onChanged: (v){
                 controller.searchBook(v);
               },
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: "Search book by name...",
                 border: InputBorder.none,
-                prefixIcon: const Icon(Icons.search),
+                prefixIcon: Icon(Icons.search),
               ),
             ),
           ),
@@ -92,7 +92,7 @@ class AllBooks extends GetView<BookController> {
             return Padding(
               padding: const EdgeInsets.all(20.0),
               child: GridView.builder(
-                  itemCount: controller.searchBookList!.length,
+                  itemCount: controller.searchBookList.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       mainAxisSpacing:10 ,
                       crossAxisSpacing: 10,
@@ -100,7 +100,7 @@ class AllBooks extends GetView<BookController> {
                       mainAxisExtent: 280
                   ),
                   itemBuilder: (context,index){
-                    var data = controller.searchBookList![index];
+                    var data = controller.searchBookList[index];
                     return SingleBookWidgets(
                       onTap: (){
                         controller.bookId.value = data.bookId!.toString();
@@ -171,7 +171,7 @@ class SingleBookWidgets extends StatelessWidget {
                 height: 180,
                 fit: BoxFit.cover,
                 placeholder: (context, url) => AppShimmerPro.circularShimmer(width: 100, height: 120, borderRadius: 3),  // Loading indicator
-                errorWidget: (context, url, error) => Icon(Icons.error),     // Error indicator
+                errorWidget: (context, url, error) => const Icon(Icons.error),     // Error indicator
               ),
             ),
 
@@ -180,7 +180,7 @@ class SingleBookWidgets extends StatelessWidget {
             //book Name
             Padding(
               padding: const EdgeInsets.only(left: 6.0),
-              child: Text("${bookName}",
+              child: Text(bookName,
                 style:const TextStyle(fontWeight: FontWeight.w400,
                     fontSize: 14,
                     color: AppColors.textBlack),
@@ -204,7 +204,7 @@ class SingleBookWidgets extends StatelessWidget {
             //price
             Padding(
               padding:const  EdgeInsets.only(left: 6.0,top: 7),
-              child: Text("${bookPrice}",style:const TextStyle(
+              child: Text(bookPrice,style:const TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.w600,
                 color: AppColors.textBlack,
