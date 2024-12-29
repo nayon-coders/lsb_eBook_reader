@@ -53,6 +53,8 @@ class CouponController extends GetxController {
     print("bookId -- ${bookId}");
 
     bool couponMatch = allCouponList.value.data!.map((e) => e.code).contains(coupon.value.text);
+
+
     bool couponBookIdCheck = false;
     for(var i in allCouponList.value.data!){
       if(i.bookListForCoupons!.contains(bookId)){

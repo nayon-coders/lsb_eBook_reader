@@ -131,6 +131,38 @@ class _ReadingScreenState extends State<ReadingScreen> {
             textStyle: TextStyle(
               fontSize: controller.fontSize.value,
             ),
+            customWidgetBuilder: (element) {
+            print("element.localName -- ${element.localName}");
+              // Check if the current element is an <u> tag
+              if (element.localName == 'u') {
+
+                bool isMarked = false;
+                for(var i in controller.peragraphModel.value.markTextData!){
+                  if(i.text!.toLowerCase().contains(element.text.toLowerCase())){
+                    isMarked = true;
+                  }
+                }
+
+                return Obx(() {
+                    return GestureDetector(
+                      onTap: () {
+                       // _showPopup(context, text);
+                        isMarked ? _showMyDialog(element.text) : null;
+                      },
+                      child: HtmlWidget(
+                        element.innerHtml,
+                        textStyle: TextStyle(
+                          fontSize: controller.fontSize.value,
+                        ),
+                      ),
+                    );
+                  }
+                );
+              }
+              return null; // Use default rendering for other elements
+            },
+
+
           );
         }
       )
@@ -435,4 +467,73 @@ class _ReadingScreenState extends State<ReadingScreen> {
         children: spans);
   }
 
+
+  Future<void> _showMyDialog(text) async {
+    //logic start
+    String defination = "";
+
+    for(var i in controller.peragraphModel.value.markTextData!){
+
+      if(i.text!.toLowerCase().contains(text!.toString().toLowerCase())){
+        defination = i.definition!;
+      }
+    }
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          actionsPadding: EdgeInsets.only(bottom: 5, left: 20, right: 30),
+          contentPadding: EdgeInsets.all(20),
+          content: Container(
+            height: 250,
+            child: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                      color: AppColors.linkColor.withOpacity(0.2),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10),
+                      )
+                    ),
+                    child: Text("$text",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: AppColors.textBlack,
+                      ),
+                    ),
+                  ),
+
+                  Container(
+                    height: 250,
+                    padding: EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                        color: AppColors.menuColor.withOpacity(0.3),
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(10),
+                          bottomRight: Radius.circular(10),
+                        )
+                    ),
+                    child: Text(defination),
+                  ),
+
+                ],
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
