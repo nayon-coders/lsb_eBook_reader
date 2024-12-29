@@ -1,5 +1,6 @@
 import 'package:ebook_reader/routes/route_name.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/profile_screen/controller/profile_controller.dart';
+import 'package:ebook_reader/widgets/app_network_images.dart';
 import 'package:ebook_reader/widgets/app_shimmer_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -30,10 +31,16 @@ class TopProfileInfoWidget extends GetView<ProfileController> {
                     decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(color: Colors.grey),
-                        image: DecorationImage(
-                            image: NetworkImage(controller.myProfileModel.value.profilePic.toString()),
-                            fit: BoxFit.cover
-                        )
+
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: AppNetworkImage(
+                        src: controller.myProfileModel.value.profilePic!,
+                        height: 120,
+                        width: 120,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   );
                 }
@@ -52,7 +59,15 @@ class TopProfileInfoWidget extends GetView<ProfileController> {
             Positioned(
                 bottom: 0,
                 right: -10,
-                child: IconButton(onPressed: ()=>Get.toNamed(AppRoute.editProfile), icon:const Icon(Icons.camera_alt,size: 30,)))
+                child: Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                        color: AppColors.bgColor,
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.white,width: 2)
+                    ),
+                    child: IconButton(onPressed: ()=>Get.toNamed(AppRoute.editProfile), icon:const Icon(Icons.camera_alt,size: 20,))))
           ],
         ),
         const SizedBox(width: 10,),

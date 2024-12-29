@@ -48,13 +48,13 @@ class AllBooks extends GetView<BookController> {
           return GridView.builder(
             itemCount: 10,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              mainAxisSpacing:5 ,
-              crossAxisSpacing: 5,
+              mainAxisSpacing:10 ,
+              crossAxisSpacing: 10,
               crossAxisCount: 2,
               mainAxisExtent: 280,
             ),
             itemBuilder: (BuildContext context, int index) {
-              return AppShimmerPro.circularShimmer(width: MediaQuery.of(context).size.width*.45, height: 180, borderRadius: 10,);
+              return AppShimmerPro.circularShimmer(width: MediaQuery.of(context).size.width*.45, height: 280, borderRadius: 10,);
             },
           );
         }else if(controller.allBooksModel.value.data == null || controller.allBooksModel.value.data!.isEmpty){
@@ -66,7 +66,7 @@ class AllBooks extends GetView<BookController> {
               child: GridView.builder(
                   itemCount: controller.allBooksModel.value.data!.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      mainAxisSpacing:10 ,
+                      mainAxisSpacing: 10 ,
                       crossAxisSpacing: 10,
                       crossAxisCount: 2,
                       mainAxisExtent: 280

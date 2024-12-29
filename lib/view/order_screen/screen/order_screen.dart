@@ -141,7 +141,7 @@ class OrderScreen extends GetView<CreateOrderController> {
                     return InkWell(
                       onTap: (){
                         if ( couponController.coupon.value.text.isNotEmpty) {
-                          couponController.applyCoupon();
+                          couponController.applyCoupon(bookInfo!.bookId!);
                           if(couponController.selectedCoupon.value.discountPrice != null){
                             controller.discountAmount.value = double.parse("${couponController.selectedCoupon.value.discountPrice}");
                           }else{

@@ -71,7 +71,7 @@ class AppConfig {
   static const String RATING_POST = "$BASE_URL/rating/add";
 
   //coupon
-  static const String COUPON_ALL = "$BASE_URL/coupons";
+  static const String COUPON_ALL = "$BASE_URL/coupons-discount";
 
 
 

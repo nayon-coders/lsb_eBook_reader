@@ -1,13 +1,19 @@
 import 'package:ebook_reader/routes/route_name.dart';
 import 'package:ebook_reader/routes/route_page.dart';
 import 'package:ebook_reader/utility/app_color.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'firebase_options.dart';
 SharedPreferences? sharedPreferences;
 void main()async {
    WidgetsFlutterBinding.ensureInitialized();
-  sharedPreferences = await SharedPreferences.getInstance() as SharedPreferences;
+   await Firebase.initializeApp(
+       options: DefaultFirebaseOptions.currentPlatform
+   );
+   sharedPreferences = await SharedPreferences.getInstance() as SharedPreferences;
   runApp(const MyApp());
 }
 

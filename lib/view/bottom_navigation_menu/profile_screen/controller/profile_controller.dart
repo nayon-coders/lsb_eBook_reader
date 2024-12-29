@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:ebook_reader/controller/global_controller.dart';
 import 'package:ebook_reader/data/global_controller/global_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,6 +15,7 @@ import '../../../../routes/route_name.dart';
 import 'package:http/http.dart' as http;
 class ProfileController extends GetxController{
 
+  final GlobalController globalController = Get.put(GlobalController());
   //oninit
   @override
   void onInit() {
@@ -40,6 +42,7 @@ class ProfileController extends GetxController{
 
 
   //text editing controller
+  var selectedProfilePic = File("").obs;
   Rx<TextEditingController> name = TextEditingController().obs;
   Rx<TextEditingController> phone = TextEditingController().obs;
   Rx<TextEditingController> email = TextEditingController().obs;
@@ -105,7 +108,12 @@ class ProfileController extends GetxController{
   updateUserInfo()async {
     isLoading.value = true;
     //api call
+    var profile = "";
+    if(selectedProfilePic.value.path.isNotEmpty){
+      profile = await globalController.uploadImageToFirebaseStorage(selectedProfilePic.value, "profile_pic");
+    }
     var response = await ApiServices.putApi(AppConfig.USER_UPDATE, {
+      "profile_pic" : profile,
       "name": name.value.text,
       "email": email.value.text,
       "phone": phone.value.text

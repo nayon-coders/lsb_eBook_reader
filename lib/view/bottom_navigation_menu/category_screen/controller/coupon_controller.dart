@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:ebook_reader/app_config.dart';
+import 'package:ebook_reader/data/model/books_topics_model.dart';
 import 'package:ebook_reader/data/services/api_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -42,16 +43,28 @@ class CouponController extends GetxController {
   }
 
   //apply coupon with the allCouponList
-  applyCoupon(){
+  applyCoupon(int bookId)async{
     selectedCoupon.value = SingleCoupon();
     if(coupon.value.text.isEmpty){
       Get.snackbar("Error!", "Please enter a coupon code", backgroundColor: Colors.red);
       return;
     }
 
-    bool couponMatch = allCouponList.value.data!.map((e) => e.code).contains(coupon.value.text);
+    print("bookId -- ${bookId}");
 
-    if(!couponMatch){
+    bool couponMatch = allCouponList.value.data!.map((e) => e.code).contains(coupon.value.text);
+    bool couponBookIdCheck = false;
+    for(var i in allCouponList.value.data!){
+      if(i.bookListForCoupons!.contains(bookId)){
+        print("couponBookIdCheck -- ${i.bookListForCoupons}");
+        couponBookIdCheck = true;
+        break;
+      }
+    }
+
+    print("couponBookIdCheck -- ${couponBookIdCheck}");
+
+    if(!couponMatch && !couponBookIdCheck){
       Get.snackbar("Error!", "Invalid Coupon Code", backgroundColor: Colors.red);
       return;
     }else{
