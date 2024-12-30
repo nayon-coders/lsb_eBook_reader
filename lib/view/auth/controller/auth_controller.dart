@@ -112,6 +112,8 @@ class AuthController extends GetxController{
 
   // logout
   logout()async{
+    await FirebaseAuth.instance.signOut();
+    await GoogleSignIn().signOut();
     SharedPreferences _pref = await SharedPreferences.getInstance();
     _pref.remove("token");
     _pref.remove("id");
@@ -122,7 +124,7 @@ class AuthController extends GetxController{
   //signin with google
   signInWithGoogle()async{
     //api call
-   isLoading.value = true;
+
 
    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
     final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
@@ -138,12 +140,27 @@ class AuthController extends GetxController{
     print("User: ${user.phoneNumber}");
 
     if(user != null){
-      Get.snackbar("Google Login!", "Google login success", snackPosition: SnackPosition.TOP, backgroundColor: Colors.green);
+      isLoading.value = true;
+      var response = await ApiServices.postApi(AppConfig.GOOGLE_LOGIN, {
+        "name": user.displayName,
+        "email": user.email,
+        "phone": user.phoneNumber == null ? "" : user.phoneNumber,
+      });
+      if(response.statusCode == 200){
+        var data = jsonDecode(response.body);
+        sharedPreferences!.setString("token", data["data"]["token"]);
+        sharedPreferences!.setString("user_id", data["data"]["user"]["id"].toString());
+        Get.snackbar("Success", "Login success", snackPosition: SnackPosition.TOP, backgroundColor: Colors.green);
+        Get.offAllNamed(AppRoute.appNavigation); //navigate to app navigation
+      }else{
+        Get.snackbar("Google Login!", "Google login failed", snackPosition: SnackPosition.TOP, backgroundColor: Colors.red);
+      }
+      isLoading.value = false;
     }else{
       Get.snackbar("Google Login!", "Google login failed", snackPosition: SnackPosition.TOP, backgroundColor: Colors.red);
     }
 
-   isLoading.value = false;
+
   }
 
   //clear all input feild

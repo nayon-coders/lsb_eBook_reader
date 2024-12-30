@@ -100,10 +100,21 @@ class OrderScreen extends GetView<CreateOrderController> {
                         SizedBox(height: 5,),
 
                         //Price
-                        Text("৳ ${bookInfo!.price!.toStringAsFixed(2)}",style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.textBlack),
+                        Row(
+                          children: [
+                            Text("৳ ${bookInfo!.sellPrice ?? 0}",style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.textBlack),
+                            ),
+                            SizedBox(width: 10,),
+                            Text("৳ ${bookInfo!.price!.toStringAsFixed(2)}",style: TextStyle(
+                                fontSize: 13,
+                                decoration: TextDecoration.lineThrough,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.textBlack),
+                            ),
+                          ],
                         ),
 
                       ],

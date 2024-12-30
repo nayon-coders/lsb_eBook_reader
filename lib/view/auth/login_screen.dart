@@ -112,20 +112,25 @@ class LoginScreen extends GetView<AuthController> {
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(color: Colors.grey.shade300,width: 1)
                 ),
-                child: InkWell(
-                   onTap: ()=>controller.signInWithGoogle(),
-                    child:Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(Assets.google,height: 30,width: 30,fit: BoxFit.cover,),
-                        const SizedBox(width: 10,),
-                        const Text("Login with Google",
-                          style: TextStyle(fontSize: 17,fontWeight: FontWeight.w600,color:AppColors.textBlack),
+                child: Obx((){
+                    return controller.isLoading.value
+                        ? Center(child: Text("Loading...."),)
+                        : InkWell(
+                       onTap: ()=>controller.signInWithGoogle(),
+                        child:Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(Assets.google,height: 30,width: 30,fit: BoxFit.cover,),
+                            const SizedBox(width: 10,),
+                            const Text("Login with Google",
+                              style: TextStyle(fontSize: 17,fontWeight: FontWeight.w600,color:AppColors.textBlack),
+                            ),
+
+
+                          ],
                         ),
-
-
-                      ],
-                    ),
+                    );
+                  }
                 ),
               ),
               const SizedBox(height: 20,),
@@ -147,4 +152,5 @@ class LoginScreen extends GetView<AuthController> {
       ),
     );
   }
+
 }

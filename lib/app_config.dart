@@ -10,6 +10,7 @@ class AppConfig {
 
   //USER AUTH API
   static const String LOGIN = '$BASE_URL/user/login';
+  static const String GOOGLE_LOGIN = '$BASE_URL/user/firebase';
   static const String REGISTER = '$BASE_URL/user/signup';
   static const String FORGOT_PASSWORD = '$BASE_URL/user/forgot-password';
   static const String RESET_PASSWORD = '$BASE_URL/user/reset-password';

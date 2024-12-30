@@ -46,6 +46,7 @@ class BookInfo {
   final String? publisherName;
   final String? freeOrPaid;
   final int? price;
+  final int? sellPrice;
   final int? totalPages;
   final String? sortDescription;
   final String? dedication;
@@ -75,6 +76,7 @@ class BookInfo {
     this.publisherName,
     this.freeOrPaid,
     this.price,
+    this.sellPrice,
     this.totalPages,
     this.sortDescription,
     this.dedication,
@@ -105,6 +107,7 @@ class BookInfo {
     publisherName: json["publisher_name"],
     freeOrPaid: json["free_or_paid"],
     price: json["price"],
+    sellPrice: json["sell_price"],
     totalPages: json["total_pages"],
     sortDescription: json["sort_description"],
     dedication: json["dedication"],
