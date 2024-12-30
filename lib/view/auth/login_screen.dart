@@ -113,7 +113,7 @@ class LoginScreen extends GetView<AuthController> {
                   border: Border.all(color: Colors.grey.shade300,width: 1)
                 ),
                 child: InkWell(
-                 //   onTap: ()=>controller.googleSignIn(),
+                   onTap: ()=>controller.signInWithGoogle(),
                     child:Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

@@ -50,6 +50,7 @@ class SingleBookList {
   final String? publisherName;
   final String? freeOrPaid;
   final int? price;
+  final int? salePrice;
   final int? totalPages;
   final String? sortDescription;
   final String? dedication;
@@ -76,6 +77,7 @@ class SingleBookList {
     this.publisherName,
     this.freeOrPaid,
     this.price,
+    this.salePrice,
     this.totalPages,
     this.sortDescription,
     this.dedication,
@@ -103,6 +105,7 @@ class SingleBookList {
     publisherName: json["publisher_name"],
     freeOrPaid: json["free_or_paid"],
     price: json["price"],
+    salePrice: json["sell_price"],
     totalPages: json["total_pages"],
     sortDescription: json["sort_description"],
     dedication: json["dedication"],

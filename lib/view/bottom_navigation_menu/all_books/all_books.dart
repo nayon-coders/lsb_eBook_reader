@@ -83,6 +83,7 @@ class AllBooks extends GetView<BookController> {
                       bookName: data.bookName! ?? "Book Name",
                       bookImage: data.image!,
                       bookPrice: "৳ ${data.price ?? 0.00}",
+                      bookSalePrice: "৳ ${data.salePrice ?? 0.00}",
                       bookRating:double.parse(data.averageRating!.toStringAsFixed(1)) ,
 
                     );
@@ -111,6 +112,7 @@ class AllBooks extends GetView<BookController> {
                       bookName: data.bookName! ?? "Book Name",
                       bookImage: data.image!,
                       bookPrice: "৳ ${data.price ?? 0.00}",
+                      bookSalePrice: "৳ ${data.salePrice ?? 0.00}",
                       bookRating:double.parse(data.averageRating!.toStringAsFixed(1)) ,
 
                     );
@@ -130,13 +132,14 @@ class AllBooks extends GetView<BookController> {
 
 class SingleBookWidgets extends StatelessWidget {
   const SingleBookWidgets({
-    super.key, required this.onTap, required this.index, required this.bookName, required this.bookImage, required this.bookPrice, required this.bookRating,
+    super.key, required this.onTap, required this.bookSalePrice, required this.index, required this.bookName, required this.bookImage, required this.bookPrice, required this.bookRating,
   });
 
   final int index;
   final String bookName;
   final String bookImage;
   final String bookPrice;
+  final String bookSalePrice;
   final double bookRating;
   final VoidCallback onTap;
 
@@ -204,11 +207,26 @@ class SingleBookWidgets extends StatelessWidget {
             //price
             Padding(
               padding:const  EdgeInsets.only(left: 6.0,top: 7),
-              child: Text("${bookPrice}",style:const TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.w600,
-                color: AppColors.textBlack,
-              ),
+              child: Row(
+                children: [
+                  Text(bookSalePrice,style:const TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textBlack,
+                  ),
+                  ),
+                  SizedBox(width: 6,),
+                  Text(bookPrice,
+                    style:const TextStyle(
+                      decoration: TextDecoration.lineThrough, // Add strikethrough
+                      decorationColor: Colors.black, // Optional: Customize the color of the strikethrough
+                      decorationThickness: 1, // Optional: Adjust the thickness of the line
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textBlack,
+                   ),
+                  ),
+                ],
               ),
             )
 

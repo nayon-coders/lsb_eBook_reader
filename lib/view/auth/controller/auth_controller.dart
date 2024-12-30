@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:ebook_reader/routes/route_name.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../app_config.dart';
@@ -115,6 +117,33 @@ class AuthController extends GetxController{
     _pref.remove("id");
     Get.offAllNamed(AppRoute.login);
 
+  }
+
+  //signin with google
+  signInWithGoogle()async{
+    //api call
+   isLoading.value = true;
+
+   final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+    final AuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    final UserCredential authResult = await FirebaseAuth.instance.signInWithCredential(credential);
+    final User? user = authResult.user;
+    print("User: ${user!.displayName}");
+    print("User: ${user.email}");
+    print("User: ${user.phoneNumber}");
+
+    if(user != null){
+      Get.snackbar("Google Login!", "Google login success", snackPosition: SnackPosition.TOP, backgroundColor: Colors.green);
+    }else{
+      Get.snackbar("Google Login!", "Google login failed", snackPosition: SnackPosition.TOP, backgroundColor: Colors.red);
+    }
+
+   isLoading.value = false;
   }
 
   //clear all input feild

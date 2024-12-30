@@ -3,6 +3,7 @@ import 'package:ebook_reader/routes/route_name.dart';
 import 'package:ebook_reader/utility/app_color.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/category_screen/controller/book_controller.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/my_order_screen/controller/my_order_controller.dart';
+import 'package:ebook_reader/view/bottom_navigation_menu/my_order_screen/model/get_my_order_model.dart';
 import 'package:ebook_reader/widgets/empty_screen.dart';
 
 import 'package:flutter/material.dart';
@@ -132,15 +133,21 @@ class MyOrderScreen extends GetView<MyOrderController> {
 
                         SizedBox(
                           width: 80,
-                          child: TextButton(onPressed: (){
-                            if(data.orderStatus == "pending" || data.orderStatus == "cancel"){
-                              return null;
-                            }else{
-                              bookController.bookId.value = data.bookId.toString();
-                              Get.toNamed(AppRoute.mySingleBook);
-                            }
-                          },
-                            child:   Text("${data.orderStatus == "pending" ? "Payment Verifying" : data.orderStatus == "cancel" ? "Canceled" : "Read"}",style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500,color: AppColors.linkColor),),),
+                          child: InkWell(
+                              onTap: (){
+                              if(data.orderStatus == "pending" || data.orderStatus == "cancel"){
+                                return null;
+                              }else{
+                                bookController.bookId.value = data.bookId.toString();
+                                Get.toNamed(AppRoute.mySingleBook);
+                              }
+                            },
+                            child: data.orderStatus == "pending"
+                                ? const Text("Payment Pending",style: TextStyle(fontSize: 12,fontWeight: FontWeight.w600,color: Colors.red),)
+                                : data.orderStatus == "cancel"
+                                ? const StatusButton(text: "Cancel",color: Colors.red,)
+                                : const StatusButton(text: "Read",color: Colors.green)
+                         ),
                         ),
 
 
@@ -154,6 +161,37 @@ class MyOrderScreen extends GetView<MyOrderController> {
 
 
           }
+        ),
+      ),
+    );
+  }
+}
+
+class StatusButton extends StatelessWidget {
+  const StatusButton({
+    super.key,
+    required this.text,
+    this.color = AppColors.cardAmber,
+  });
+
+  final String text;
+  final Color? color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 45,
+      width: 120,
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Center(
+        child:  Text(text,
+          style:const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: Colors.white),
         ),
       ),
     );

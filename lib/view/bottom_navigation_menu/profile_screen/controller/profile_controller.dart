@@ -49,6 +49,10 @@ class ProfileController extends GetxController{
   Rx<TextEditingController> pass = TextEditingController().obs;
   Rx<TextEditingController> confirmPass = TextEditingController().obs;
   Rx<TextEditingController> address = TextEditingController().obs;
+
+  Rx<TextEditingController> oldPassword = TextEditingController().obs;
+  Rx<TextEditingController> newPassword = TextEditingController().obs;
+  Rx<TextEditingController> newPasswordConfirm = TextEditingController().obs;
   RxList  items = ["student","teacher","banker"].obs;
   RxString selectedItem = "student".obs;
   RxBool show = false.obs;
@@ -142,27 +146,36 @@ class ProfileController extends GetxController{
 
 
 
+  RxBool isOldPasswordShow = true.obs;
+  RxBool isNewPasswordShow = true.obs;
+  RxBool isConfirmPasswordShow = true.obs;
+
   //update user password
   updateUserPassword(id)async {
     isLoading.value = true;
     //api call
-    var response = await ApiServices.putApi(AppConfig.USER_PASS_UPDATE+id, {
-      "password": pass.value.text
-    });
+    var response = await ApiServices.putApi(AppConfig.USER_PASS_UPDATE,
+        {
+          "old_password": oldPassword.value.text,
+          "new_password": newPassword.value.text,
+        }
+    );
 
+    var data = jsonDecode(response.body);
+    print("data --- ${data}");
     //check response ans show error
     if (response.statusCode == 200) {
       //save token
-      var data = jsonDecode(response.body);
+
       getUserInfo();
       isLoading.value = false;
       //show get.snackbar
       Get.snackbar(
-          "Success", "Update success", snackPosition: SnackPosition.TOP,
+          "Success", "Password update success", snackPosition: SnackPosition.TOP,
           backgroundColor: Colors.green);
     } else {
       isLoading.value = false;
-      Get.snackbar("Error", "Invalid email or password",
+      Get.snackbar("Error", "Old password does not match",
           snackPosition: SnackPosition.TOP, backgroundColor: Colors.red);
     }
   }

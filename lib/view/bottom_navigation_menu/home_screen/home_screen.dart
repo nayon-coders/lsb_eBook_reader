@@ -241,12 +241,33 @@ class HomeScreen extends GetView<HomeController> {
                                      //price
                                      Padding(
                                        padding: const EdgeInsets.only(left: 6.0),
-                                       child: Text("\$${data.price.toString()}",style:const TextStyle(
-                                         fontSize: 13,
-                                         fontWeight: FontWeight.w600,
-                                         color: AppColors.textBlack,
-                                       ),
-                                       ),
+                                       child: data.freeOrPaid != "Paid"
+                                           ?  Text("Free",style:const TextStyle(
+                                               fontSize: 14,
+                                               fontWeight: FontWeight.w600,
+                                               color: Colors.green,
+                                             ),
+                                             )
+                                           : Row(
+                                             children: [
+                                               Text("৳${data.salePrice.toString()}",style:const TextStyle(
+                                                 fontSize: 14,
+                                                 fontWeight: FontWeight.w600,
+                                                 color: AppColors.textBlack,
+                                               ),
+                                               ),
+                                               SizedBox(width: 10,),
+                                               Text("৳${data.price.toString()}",style:const TextStyle(
+                                                 decoration: TextDecoration.lineThrough, // Add strikethrough
+                                                 decorationColor: Colors.black, // Optional: Customize the color of the strikethrough
+                                                 decorationThickness: 1, // Optional: Adjust the thickness of the line
+                                                 fontSize: 12,
+                                                 fontWeight: FontWeight.w600,
+                                                 color: AppColors.textBlack,
+                                               ),
+                                               ),
+                                             ],
+                                           ),
                                      )
 
                                    ],

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../favorite_screen/favorite_screen.dart';
+import 'screen/change_password.dart';
 import 'screen/edit_profile.dart';
 import 'widget/list_menu.dart';
 import 'widget/profile_info_widgets.dart';
@@ -56,7 +57,9 @@ class ProfileScreen extends StatelessWidget {
           ListMenu(onClick: (){
             Get.toNamed(AppRoute.myOrderScreen);
           }, name: "Downloads (My books)", icon: Icons.cloud_download),
-         const Divider(),
+          ListMenu(onClick: ()=>Get.to(()=>ChangePassword()), name: "Change Password", icon: Icons.password),
+
+          const Divider(),
           ListMenu(onClick: ()=>Get.toNamed(AppRoute.aboutUs), name: "About us", icon: Icons.clear_all_rounded),
           ListMenu(onClick: ()=>Get.toNamed(AppRoute.contactUs), name: "Contact us", icon: Icons.contact_support),
           ListMenu(onClick: ()=>Get.toNamed(AppRoute.privacyPolicy), name: "Privacy Policy", icon: Icons.privacy_tip),
