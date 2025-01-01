@@ -27,7 +27,7 @@ class PaymentMethodView extends GetView<PaymentController> {
             return AppShimmerPro.circularShimmer(width: Get.width, height: 50, borderRadius: 5);
           },
         );
-      }else if(controller.paymentModel.value.data!.isNotEmpty) {
+      }else if(controller.paymentModel.value.data != null && controller.paymentModel.value.data!.isNotEmpty) {
         return ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),

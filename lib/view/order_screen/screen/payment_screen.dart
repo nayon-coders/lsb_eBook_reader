@@ -86,7 +86,7 @@ class PaymentScreen extends GetView<CreateOrderController> {
                 ),
                 child: Row(
                   children: [
-                    Text("Account Number: ",
+                    Text("একাউন্ট নাম্বার: ",
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 15,
@@ -107,7 +107,7 @@ class PaymentScreen extends GetView<CreateOrderController> {
               ),
             ),
             SizedBox(height: 40,),
-            Text("Confirm your payment",
+            Text("আপনার পেমেন্ট নিশ্চিত করুন",
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 18,
@@ -115,9 +115,29 @@ class PaymentScreen extends GetView<CreateOrderController> {
               ),
             ),
             SizedBox(height: 10,),
-            AppInput(hint: "Payment Number", controller: controller.payNumber.value),
+            AppInput(hint: "যেই নম্বর থেকে টাকা পাঠিয়েছেন", controller: controller.payNumber.value, textType: TextInputType.number, ),
             SizedBox(height: 15,),
-            AppInput(hint: "Transaction ID", controller: controller.payTransId.value),
+            AppInput(hint: "ট্রানজেকশন আইডি", controller: controller.payTransId.value),
+
+            SizedBox(height: 30,),
+            Container(
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: Colors.red.shade100,
+                borderRadius: BorderRadius.circular(10)
+              ),
+              child: Column(
+                children: [
+                  Text("Note: উপরের নম্বরে বিকাশ/রকেট/নগদে --- টাকা সেন্ড মানি / ক্যাশ ইন করে আপনার পেমেন্ট নম্বর এবং ট্রানজেকশন আইডি নিচের দুটি ঘরে লিখুন।",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 14,
+                      color: Colors.red,
+                    ),
+                  )
+                ],
+              ),
+            )
           ],
         )
       ),
@@ -137,8 +157,7 @@ class PaymentScreen extends GetView<CreateOrderController> {
                   Get.snackbar("Error", "Please enter transaction id", backgroundColor: Colors.red);
                   return;
                 }
-
-                controller.placeOrder(bookInfo);
+                controller.placeOrder(bookInfo!);
 
                 // controller.createOrder();
               },

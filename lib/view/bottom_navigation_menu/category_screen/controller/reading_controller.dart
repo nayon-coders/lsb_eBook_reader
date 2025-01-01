@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:ebook_reader/app_config.dart';
 import 'package:ebook_reader/data/services/api_services.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,7 @@ import 'package:html/parser.dart' as html_parser;
 import 'package:html/dom.dart' as dom;
 import 'package:get/get.dart';
 import 'package:page_flip/page_flip.dart';
-
+import 'package:http/http.dart' as http;
 import '../../../../data/model/mark_fav_model.dart';
 import '../../../../data/model/peragraphModel.dart';
 import 'mark_text_controller.dart';
@@ -36,6 +37,8 @@ class ReadingController extends GetxController {
   var wordsPerLine = 0.obs; // Holds the number of words that can fit in a line
 
   RxDouble fontSize = 15.00.obs;
+
+  RxDouble pdfZoom = 1.3.obs;
   
   //Rx model 
   Rx<PeragraphModel> peragraphModel = PeragraphModel().obs;
@@ -63,29 +66,51 @@ class ReadingController extends GetxController {
     var response = await ApiServices.getApi(AppConfig.PERAGRAPH_GET_BY_ID+"$ID");
     if(response.statusCode == 200){
       peragraphModel.value = PeragraphModel.fromJson(jsonDecode(response.body));
+      _loadPdf(peragraphModel.value.data!.first!.content!);
 
-      var text =  peragraphModel.value.data!.first.content!.toString(); // Get the JSON string
-      // Step 1: Remove the enclosing square brackets
-      var dataString = text!.substring(1, text!.length - 1);
-
-      // Step 2: Split the string using the delimiter "},"
-      List<String> splitList = dataString.split('},');
-
-      // Step 3: Clean up each item in the list to remove curly braces
-      splitList = splitList.map((item) {
-        // Add the closing brace "}" back if it was removed during splitting
-        if (!item.trim().endsWith('}')) {
-          item = '$item}';
-        }
-        // Remove the opening and closing curly braces
-        return item.replaceAll('{', '').replaceAll('}', '').trim();
-      }).toList();
-      content.value = splitList;
+      // var text =  peragraphModel.value.data!.first.content!.toString(); // Get the JSON string
+      // // Step 1: Remove the enclosing square brackets
+      // var dataString = text!.substring(1, text!.length - 1);
+      //
+      // // Step 2: Split the string using the delimiter "},"
+      // List<String> splitList = dataString.split('},');
+      //
+      // // Step 3: Clean up each item in the list to remove curly braces
+      // splitList = splitList.map((item) {
+      //   // Add the closing brace "}" back if it was removed during splitting
+      //   if (!item.trim().endsWith('}')) {
+      //     item = '$item}';
+      //   }
+      //   // Remove the opening and closing curly braces
+      //   return item.replaceAll('{', '').replaceAll('}', '').trim();
+      // }).toList();
+      // content.value = splitList;
 
       // splitHtmlByWords(peragraphModel.value.data!.first!.content!, 130);
       peraId.value = peragraphModel.value.data!.first!.paraId!.toString();
     }
     isLoading.value = false;
+  }
+
+  Rx<Uint8List> pdfBook = Uint8List(0).obs;
+  RxBool isPDFLoading = false.obs;
+  Future<void> _loadPdf(pdfUrl) async {
+
+    try {
+      isPDFLoading.value = true;
+      final response = await http.get(Uri.parse(pdfUrl));
+      if (response.statusCode == 200) {
+          pdfBook.value = response.bodyBytes; // Load PDF data into memory
+          isPDFLoading.value = false;
+      } else {
+        isPDFLoading.value = false;
+        throw Exception('Failed to load PDF');
+
+      }
+    } catch (e) {
+      print('Error loading PDF: $e');
+      isPDFLoading.value = false;
+    }
   }
 
 

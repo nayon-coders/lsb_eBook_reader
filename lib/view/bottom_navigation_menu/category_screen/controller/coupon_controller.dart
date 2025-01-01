@@ -45,6 +45,7 @@ class CouponController extends GetxController {
   //apply coupon with the allCouponList
   applyCoupon(int bookId)async{
     selectedCoupon.value = SingleCoupon();
+
     if(coupon.value.text.isEmpty){
       Get.snackbar("Error!", "Please enter a coupon code", backgroundColor: Colors.red);
       return;
@@ -55,9 +56,13 @@ class CouponController extends GetxController {
     bool couponMatch = allCouponList.value.data!.map((e) => e.code).contains(coupon.value.text);
 
 
+    var today = DateTime.now();
+    bool couponCodeValidaDate = allCouponList.value.data!.map((e) => e.isActive).contains(1);
+
+
     bool couponBookIdCheck = false;
     for(var i in allCouponList.value.data!){
-      if(i.bookListForCoupons!.contains(bookId)){
+      if(i.bookListForCoupons!.toString().contains(bookId.toString())){
         print("couponBookIdCheck -- ${i.bookListForCoupons}");
         couponBookIdCheck = true;
         break;
@@ -65,12 +70,26 @@ class CouponController extends GetxController {
     }
 
     print("couponBookIdCheck -- ${couponBookIdCheck}");
+    print("couponBookIdCheck -- ${couponMatch}");
+    print("couponBookIdCheck -- ${couponCodeValidaDate}");
 
-    if(!couponMatch && !couponBookIdCheck){
-      Get.snackbar("Error!", "Invalid Coupon Code", backgroundColor: Colors.red);
+    if(couponMatch && couponBookIdCheck){
+      //check coupon valid code
+      if(couponCodeValidaDate) {
+        selectedCoupon.value = allCouponList.value.data!.firstWhere((element) => element.code == coupon.value.text);
+        Get.snackbar("Success!", "Coupon Applied Successfully.",
+            backgroundColor: Colors.green);
+        return;
+      }else{
+        Get.snackbar("Error!", "Coupon is not valid", backgroundColor: Colors.red);
+        return;
+      }
+      Get.snackbar("Success!", "Coupon Applied Successfully.", backgroundColor: Colors.green);
       return;
     }else{
-      Get.snackbar("Success!", "Coupon Applied Successfully.", backgroundColor: Colors.green);
+      Get.snackbar("Error!", "Invalid Coupon Code", backgroundColor: Colors.red);
+      return;
+
     }
 
     for(var i in allCouponList.value.data!){

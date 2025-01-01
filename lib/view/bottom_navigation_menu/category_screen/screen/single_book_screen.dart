@@ -286,7 +286,7 @@ class SingleBookScreen extends GetView<BookController> {
                       }else{
                         return AppButton(
                           width: 140,
-                          name: "Buy Now",
+                          name: "Buy PDF",
                           onClick: ()=>Get.toNamed(AppRoute.orderScreen, arguments: controller.singleBookModel.value.data!),);
                       }
 

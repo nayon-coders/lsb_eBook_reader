@@ -147,11 +147,18 @@ class AuthController extends GetxController{
         "phone": user.phoneNumber == null ? "" : user.phoneNumber,
       });
       if(response.statusCode == 200){
-        var data = jsonDecode(response.body);
-        sharedPreferences!.setString("token", data["data"]["token"]);
-        sharedPreferences!.setString("user_id", data["data"]["user"]["id"].toString());
-        Get.snackbar("Success", "Login success", snackPosition: SnackPosition.TOP, backgroundColor: Colors.green);
-        Get.offAllNamed(AppRoute.appNavigation); //navigate to app navigation
+        if(jsonDecode(response.body)["data"]["user"]["status"] == "Pending"){
+          Get.snackbar("Google Login!", "Your account is not active yet", snackPosition: SnackPosition.TOP, backgroundColor: Colors.red);
+          isLoading.value = false;
+          return;
+        }else{
+          var data = jsonDecode(response.body);
+          sharedPreferences!.setString("token", data["data"]["token"]);
+          sharedPreferences!.setString("user_id", data["data"]["user"]["id"].toString());
+          Get.snackbar("Success", "Login success", snackPosition: SnackPosition.TOP, backgroundColor: Colors.green);
+          Get.offAllNamed(AppRoute.appNavigation); //navigate to app navigation
+        }
+
       }else{
         Get.snackbar("Google Login!", "Google login failed", snackPosition: SnackPosition.TOP, backgroundColor: Colors.red);
       }

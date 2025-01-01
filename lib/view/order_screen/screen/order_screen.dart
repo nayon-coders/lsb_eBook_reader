@@ -29,7 +29,7 @@ class OrderScreen extends GetView<CreateOrderController> {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-      controller.productPrice.value = double.parse("${bookInfo!.price!}");
+      controller.productPrice.value = double.parse("${bookInfo!.sellPrice!}");
     });
     Size size = MediaQuery.sizeOf(context);
     return Scaffold(
@@ -139,43 +139,47 @@ class OrderScreen extends GetView<CreateOrderController> {
             PaymentMethodView(),
 
 
-            const SizedBox(height:20,),
+            //const SizedBox(height:20,),
             //Shopping address
-            ShippingAddressView(),
+            //ShippingAddressView(),
 
-
-            const SizedBox(height: 50,),
+            const SizedBox(height: 20,),
             AppInput(
-                hint: "Coupon",
-                controller: couponController.coupon.value,
-                suffixIcon: Obx((){
-                    return InkWell(
-                      onTap: (){
-                        if ( couponController.coupon.value.text.isNotEmpty) {
-                          couponController.applyCoupon(bookInfo!.bookId!);
-                          if(couponController.selectedCoupon.value.discountPrice != null){
-                            controller.discountAmount.value = double.parse("${couponController.selectedCoupon.value.discountPrice}");
-                          }else{
-                            controller.discountAmount.value = 0.0;
-                          }
-                          controller.calculateTotalAmount();
-                        }
-                      },
-                      child: Container(
-                      margin:const EdgeInsets.all(6),
-                      padding:const EdgeInsets.all(4),
-                      width: 80,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: AppColors.buttonGreen,
-                      ),
-                      child: Center(
-                          child: couponController.isLoading.value ? CircularProgressIndicator(color: Colors.white,) : Text("Apply",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w400,color: Colors.white),)),
-                                    ),
-                    );
-                  }
-                ),
-            )
+              hint: "Coupon",
+
+
+              controller: couponController.coupon.value,
+              suffixIcon: Obx((){
+                return InkWell(
+                  onTap: (){
+                    if ( couponController.coupon.value.text.isNotEmpty) {
+                      couponController.applyCoupon(bookInfo!.bookId!);
+                      print("couponController.selectedCoupon.value -- ${couponController.selectedCoupon.value.code}");
+                      if(couponController.selectedCoupon.value.discountPrice != null){
+                        controller.discountAmount.value = double.parse("${couponController.selectedCoupon.value.discountPrice}");
+                      }else{
+                        controller.discountAmount.value = 0.0;
+                      }
+                      controller.calculateTotalAmount();
+                    }
+                  },
+                  child: Container(
+                    margin:const EdgeInsets.all(6),
+                    padding:const EdgeInsets.all(4),
+                    width: 80,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: AppColors.buttonGreen,
+                    ),
+                    child: Center(
+                        child: couponController.isLoading.value ? CircularProgressIndicator(color: Colors.white,) : Text("Apply",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w400,color: Colors.white),)),
+                  ),
+                );
+              }
+              ),
+            ),
+
+
           ],
         ),
       ),

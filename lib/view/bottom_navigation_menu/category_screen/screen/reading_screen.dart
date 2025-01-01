@@ -5,9 +5,11 @@ import 'package:ebook_reader/widgets/app_shimmer_pro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:html/parser.dart' as html_parser;
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:page_flip/page_flip.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:turn_page_transition/turn_page_transition.dart';
@@ -27,7 +29,10 @@ class _ReadingScreenState extends State<ReadingScreen> {
   final ReadingController controller = Get.find<ReadingController>();
   final MarkTextController markTextController = Get.find<MarkTextController>();
   final pageFlipWidgetsController = GlobalKey<PageFlipWidgetState>();
+  final PdfViewerController _pdfViewerController = PdfViewerController();
 
+
+  int _currentPageNumber = 0;
 
   late BookInfo bookInfo;
   // topic id
@@ -39,7 +44,6 @@ class _ReadingScreenState extends State<ReadingScreen> {
     bookInfo = Get.arguments["bookInfo"] as BookInfo;
     topicId = Get.arguments["id"] as String;
 
-    //_pdfViewerController. = PdfScrollDirection.horizontal;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       if (bookInfo.bookId != null) {
         controller.getParagraph(topicId.toString());
@@ -92,17 +96,26 @@ class _ReadingScreenState extends State<ReadingScreen> {
           ],
         ),
         body: Obx(() {
+          print(" controller.isPDFLoading.value --- ${ controller.isPDFLoading.value}");
+          print(" controller.isLoading.value --- ${ controller.isLoading.value}");
           // Check if data is loading
-          if (controller.isLoading.value) {
+          if(controller.isPDFLoading.value){
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Lottie.asset("assets/image/book-loading.json", height: 100, width: 100),
+                  Text("Loading..."),
+                ],
+              ),
+            );
+          }else if (controller.isLoading.value) {
             return _buildBookLoading();
           }
           // Check if the data is null or empty
           else if (controller.peragraphModel.value.data == null || controller.peragraphModel.value.data!.isEmpty) {
             return NotFind(); // Show "Not Found" if no content is available
-          }
-          // Check if totalBookPages is populated
-          else if ( controller.content.isEmpty) {
-            return Center(child: Text("No pages available."));
           }
           else {
             return PageFlipWidget(
@@ -111,66 +124,67 @@ class _ReadingScreenState extends State<ReadingScreen> {
               // isRightSwipe: true,
               //lastPage: Container(color: Colors.white, child: const Center(child: Text('Last Page!'))),
               children: <Widget>[
-                for (var i = 0; i < controller.content.value.length; i++) _buildBookContent(controller.content.value[i]) ,
+                for (var i = 0; i < int.parse("${controller.peragraphModel.value.data!.first!.pageNumber}"); i++) _buildPDFBookShow(i) ,
               ],
             );
           }
         }),
 
 
-        bottomNavigationBar: _buildBottomBar(),
+        bottomNavigationBar:  Obx(() {
+            return controller.isPDFLoading.value ? SizedBox(height: 0,) : _buildBottomBar();
+          }
+        ),
       ),
     );
   }
 
-  Container _buildBookContent(data) {
+  Container _buildPDFBookShow(int i){
+    _currentPageNumber = i;
     return Container(
-      padding: const EdgeInsets.all(20),
+  //    margin: EdgeInsets.only(left: 10, right: 10),
       child: Obx(() {
-          return HtmlWidget(data,
-            textStyle: TextStyle(
-              fontSize: controller.fontSize.value,
-            ),
-            customWidgetBuilder: (element) {
-            print("element.localName -- ${element.localName}");
-              // Check if the current element is an <u> tag
-              if (element.localName == 'u') {
+          return controller.isPDFLoading.value
+              ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(),
+                    Text("Loading..."),
+                  ],
+                ),
+              ): SfPdfViewer.memory(
+                controller.pdfBook.value,
+                maxZoomLevel: 1.35,
+                initialZoomLevel: 1.35,
 
-                bool isMarked = false;
-                for(var i in controller.peragraphModel.value.markTextData!){
-                  if(i.text!.toLowerCase().contains(element.text.toLowerCase())){
-                    isMarked = true;
-                  }
-                }
+                scrollDirection: PdfScrollDirection.horizontal,
 
-                return Obx(() {
-                    return GestureDetector(
-                      onTap: () {
-                       // _showPopup(context, text);
-                        isMarked ? _showMyDialog(element.text) : null;
-                      },
-                      child: HtmlWidget(
-                        element.innerHtml,
-                        textStyle: TextStyle(
-                          fontSize: controller.fontSize.value,
-                        ),
-                      ),
-                    );
-                  }
-                );
-              }
-              return null; // Use default rendering for other elements
-            },
+                controller: _pdfViewerController,
 
+                canShowScrollHead: false,
 
-          );
+                canShowScrollStatus: false,
+                canShowPaginationDialog: false,
+                initialPageNumber: i,
+                enableDoubleTapZooming: false,
+                enableTextSelection: false,
+                enableDocumentLinkAnnotation: true,
+                onHyperlinkClicked: (details) {
+                 _showMyDialog(details.uri);
+                },
+              );
         }
-      )
+      ),
     );
+
   }
+
 
   Container _buildBottomBar() {
     return Container(
+
       padding: const EdgeInsets.only(left: 40, right: 40, top: 5, bottom: 5),
       color: Colors.grey.shade200,
       child: Row(
@@ -178,7 +192,8 @@ class _ReadingScreenState extends State<ReadingScreen> {
         children: [
           //_buildNextPrevious(),
           Obx(() {
-            return Text("Total Page ${controller.content.length}",
+
+            return controller.isPDFLoading.value || controller.isLoading.value ? Center() : Text("Total Page ${controller.peragraphModel.value.data!.first.pageNumber}",
             );
           }
           ),
@@ -211,28 +226,36 @@ class _ReadingScreenState extends State<ReadingScreen> {
   Row _buildFontDafination() {
     return Row(
       children: [
-        IconButton(
-            onPressed: () {
-              if(controller.fontSize.value > 14.5) {
-                controller.fontSize.value = controller.fontSize.value - 0.1;
-              }
+        // IconButton(
+        //     onPressed: () {
+        //       if(controller.pdfZoom.value > 1.5) {
+        //         controller.fontSize.value = controller.fontSize.value - 0.1;
+        //       }
+        //     },
+        //     icon: Icon(Icons.text_decrease_outlined)),
+        // IconButton(
+        //     onPressed: () {
+        //       if(controller.fontSize.value < 16) { // 16 is the default font size
+        //         controller.fontSize.value = controller.fontSize.value + 0.1;
+        //       }
+        //       print(" controller.fontSize.value --- ${ controller.fontSize.value}");
+        //     },
+        //     icon: Icon(Icons.text_increase_outlined)),
+        // SizedBox(width: 20,),
 
-            },
-            icon: Icon(Icons.text_decrease_outlined)),
-        IconButton(
-            onPressed: () {
-              if(controller.fontSize.value < 16) { // 16 is the default font size
-                controller.fontSize.value = controller.fontSize.value + 0.1;
-              }
-              print(" controller.fontSize.value --- ${ controller.fontSize.value}");
-            },
-            icon: Icon(Icons.text_increase_outlined)),
-        SizedBox(width: 20,),
 
-
-        InkWell(
-            onTap: ()=> _showVocabularyList(),
-            child: Image.asset("assets/images/definition.png",height: 30,width: 30,)),
+        Container(
+          width: 40,
+          height: 40,
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(100)
+          ),
+          child: InkWell(
+              onTap: ()=> _showVocabularyList(),
+              child: Image.asset("assets/images/definition.png",height: 30,width: 30,)),
+        ),
       ],
     );
   }
@@ -472,9 +495,11 @@ class _ReadingScreenState extends State<ReadingScreen> {
     //logic start
     String defination = "";
 
+    String extractedText = text.split("https://").last;
+
     for(var i in controller.peragraphModel.value.markTextData!){
 
-      if(i.text!.toLowerCase().contains(text!.toString().toLowerCase())){
+      if(i.text!.toLowerCase().contains(extractedText!.toString().toLowerCase())){
         defination = i.definition!;
       }
     }
@@ -483,10 +508,14 @@ class _ReadingScreenState extends State<ReadingScreen> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          actionsPadding: EdgeInsets.only(bottom: 5, left: 20, right: 30),
+          actionsPadding: EdgeInsets.only(bottom: 5, left: 5, right: 5),
           contentPadding: EdgeInsets.all(20),
+          insetPadding: EdgeInsets.all(20),
+          iconPadding: EdgeInsets.all(20),
           content: Container(
             height: 250,
+            width: Get.width,
+
             child: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
@@ -499,7 +528,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
                         topRight: Radius.circular(10),
                       )
                     ),
-                    child: Text("$text",
+                    child: Text("$extractedText",
                       style: TextStyle(
                         fontSize: 16,
                         color: AppColors.textBlack,
@@ -529,6 +558,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
               child: Text('Close'),
               onPressed: () {
                 Navigator.of(context).pop();
+                Navigator.of(context).pop();
               },
             ),
           ],
@@ -537,3 +567,49 @@ class _ReadingScreenState extends State<ReadingScreen> {
     );
   }
 }
+
+// Container _buildBookContent(data) {
+//   return Container(
+//       padding: const EdgeInsets.all(20),
+//       child: Obx(() {
+//         return HtmlWidget(data,
+//           textStyle: TextStyle(
+//             fontSize: controller.fontSize.value,
+//           ),
+//           customWidgetBuilder: (element) {
+//             print("element.localName -- ${element.localName}");
+//             // Check if the current element is an <u> tag
+//             if (element.localName == 'u') {
+//
+//               bool isMarked = false;
+//               for(var i in controller.peragraphModel.value.markTextData!){
+//                 if(i.text!.toLowerCase().contains(element.text.toLowerCase())){
+//                   isMarked = true;
+//                 }
+//               }
+//
+//               return Obx(() {
+//                 return GestureDetector(
+//                   onTap: () {
+//                     // _showPopup(context, text);
+//                     isMarked ? _showMyDialog(element.text) : null;
+//                   },
+//                   child: HtmlWidget(
+//                     element.innerHtml,
+//                     textStyle: TextStyle(
+//                       fontSize: controller.fontSize.value,
+//                     ),
+//                   ),
+//                 );
+//               }
+//               );
+//             }
+//             return null; // Use default rendering for other elements
+//           },
+//
+//
+//         );
+//       }
+//       )
+//   );
+// }
