@@ -142,12 +142,14 @@ class MyOrderScreen extends GetView<MyOrderController> {
                                 Get.toNamed(AppRoute.mySingleBook);
                               }
                             },
-                            child: data.orderStatus == "pending"
+                            child: data.orderStatus!.toLowerCase().contains("pending")
                                 ? const Text("Payment Pending",style: TextStyle(fontSize: 12,fontWeight: FontWeight.w600,color: Colors.red),)
-                                : data.orderStatus == "cancel"
+                                : data.orderStatus!.toLowerCase().contains("cancel")
                                 ? const StatusButton(text: "Cancel",color: Colors.red,)
-                                : const StatusButton(text: "Read",color: Colors.green)
-                         ),
+                                : data.orderStatus.toString().toLowerCase().contains("complete") || data.orderStatus.toString().toLowerCase().contains("accept")
+                                ? const StatusButton(text: "Read",color: Colors.green)
+                                : const StatusButton(text: "Pending",color: Colors.orange),
+                          ),
                         ),
 
 

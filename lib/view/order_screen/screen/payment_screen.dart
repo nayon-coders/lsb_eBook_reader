@@ -106,7 +106,26 @@ class PaymentScreen extends GetView<CreateOrderController> {
                 ),
               ),
             ),
-            SizedBox(height: 40,),
+            SizedBox(height: 20,),
+            Container(
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                  color: Colors.red.shade100,
+                  borderRadius: BorderRadius.circular(10)
+              ),
+              child: Column(
+                children: [
+                  Text("Note: উপরের নম্বরে ${(controller.totalAmount.value + controller.paymentCharge.value).toStringAsFixed(2)} টাকা সেন্ড মানি / ক্যাশ ইন করে আপনার পেমেন্ট নম্বর এবং ট্রানজেকশন আইডি নিচের দুটি ঘরে লিখুন।",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 14,
+                      color: Colors.red,
+                    ),
+                  )
+                ],
+              ),
+            ),
+            SizedBox(height: 20,),
             Text("আপনার পেমেন্ট নিশ্চিত করুন",
               style: TextStyle(
                 fontWeight: FontWeight.w600,
@@ -119,25 +138,7 @@ class PaymentScreen extends GetView<CreateOrderController> {
             SizedBox(height: 15,),
             AppInput(hint: "ট্রানজেকশন আইডি", controller: controller.payTransId.value),
 
-            SizedBox(height: 30,),
-            Container(
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Colors.red.shade100,
-                borderRadius: BorderRadius.circular(10)
-              ),
-              child: Column(
-                children: [
-                  Text("Note: উপরের নম্বরে বিকাশ/রকেট/নগদে --- টাকা সেন্ড মানি / ক্যাশ ইন করে আপনার পেমেন্ট নম্বর এবং ট্রানজেকশন আইডি নিচের দুটি ঘরে লিখুন।",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14,
-                      color: Colors.red,
-                    ),
-                  )
-                ],
-              ),
-            )
+
           ],
         )
       ),

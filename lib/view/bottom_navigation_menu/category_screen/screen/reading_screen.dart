@@ -11,6 +11,7 @@ import 'package:html/parser.dart' as html_parser;
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:page_flip/page_flip.dart';
+import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:turn_page_transition/turn_page_transition.dart';
 
@@ -95,40 +96,44 @@ class _ReadingScreenState extends State<ReadingScreen> {
             SizedBox(width: 10,),
           ],
         ),
-        body: Obx(() {
-          print(" controller.isPDFLoading.value --- ${ controller.isPDFLoading.value}");
-          print(" controller.isLoading.value --- ${ controller.isLoading.value}");
-          // Check if data is loading
-          if(controller.isPDFLoading.value){
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Lottie.asset("assets/images/book-loading.json", height: 100, width: 100),
-                  Text("Loading..."),
+        body: Container(
+
+          child: Obx(() {
+            print(" controller.isPDFLoading.value --- ${ controller.isPDFLoading.value}");
+            print(" controller.isLoading.value --- ${ controller.isLoading.value}");
+            // Check if data is loading
+            if(controller.isPDFLoading.value){
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Lottie.asset("assets/images/book-loading.json", height: 100, width: 100),
+                    Text("Loading..."),
+                  ],
+                ),
+              );
+            }else if (controller.isLoading.value) {
+              return _buildBookLoading();
+            }
+            // Check if the data is null or empty
+            else if (controller.peragraphModel.value.data == null || controller.peragraphModel.value.data!.isEmpty) {
+              return NotFind(); // Show "Not Found" if no content is available
+            }
+            else {
+
+              return PageFlipWidget(
+                key: pageFlipWidgetsController,
+                backgroundColor: Colors.white,
+                // isRightSwipe: true,
+                //lastPage: Container(color: Colors.white, child: const Center(child: Text('Last Page!'))),
+                children: <Widget>[
+                  for (var i = 0; i < int.parse("${controller.peragraphModel.value.data!.first!.pageNumber}"); i++) _buildPDFBookShow(i) ,
                 ],
-              ),
-            );
-          }else if (controller.isLoading.value) {
-            return _buildBookLoading();
-          }
-          // Check if the data is null or empty
-          else if (controller.peragraphModel.value.data == null || controller.peragraphModel.value.data!.isEmpty) {
-            return NotFind(); // Show "Not Found" if no content is available
-          }
-          else {
-            return PageFlipWidget(
-              key: pageFlipWidgetsController,
-              backgroundColor: Colors.white,
-              // isRightSwipe: true,
-              //lastPage: Container(color: Colors.white, child: const Center(child: Text('Last Page!'))),
-              children: <Widget>[
-                for (var i = 0; i < int.parse("${controller.peragraphModel.value.data!.first!.pageNumber}"); i++) _buildPDFBookShow(i) ,
-              ],
-            );
-          }
-        }),
+              );
+            }
+          }),
+        ),
 
 
         bottomNavigationBar:  Obx(() {
@@ -142,6 +147,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
   Container _buildPDFBookShow(int i){
     _currentPageNumber = i;
     return Container(
+
   //    margin: EdgeInsets.only(left: 10, right: 10),
       child: Obx(() {
           return controller.isPDFLoading.value
@@ -154,27 +160,33 @@ class _ReadingScreenState extends State<ReadingScreen> {
                     Text("Loading..."),
                   ],
                 ),
-              ): SfPdfViewer.memory(
-                controller.pdfBook.value,
-                maxZoomLevel: 1.35,
-                initialZoomLevel: 1.35,
+              ): AbsorbPointer(
+                absorbing: true,
+                child: SfPdfViewerTheme(
+                  data: SfPdfViewerThemeData(
+                    backgroundColor: Color(0xffF5F5F5) //<----
+                  ),
+                  child: SfPdfViewer.memory(
+                    controller.pdfBook.value,
+                    maxZoomLevel: 1.3,
+                    initialZoomLevel: controller.pageWidth.value,
+                    scrollDirection: PdfScrollDirection.horizontal,
+                    controller: _pdfViewerController,
+                    canShowScrollHead: false,
+                    canShowScrollStatus: false,
+                    canShowPaginationDialog: false,
+                    initialPageNumber: i,
+                    enableDoubleTapZooming: false,
+                    enableTextSelection: false,
+                    enableDocumentLinkAnnotation: true,
+                    onHyperlinkClicked: (details) {
+                      _showMyDialog(details.uri);
+                    },
+                  ),
+                ),
 
-                scrollDirection: PdfScrollDirection.horizontal,
 
-                controller: _pdfViewerController,
-
-                canShowScrollHead: false,
-
-                canShowScrollStatus: false,
-                canShowPaginationDialog: false,
-                initialPageNumber: i,
-                enableDoubleTapZooming: false,
-                enableTextSelection: false,
-                enableDocumentLinkAnnotation: true,
-                onHyperlinkClicked: (details) {
-                 _showMyDialog(details.uri);
-                },
-              );
+          );
         }
       ),
     );
@@ -228,17 +240,12 @@ class _ReadingScreenState extends State<ReadingScreen> {
       children: [
         // IconButton(
         //     onPressed: () {
-        //       if(controller.pdfZoom.value > 1.5) {
-        //         controller.fontSize.value = controller.fontSize.value - 0.1;
-        //       }
+        //       controller.decreaseFontSizePdf();
         //     },
         //     icon: Icon(Icons.text_decrease_outlined)),
         // IconButton(
         //     onPressed: () {
-        //       if(controller.fontSize.value < 16) { // 16 is the default font size
-        //         controller.fontSize.value = controller.fontSize.value + 0.1;
-        //       }
-        //       print(" controller.fontSize.value --- ${ controller.fontSize.value}");
+        //       controller.increaseFontSizePdf();
         //     },
         //     icon: Icon(Icons.text_increase_outlined)),
         // SizedBox(width: 20,),

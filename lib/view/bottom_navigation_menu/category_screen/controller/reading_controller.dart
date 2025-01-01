@@ -59,6 +59,18 @@ class ReadingController extends GetxController {
     pageFlipWidgetsController.currentState!.previousPage();
   }
 
+  RxDouble pageWidth = 1.00.obs;
+
+  //increase font size
+  void increaseFontSizePdf() {
+    pageWidth.value += 0.1;
+  }
+  void decreaseFontSizePdf() {
+    if(pageWidth.value >= 1){
+      pageWidth.value -= 0.1;
+    }
+  }
+
   //get peragraph 
   getParagraph(ID)async{
     content.clear();
