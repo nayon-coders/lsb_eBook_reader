@@ -105,7 +105,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Lottie.asset("assets/image/book-loading.json", height: 100, width: 100),
+                  Lottie.asset("assets/images/book-loading.json", height: 100, width: 100),
                   Text("Loading..."),
                 ],
               ),
