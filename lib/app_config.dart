@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 
 class AppConfig {
 
-  static const String appName = 'LSB e BooK';
+  static const String appName = "Ahmed's English";
+  static const String hiveBox = "ahmeds_english";
   static const String DOMAIN = 'https://e-book-node-server.onrender.com';
   static const String API = 'api/v1';
   static const String BASE_URL = '$DOMAIN/$API';
@@ -73,6 +74,7 @@ class AppConfig {
 
   //coupon
   static const String COUPON_ALL = "$BASE_URL/coupons-discount";
+  static const String bookWithTopics = "$BASE_URL/book/w-toc/";
 
 
 

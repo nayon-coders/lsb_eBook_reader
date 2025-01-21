@@ -49,11 +49,13 @@ class MyOrderScreen extends GetView<MyOrderController> {
             return const Center(
               child: EmptyScreen()
             );
-          }
+          }else{
+
             return ListView.builder(
                 itemCount: controller.getOrderModel.value.ordersData!.length,
                 itemBuilder: (context,index){
                   final data = controller.getOrderModel.value.ordersData![index];
+                  print("Order status: ${data.orderStatus}");
                   return Container(
                     margin:const EdgeInsets.only(bottom: 10),
                     padding:const EdgeInsets.only(right: 10),
@@ -104,9 +106,9 @@ class MyOrderScreen extends GetView<MyOrderController> {
                                       overflow: TextOverflow.ellipsis,
                                       style:const TextStyle(
                                           overflow:TextOverflow.ellipsis,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w500,
-                                        color: AppColors.textBlack),
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w500,
+                                          color: AppColors.textBlack),
                                     ),
                                   ),
 
@@ -134,7 +136,7 @@ class MyOrderScreen extends GetView<MyOrderController> {
                         SizedBox(
                           width: 80,
                           child: InkWell(
-                              onTap: (){
+                            onTap: (){
                               if(data.orderStatus == "pending" || data.orderStatus == "cancel"){
                                 return null;
                               }else{
@@ -145,8 +147,8 @@ class MyOrderScreen extends GetView<MyOrderController> {
                             child: data.orderStatus!.toLowerCase().contains("pending")
                                 ? const Text("Payment Pending",style: TextStyle(fontSize: 12,fontWeight: FontWeight.w600,color: Colors.red),)
                                 : data.orderStatus!.toLowerCase().contains("cancel")
-                                ? const StatusButton(text: "Cancel",color: Colors.red,)
-                                : data.orderStatus.toString().toLowerCase().contains("complete") || data.orderStatus.toString().toLowerCase().contains("accept")
+                                ? const Text("Cancel",style: TextStyle(fontSize: 12,fontWeight: FontWeight.w600,color: Colors.red),)
+                                : data.orderStatus.toString().toLowerCase().contains("complete") || data.orderStatus.toString().toLowerCase().contains("accept") || data.orderStatus.toString().toLowerCase().contains("successful")
                                 ? const StatusButton(text: "Read",color: Colors.green)
                                 : const StatusButton(text: "Pending",color: Colors.orange),
                           ),
@@ -160,6 +162,8 @@ class MyOrderScreen extends GetView<MyOrderController> {
                   );
 
                 });
+          }
+
 
 
           }
