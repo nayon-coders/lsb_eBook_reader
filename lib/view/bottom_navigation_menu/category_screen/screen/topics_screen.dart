@@ -37,6 +37,7 @@ class TopicsScreen extends GetView<BookController> {
               itemCount: controller.topicList.value.length,
               itemBuilder: (context,index){
                 var data = controller.topicList.value[index];
+
                 return Container(
                   padding:const EdgeInsets.only(left: 10,right: 10),
                   margin:const EdgeInsets.all(10),
@@ -54,7 +55,11 @@ class TopicsScreen extends GetView<BookController> {
                     color: allPermission ? Colors.white :  data.lookStatus == AppConst.lock ?  Colors.grey.shade200  : Colors.white
                   ),
                   child: ListTile(
-                    onTap: ()=>data.lookStatus == AppConst.lock ? null : Get.toNamed(AppRoute.readingScreen,arguments: {"bookInfo":bookInfo,"id":data.id.toString()}),
+                    onTap: (){
+                      data.lookStatus == AppConst.lock ? null : Get.toNamed(AppRoute.readingScreen,arguments: {"bookInfo":bookInfo,"id":data.id.toString()});
+                      print("------pageNumber ${bookInfo.totalPages}");
+                    },
+
                     contentPadding: EdgeInsets.zero,
                     tileColor: Colors.white,
                     leading: Container(

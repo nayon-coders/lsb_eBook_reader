@@ -62,12 +62,7 @@ class _AppNavigationScreenState extends State<AppNavigationScreen> {
             BottomNavigationBarItem(
               backgroundColor: AppColors.bottomNev,
                 icon: Obx((){
-                    return ColorFiltered(
-                      colorFilter: ColorFilter.mode(
-                          controller.currentIndex ==1?Colors.white:AppColors.textBlack,
-                          BlendMode.srcIn
-                      ),
-                        child: Image.asset(Assets.save,height: 25,width: 25,fit: BoxFit.contain,));
+                    return Image.asset(Assets.mybook,height: 30,width: 30,fit: BoxFit.contain,);
                   }
                 ),
                 label: "",
