@@ -10,7 +10,8 @@ class AppButton extends StatelessWidget {
     this.bgColor=AppColors.buttonGreen,
     this.height=45,
     this.width=300,
-    this.isLoading = false
+    this.isLoading = false,
+    this.fontSize = 16
   });
   final String name;
   final VoidCallback onClick;
@@ -18,6 +19,7 @@ class AppButton extends StatelessWidget {
   final double? height;
   final double? width;
   final bool isLoading;
+  final double fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class AppButton extends StatelessWidget {
           color:bgColor,
         ),
         child: Center(
-          child: isLoading ? const CircularProgressIndicator.adaptive() : Text(name,style:const TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color:Colors.white),),
+          child: isLoading ? const CircularProgressIndicator.adaptive() : Text(name,style: TextStyle(fontSize: fontSize,fontWeight: FontWeight.w600,color:Colors.white),),
         ),
       ),
     );

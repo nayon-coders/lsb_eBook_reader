@@ -10,6 +10,7 @@ import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:html/parser.dart' as html_parser;
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:page_flip/page_flip.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -100,7 +101,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
 
           child: Obx(() {
             print(" controller.isPDFLoading.value --- ${ controller.isPDFLoading.value}");
-            print(" controller.isLoading.value --- ${ controller.isLoading.value}");
+            print(" controller.isLoading.value --- ${  controller.pdfBook.value}");
             // Check if data is loading
             if(controller.isPDFLoading.value){
               return Center(
@@ -251,17 +252,20 @@ class _ReadingScreenState extends State<ReadingScreen> {
         // SizedBox(width: 20,),
 
 
-        Container(
-          width: 40,
-          height: 40,
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(100)
+        InkWell(
+          onTap: ()=> _showVocabularyList(),
+          child: Container(
+            width: 40,
+            height: 40,
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(100)
+            ),
+            child: InkWell(
+
+                child: Image.asset("assets/images/definition.png",height: 30,width: 30,)),
           ),
-          child: InkWell(
-              onTap: ()=> _showVocabularyList(),
-              child: Image.asset("assets/images/definition.png",height: 30,width: 30,)),
         ),
       ],
     );
@@ -304,7 +308,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
   //show the vocabulary list
   void _showVocabularyList() {
 
-    showModalBottomSheet(
+    showMaterialModalBottomSheet(
         context: context,
         builder: (context) {
           return Container(

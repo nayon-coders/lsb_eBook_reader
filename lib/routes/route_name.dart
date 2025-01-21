@@ -1,7 +1,11 @@
 
 
 class AppRoute{
+  static const String checkConnection = "/check-connection";
   static const String start = "/";
+  static const String OfflinePages = "/OfflinePages";
+  static const String OfflineMyBook = "/OfflineMyBook";
+  static const String offLineMode = "/offline-mode";
   static const String login = "/login_screen";
   static const String signup = "/signup_screen";
   static const String appNavigation = "/appNavigation_screen";

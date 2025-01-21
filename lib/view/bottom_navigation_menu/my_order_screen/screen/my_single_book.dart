@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ebook_reader/routes/route_name.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/profile_screen/controller/favroit_controller.dart';
+import 'package:ebook_reader/view/offline_mode/controller/offline_book_controller.dart';
 import 'package:ebook_reader/widgets/app_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating/flutter_rating.dart';
@@ -14,7 +15,7 @@ import 'rating_view.dart';
 class MySingleBookScreen extends GetView<BookController> {
   MySingleBookScreen({super.key});
   FavroitController favroitController =  Get.put(FavroitController());
-
+ final OfflineBookController offlineBookController = Get.put(OfflineBookController());
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class MySingleBookScreen extends GetView<BookController> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Obx((){
-            if(controller.isLoading.value){
+            if(controller.isLoading.value || controller.isGettingSingleProduct.value || controller.singleBookModel.value.data == null){
               return SingleBookLoadingWidget(size: size);
             }else{
               return Column(
@@ -87,12 +88,8 @@ class MySingleBookScreen extends GetView<BookController> {
                         top: 10,
                         child: InkWell(
                           onTap: (){
-                            if(favroitController.isFav.value){
-                              //remove from favorite
-                              favroitController.removeFavroit(controller.bookId.value); //add into favorite
-                            }else {
-                              favroitController.addFavroit(controller.bookId.value); //add into favorite
-                            }
+                            if(controller.isGettingBookInfo.value) return;
+                             controller.getBookInfoWithTopics(controller.bookId.value); //get book info with topics
                           },
                           child: Obx(() {
                             return Container(
@@ -106,9 +103,8 @@ class MySingleBookScreen extends GetView<BookController> {
                                 border: Border.all(color: Colors.black),
                               ),
                               child: Center(
-                                child:Icon(
-                                  favroitController.isFav.value ? Icons.favorite : Icons.favorite_border,
-                                  color:  favroitController.isFav.value ? Colors.red : Colors.black,
+                                child: controller.isGettingBookInfo.value ? CircularProgressIndicator() : Icon(Icons.bookmark_outline_sharp,
+                                //  color:  favroitController.isFav.value ? Colors.red : Colors.black,
                                   size: 20,
                                 ),
                               ),
@@ -256,12 +252,13 @@ class MySingleBookScreen extends GetView<BookController> {
         padding:const EdgeInsets.all(30),
         color:AppColors.bgColor,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             AppButton(
               name: "Review",
               width: Get.width*.40,
+                fontSize: 14,
               bgColor: AppColors.bottomNev,
               onClick: ()=>Get.bottomSheet(
                 RatingView(id: controller.singleBookModel.value.data!.bookId!.toString(),),
@@ -272,7 +269,11 @@ class MySingleBookScreen extends GetView<BookController> {
             AppButton(
               name: "Read Book",
               width: Get.width*.40,
+              fontSize: 14,
               onClick: ()=>Get.toNamed(AppRoute.chapter, arguments: {"data": controller.singleBookModel.value.data!, "allPermission" : true}),),
+
+
+
 
 
           ],

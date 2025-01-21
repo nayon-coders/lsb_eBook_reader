@@ -24,48 +24,74 @@ import '../data/binding/book_controller_binding.dart';
 import '../data/binding/home_binding.dart';
 import '../data/binding/order_create_binding.dart';
 import '../data/binding/profile_binding.dart';
+import '../data/middleware/connection_mideleare.dart';
 import '../view/bottom_navigation_menu/app_navigation_screen.dart';
 import '../view/bottom_navigation_menu/category_screen/screen/capter_screen.dart';
 import '../view/bottom_navigation_menu/category_screen/screen/catagory_books.dart';
 import '../view/bottom_navigation_menu/category_screen/screen/reading_screen.dart';
 import '../view/bottom_navigation_menu/category_screen/screen/single_book_screen.dart';
 import '../view/bottom_navigation_menu/category_screen/screen/topics_screen.dart';
+import '../view/offline_mode/view/offline_my_book.dart';
+import '../view/offline_mode/view/offline_pages.dart';
+import '../view/offline_mode/view/read_pdf.dart';
 import '../view/order_screen/screen/add_address.dart';
 import '../view/order_screen/screen/order_screen.dart';
 class RoutePage{
   static List<GetPage<dynamic>> routes=[
 
+
     GetPage(
         name: AppRoute.start,
         page: ()=> StartScreen(),
-        middlewares: [AuthMiddleware()]
+        middlewares: [AuthMiddleware(), ConnectionMiddleware()]
+    ),
+ GetPage(
+        name: AppRoute.OfflinePages,
+        page: ()=> OfflinePages(),
+        middlewares: [ ConnectionMiddleware()]
+    ),
+
+    GetPage(
+        name: AppRoute.offLineMode,
+        page: ()=> OffLineReadPdf(),
+        //middlewares: [AuthMiddleware()]
+    ),
+    GetPage(
+        name: AppRoute.OfflineMyBook,
+        page: ()=> OfflineMyBook(),
+        //middlewares: [AuthMiddleware()]
     ),
 
     GetPage(
       name: AppRoute.login,
       page: ()=> LoginScreen(),
       binding: AuthBinding(),
+      middlewares: [ConnectionMiddleware()]
     ),
     GetPage(
       name: AppRoute.signup,
       page: ()=> SignupScreen(),
       binding: AuthBinding(),
+        middlewares: [ConnectionMiddleware()]
     ),
 
     //Navigation
     GetPage(
         name: AppRoute.appNavigation,
         page: ()=>AppNavigationScreen(),
-        bindings: [HomeBinding()]
+        bindings: [HomeBinding()],
+        middlewares: [ ConnectionMiddleware()]
     ),
     GetPage(
         name: AppRoute.myOrderScreen,
         page: ()=>MyOrderScreen(),
-        binding: HomeBinding()
+        binding: HomeBinding() ,
+        middlewares: [ ConnectionMiddleware()]
     ),
     GetPage(
       name: AppRoute.favoriteBooks,
       page: ()=>FavoriteScreen(),
+        middlewares: [ConnectionMiddleware()]
     //  binding: HomeBinding(),
 
     ),
@@ -73,18 +99,21 @@ class RoutePage{
       name: AppRoute.allBooks,
       page: ()=>AllBooks(),
       binding: HomeBinding(),
+        middlewares: [ConnectionMiddleware()]
 
     ),
     GetPage(
       name: AppRoute.homeScreen,
       page: ()=>HomeScreen(),
       binding: HomeBinding(),
+        middlewares: [ConnectionMiddleware()]
 
     ),
     GetPage(
       name: AppRoute.profileScreen,
       page: ()=>ProfileScreen(),
       binding: HomeBinding(),
+        middlewares: [ConnectionMiddleware()]
 
     ),
 
@@ -97,6 +126,7 @@ class RoutePage{
         name: AppRoute.orderScreen,
         page: ()=>OrderScreen(),
       bindings: [OrderCreateBinding()],
+        middlewares: [ConnectionMiddleware()]
 
     ),
 
@@ -105,7 +135,8 @@ class RoutePage{
     GetPage(
         name: AppRoute.editProfile,
         page: ()=>EditProfile(),
-       binding:ProfileBinding()
+       binding:ProfileBinding(),
+        middlewares: [ConnectionMiddleware()]
     ),
 
 
@@ -113,33 +144,39 @@ class RoutePage{
     GetPage(
         name: AppRoute.categoryBook,
         page: ()=>CategoryBook(),
-       binding: BookControllerBinding()
+       binding: BookControllerBinding(),
+        middlewares: [ConnectionMiddleware()]
     ),
     //all books
     GetPage(
         name: AppRoute.singleBook,
         page: ()=>SingleBookScreen(),
-       binding: BookControllerBinding()
+       binding: BookControllerBinding(),
+        middlewares: [ConnectionMiddleware()]
     ),
     GetPage(
         name: AppRoute.mySingleBook,
         page: ()=>MySingleBookScreen(),
-       binding: BookControllerBinding()
+       binding: BookControllerBinding(),
+        middlewares: [ConnectionMiddleware()]
     ),
     GetPage(
         name: AppRoute.chapter,
         page: ()=>ChapterScreen(),
-       binding: BookControllerBinding()
+       binding: BookControllerBinding(),
+        middlewares: [ConnectionMiddleware()]
     ),
     GetPage(
         name: AppRoute.topics,
         page: ()=>TopicsScreen(),
-        binding: BookControllerBinding()
+        binding: BookControllerBinding(),
+        middlewares: [ConnectionMiddleware()]
     ),
     GetPage(
         name: AppRoute.readingScreen,
         page: ()=>ReadingScreen(),
-        binding: ReadingBinding()
+        binding: ReadingBinding(),
+        middlewares: [ConnectionMiddleware()]
     ),
 
 
@@ -147,6 +184,7 @@ class RoutePage{
       name: AppRoute.addShippingAddress,
       page: ()=>AddAddress(),
       binding: OrderCreateBinding(),
+        middlewares: [ConnectionMiddleware()]
 
     ),
 

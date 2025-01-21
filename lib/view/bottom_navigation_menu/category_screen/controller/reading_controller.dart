@@ -73,7 +73,8 @@ class ReadingController extends GetxController {
 
   //get peragraph 
   getParagraph(ID)async{
-    content.clear();
+    print("ID for sub topics----${ID}");
+    peragraphModel.value = PeragraphModel();
     isLoading.value = true;
     var response = await ApiServices.getApi(AppConfig.PERAGRAPH_GET_BY_ID+"$ID");
     if(response.statusCode == 200){
@@ -107,6 +108,7 @@ class ReadingController extends GetxController {
   Rx<Uint8List> pdfBook = Uint8List(0).obs;
   RxBool isPDFLoading = false.obs;
   Future<void> _loadPdf(pdfUrl) async {
+    print("pdfUrl -- ${pdfUrl}");
 
     try {
       isPDFLoading.value = true;
