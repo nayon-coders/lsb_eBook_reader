@@ -96,44 +96,41 @@ class _ReadingScreenState extends State<ReadingScreen> {
             SizedBox(width: 10,),
           ],
         ),
-        body: Container(
-
-          child: Obx(() {
-            print(" controller.isPDFLoading.value --- ${ controller.isPDFLoading.value}");
-            print(" controller.isLoading.value --- ${ controller.isLoading.value}");
-            // Check if data is loading
-            if(controller.isPDFLoading.value){
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Lottie.asset("assets/images/book-loading.json", height: 100, width: 100),
-                    Text("Loading..."),
-                  ],
-                ),
-              );
-            }else if (controller.isLoading.value) {
-              return _buildBookLoading();
-            }
-            // Check if the data is null or empty
-            else if (controller.peragraphModel.value.data == null || controller.peragraphModel.value.data!.isEmpty) {
-              return NotFind(); // Show "Not Found" if no content is available
-            }
-            else {
-
-              return PageFlipWidget(
-                key: pageFlipWidgetsController,
-                backgroundColor: Colors.white,
-                // isRightSwipe: true,
-                //lastPage: Container(color: Colors.white, child: const Center(child: Text('Last Page!'))),
-                children: <Widget>[
-                  for (var i = 0; i < int.parse("${controller.peragraphModel.value.data!.first!.pageNumber}"); i++) _buildPDFBookShow(i) ,
+        body: Obx(() {
+          print(" controller.isPDFLoading.value --- ${ controller.isPDFLoading.value}");
+          print(" controller.isLoading.value --- ${ controller.isLoading.value}");
+          // Check if data is loading
+          if(controller.isPDFLoading.value){
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Lottie.asset("assets/images/book-loading.json", height: 100, width: 100),
+                  Text("Loading..."),
                 ],
-              );
-            }
-          }),
-        ),
+              ),
+            );
+          }else if (controller.isLoading.value) {
+            return _buildBookLoading();
+          }
+          // Check if the data is null or empty
+          else if (controller.peragraphModel.value.data == null || controller.peragraphModel.value.data!.isEmpty) {
+            return NotFind(); // Show "Not Found" if no content is available
+          }
+          else {
+
+            return PageFlipWidget(
+              key: pageFlipWidgetsController,
+              backgroundColor: Colors.white,
+              // isRightSwipe: true,
+              //lastPage: Container(color: Colors.white, child: const Center(child: Text('Last Page!'))),
+              children: <Widget>[
+                for (var i = 0; i < int.parse("${controller.peragraphModel.value.data!.first!.pageNumber}"); i++) _buildPDFBookShow(i) ,
+              ],
+            );
+          }
+        }),
 
 
         bottomNavigationBar:  Obx(() {
@@ -205,8 +202,8 @@ class _ReadingScreenState extends State<ReadingScreen> {
           //_buildNextPrevious(),
           Obx(() {
 
-            return controller.isPDFLoading.value || controller.isLoading.value ? Center() : Text("Total Page ${controller.peragraphModel.value.data!.first.pageNumber}",
-            );
+            return controller.isPDFLoading.value || controller.isLoading.value ? const Center() :const Text("ব্যাখ্যা ও তথ্য খুঁজুন",style: TextStyle(fontSize: 15,fontWeight: FontWeight.w600,color: Colors.black),);
+           // Text("Total Page ${controller.peragraphModel.value.data!.first.pageNumber}",);
           }
           ),
 
@@ -307,13 +304,14 @@ class _ReadingScreenState extends State<ReadingScreen> {
     showModalBottomSheet(
         context: context,
         builder: (context) {
+          RxInt selectedTileId = (-1).obs;
           return Container(
               padding: const EdgeInsets.all(20),
               height: Get.height,
               width: Get.width,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: AppColors.bgColor,
-                borderRadius: const BorderRadius.only(
+                borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30),
                   topRight: Radius.circular(30),
                 ),
@@ -322,12 +320,12 @@ class _ReadingScreenState extends State<ReadingScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Definition", style: const TextStyle(
+                  const Text("Definition", style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                     color: AppColors.textBlack,
                   ),),
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   Expanded(
                     child: Obx(() {
                       if(controller.peragraphModel.value.markTextData == null || controller.peragraphModel.value.markTextData!.isEmpty){
@@ -354,6 +352,13 @@ class _ReadingScreenState extends State<ReadingScreen> {
                               ),
                               child: Obx(() {
                                 return ListTile(
+                                  onTap: (){
+                                    if (selectedTileId.value == data.id) {
+                                      selectedTileId.value = -1; // Deselect if already selected
+                                    } else {
+                                      selectedTileId.value = data.id!; // Expand current tile
+                                    }
+                                  },
                                   title: Text("${data.text}",
                                     style: const TextStyle(
                                       fontSize: 15,
@@ -361,7 +366,17 @@ class _ReadingScreenState extends State<ReadingScreen> {
                                       color: AppColors.textBlack,
                                     ),
                                   ),
-                                  subtitle: Text("${data.definition}",
+                                  subtitle: selectedTileId.value==data.id?Text(
+                                    "${data.definition}",
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColors.textBlack,
+                                    ),
+                                  )
+                                      :Text("${data.definition}",
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,

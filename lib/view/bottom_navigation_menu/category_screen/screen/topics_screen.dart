@@ -57,7 +57,7 @@ class TopicsScreen extends GetView<BookController> {
                   child: ListTile(
                     onTap: (){
                       data.lookStatus == AppConst.lock ? null : Get.toNamed(AppRoute.readingScreen,arguments: {"bookInfo":bookInfo,"id":data.id.toString()});
-                      print("------pageNumber ${bookInfo.totalPages}");
+
                     },
 
                     contentPadding: EdgeInsets.zero,

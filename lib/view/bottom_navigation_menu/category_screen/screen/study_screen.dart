@@ -66,10 +66,10 @@ class StudyScreen extends GetView<BookController> {
                       const SizedBox(height: 6,),
 
                       //book Name
-                      Padding(
-                        padding: const EdgeInsets.only(left: 6.0),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 6.0),
                         child: Text("Book Night",
-                          style:const TextStyle(fontWeight: FontWeight.w600,
+                          style:TextStyle(fontWeight: FontWeight.w600,
                               fontSize: 16,
                               color: AppColors.textBlack),
                         ),
@@ -95,9 +95,9 @@ class StudyScreen extends GetView<BookController> {
                       const  SizedBox(height: 5,),
 
                       //price
-                      Padding(
-                        padding: const EdgeInsets.only(left: 6.0),
-                        child: Text("\$250",style:const TextStyle(
+                      const Padding(
+                        padding: EdgeInsets.only(left: 6.0),
+                        child: Text("\$250",style:TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
                           color: AppColors.textBlack,

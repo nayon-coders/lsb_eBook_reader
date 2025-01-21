@@ -19,8 +19,9 @@ class PaymentScreen extends GetView<CreateOrderController> {
     return Scaffold(
       backgroundColor: AppColors.bgColor,
       appBar: AppBar(
+        surfaceTintColor: Colors.transparent,
         backgroundColor: AppColors.bgColor,
-        title:const Text("Payment"),
+        title:const Text("Payment",style: TextStyle(fontWeight: FontWeight.w600,color: AppColors.textBlack,fontSize: 18),),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -30,17 +31,32 @@ class PaymentScreen extends GetView<CreateOrderController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
+              padding: EdgeInsets.only(left: 15),
+              alignment: Alignment.center,
+              height: 50,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10)
               ),
-              child: ListTile(
-                leading: Image.network(controller.selectedPaymentMethod.value.logoImage!, height: 60, width: 60,),
-                title: Text("${controller.selectedPaymentMethod!.value.methodName!}",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),),
-                subtitle: Text("Pay with ${controller.selectedPaymentMethod!.value.methodName!}"),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image.network(controller.selectedPaymentMethod.value.logoImage!, height: 40, width: 60,),
+                  const SizedBox(width: 10,),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("${controller.selectedPaymentMethod!.value.methodName!}",style: const TextStyle(fontSize: 15,fontWeight: FontWeight.w600),),
+                      Text("Pay with ${controller.selectedPaymentMethod!.value.methodName!}"),
+                    ],
+                  ),
+
+                ],
               ),
             ),
-            SizedBox(height: 20,),
+           const  SizedBox(height: 10,),
             Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -54,7 +70,7 @@ class PaymentScreen extends GetView<CreateOrderController> {
                         amount: "${controller.totalAmount.value.toStringAsFixed(2)} TK",
                         text: "Total order amount",
                       ),
-                      SizedBox(width: 20,),
+                      SizedBox(width: 10,),
                       PaymentBoxWiodget(
                         amount: "${controller.paymentCharge.value.toStringAsFixed(2)} TK",
                         text: "Charge",
@@ -73,20 +89,20 @@ class PaymentScreen extends GetView<CreateOrderController> {
                 ],
               ),
             ),
-            SizedBox(height: 20,),
+            const SizedBox(height: 10,),
             InkWell(
               onTap: (){
                 AppConst.copyToClipboard(controller.selectedPaymentMethod.value.acocuntNumber.toString());
               },
               child: Container(
-                padding: EdgeInsets.all(10),
+                padding:const  EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10)
                 ),
                 child: Row(
                   children: [
-                    Text("একাউন্ট নাম্বার: ",
+                    const Text("একাউন্ট নাম্বার: ",
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 15,
@@ -94,21 +110,21 @@ class PaymentScreen extends GetView<CreateOrderController> {
                       ),
                     ),
                     Text("${controller.selectedPaymentMethod.value.acocuntNumber}",
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 18,
                         color: Colors.blue,
                       ),
                     ),
-                    SizedBox(width: 5,),
-                    Icon(Icons.copy, color: Colors.blue, size: 20,)
+                    const SizedBox(width: 5,),
+                    const Icon(Icons.copy, color: Colors.blue, size: 20,)
                   ],
                 ),
               ),
             ),
-            SizedBox(height: 20,),
+            const SizedBox(height: 20,),
             Container(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                   color: Colors.red.shade100,
                   borderRadius: BorderRadius.circular(10)
@@ -116,7 +132,7 @@ class PaymentScreen extends GetView<CreateOrderController> {
               child: Column(
                 children: [
                   Text("Note: উপরের নম্বরে ${(controller.totalAmount.value + controller.paymentCharge.value).toStringAsFixed(2)} টাকা সেন্ড মানি / ক্যাশ ইন করে আপনার পেমেন্ট নম্বর এবং ট্রানজেকশন আইডি নিচের দুটি ঘরে লিখুন।",
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: 14,
                       color: Colors.red,
@@ -125,47 +141,71 @@ class PaymentScreen extends GetView<CreateOrderController> {
                 ],
               ),
             ),
-            SizedBox(height: 20,),
-            Text("আপনার পেমেন্ট নিশ্চিত করুন",
+            const SizedBox(height: 20,),
+            const Text("আপনার পেমেন্ট নিশ্চিত করুন",
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 18,
                 color: AppColors.textBlack,
               ),
             ),
-            SizedBox(height: 10,),
+            const SizedBox(height: 10,),
             AppInput(hint: "যেই নম্বর থেকে টাকা পাঠিয়েছেন", controller: controller.payNumber.value, textType: TextInputType.number, ),
-            SizedBox(height: 15,),
+            const SizedBox(height: 15,),
             AppInput(hint: "ট্রানজেকশন আইডি", controller: controller.payTransId.value),
+
+            const SizedBox(height: 30,),
+
+            Obx((){
+              return AppButton(
+                width: Get.width,
+                isLoading: controller.isCreatingOrder.value,
+                name: "Pay Now",
+                onClick: () {
+                  if(controller.payNumber.value.text.isEmpty){
+                    Get.snackbar("Error", "Please enter pay number", backgroundColor: Colors.red);
+                    return;
+                  }
+                  if(controller.payTransId.value.text.isEmpty){
+                    Get.snackbar("Error", "Please enter transaction id", backgroundColor: Colors.red);
+                    return;
+                  }
+                  controller.placeOrder(bookInfo!);
+
+                  // controller.createOrder();
+                },
+              );
+            }
+            ),
 
 
           ],
         )
       ),
 
-      bottomNavigationBar:  Padding(
-        padding: const EdgeInsets.all(30.0),
-        child: Obx((){
-            return AppButton(
-              isLoading: controller.isCreatingOrder.value,
-              name: "Pay Now",
-              onClick: () {
-                if(controller.payNumber.value.text.isEmpty){
-                  Get.snackbar("Error", "Please enter pay number", backgroundColor: Colors.red);
-                  return;
-                }
-                if(controller.payTransId.value.text.isEmpty){
-                  Get.snackbar("Error", "Please enter transaction id", backgroundColor: Colors.red);
-                  return;
-                }
-                controller.placeOrder(bookInfo!);
-
-                // controller.createOrder();
-              },
-            );
-          }
-        ),
-      ),
+      // bottomNavigationBar:  Padding(
+      //   padding: const EdgeInsets.all(30.0),
+      //   child: Obx((){
+      //       return AppButton(
+      //         isLoading: controller.isCreatingOrder.value,
+      //         name: "Pay Now",
+      //         onClick: () {
+      //           if(controller.payNumber.value.text.isEmpty){
+      //             Get.snackbar("Error", "Please enter pay number", backgroundColor: Colors.red);
+      //             return;
+      //           }
+      //           if(controller.payTransId.value.text.isEmpty){
+      //             Get.snackbar("Error", "Please enter transaction id", backgroundColor: Colors.red);
+      //             return;
+      //           }
+      //           controller.placeOrder(bookInfo!);
+      //
+      //           // controller.createOrder();
+      //         },
+      //       );
+      //     }
+      //   ),
+      // ),
 
     );
   }
@@ -182,8 +222,8 @@ final String text;
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        padding: EdgeInsets.all(20),
-        decoration: BoxDecoration(
+        padding: const EdgeInsets.all(10),
+        decoration: const BoxDecoration(
           border: Border(
             bottom: BorderSide(width: 1, color: AppColors.bottomNev)
           )
@@ -192,14 +232,14 @@ final String text;
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text("${amount}",
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 18
               ),
             ),
-            SizedBox(height: 5,),
+            const SizedBox(height: 5,),
             Text("$text",
-              style: TextStyle(
+              style: const TextStyle(
                   fontWeight: FontWeight.w400,
                   fontSize: 12,
                 color: Colors.red
