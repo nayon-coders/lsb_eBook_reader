@@ -2,6 +2,7 @@
 
 class Assets{
   static const String logo = "assets/images/ebook.png";
+  static const String google = "assets/images/google.png";
   static const String home = "assets/images/home.png";
   static const String menu = "assets/images/menu.png";
   static const String save = "assets/images/save.png";

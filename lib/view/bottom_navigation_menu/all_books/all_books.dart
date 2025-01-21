@@ -8,11 +8,11 @@ import '../../../../utility/app_color.dart';
 import '../category_screen/controller/book_controller.dart';
 
 class AllBooks extends GetView<BookController> {
-   const AllBooks({super.key});
+   AllBooks({super.key});
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       controller.getAllBooks();
     });
     return Scaffold(
@@ -34,10 +34,10 @@ class AllBooks extends GetView<BookController> {
               onChanged: (v){
                 controller.searchBook(v);
               },
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 hintText: "Search book by name...",
                 border: InputBorder.none,
-                prefixIcon: Icon(Icons.search),
+                prefixIcon: const Icon(Icons.search),
               ),
             ),
           ),
@@ -48,13 +48,13 @@ class AllBooks extends GetView<BookController> {
           return GridView.builder(
             itemCount: 10,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              mainAxisSpacing:5 ,
-              crossAxisSpacing: 5,
+              mainAxisSpacing:10 ,
+              crossAxisSpacing: 10,
               crossAxisCount: 2,
               mainAxisExtent: 280,
             ),
             itemBuilder: (BuildContext context, int index) {
-              return AppShimmerPro.circularShimmer(width: MediaQuery.of(context).size.width*.45, height: 180, borderRadius: 10,);
+              return AppShimmerPro.circularShimmer(width: MediaQuery.of(context).size.width*.45, height: 280, borderRadius: 10,);
             },
           );
         }else if(controller.allBooksModel.value.data == null || controller.allBooksModel.value.data!.isEmpty){
@@ -66,7 +66,7 @@ class AllBooks extends GetView<BookController> {
               child: GridView.builder(
                   itemCount: controller.allBooksModel.value.data!.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      mainAxisSpacing:10 ,
+                      mainAxisSpacing: 10 ,
                       crossAxisSpacing: 10,
                       crossAxisCount: 2,
                       mainAxisExtent: 280
@@ -83,6 +83,7 @@ class AllBooks extends GetView<BookController> {
                       bookName: data.bookName! ?? "Book Name",
                       bookImage: data.image!,
                       bookPrice: "৳ ${data.price ?? 0.00}",
+                      bookSalePrice: "৳ ${data.salePrice ?? 0.00}",
                       bookRating:double.parse(data.averageRating!.toStringAsFixed(1)) ,
 
                     );
@@ -92,7 +93,7 @@ class AllBooks extends GetView<BookController> {
             return Padding(
               padding: const EdgeInsets.all(20.0),
               child: GridView.builder(
-                  itemCount: controller.searchBookList.length,
+                  itemCount: controller.searchBookList!.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       mainAxisSpacing:10 ,
                       crossAxisSpacing: 10,
@@ -100,7 +101,7 @@ class AllBooks extends GetView<BookController> {
                       mainAxisExtent: 280
                   ),
                   itemBuilder: (context,index){
-                    var data = controller.searchBookList[index];
+                    var data = controller.searchBookList![index];
                     return SingleBookWidgets(
                       onTap: (){
                         controller.bookId.value = data.bookId!.toString();
@@ -111,6 +112,7 @@ class AllBooks extends GetView<BookController> {
                       bookName: data.bookName! ?? "Book Name",
                       bookImage: data.image!,
                       bookPrice: "৳ ${data.price ?? 0.00}",
+                      bookSalePrice: "৳ ${data.salePrice ?? 0.00}",
                       bookRating:double.parse(data.averageRating!.toStringAsFixed(1)) ,
 
                     );
@@ -130,13 +132,14 @@ class AllBooks extends GetView<BookController> {
 
 class SingleBookWidgets extends StatelessWidget {
   const SingleBookWidgets({
-    super.key, required this.onTap, required this.index, required this.bookName, required this.bookImage, required this.bookPrice, required this.bookRating,
+    super.key, required this.onTap, required this.bookSalePrice, required this.index, required this.bookName, required this.bookImage, required this.bookPrice, required this.bookRating,
   });
 
   final int index;
   final String bookName;
   final String bookImage;
   final String bookPrice;
+  final String bookSalePrice;
   final double bookRating;
   final VoidCallback onTap;
 
@@ -171,7 +174,7 @@ class SingleBookWidgets extends StatelessWidget {
                 height: 180,
                 fit: BoxFit.cover,
                 placeholder: (context, url) => AppShimmerPro.circularShimmer(width: 100, height: 120, borderRadius: 3),  // Loading indicator
-                errorWidget: (context, url, error) => const Icon(Icons.error),     // Error indicator
+                errorWidget: (context, url, error) => Icon(Icons.error),     // Error indicator
               ),
             ),
 
@@ -180,7 +183,7 @@ class SingleBookWidgets extends StatelessWidget {
             //book Name
             Padding(
               padding: const EdgeInsets.only(left: 6.0),
-              child: Text(bookName,
+              child: Text("${bookName}",
                 style:const TextStyle(fontWeight: FontWeight.w400,
                     fontSize: 14,
                     color: AppColors.textBlack),
@@ -204,11 +207,26 @@ class SingleBookWidgets extends StatelessWidget {
             //price
             Padding(
               padding:const  EdgeInsets.only(left: 6.0,top: 7),
-              child: Text(bookPrice,style:const TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.w600,
-                color: AppColors.textBlack,
-              ),
+              child: Row(
+                children: [
+                  Text(bookSalePrice,style:const TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textBlack,
+                  ),
+                  ),
+                  SizedBox(width: 6,),
+                  Text(bookPrice,
+                    style:const TextStyle(
+                      decoration: TextDecoration.lineThrough, // Add strikethrough
+                      decorationColor: Colors.black, // Optional: Customize the color of the strikethrough
+                      decorationThickness: 1, // Optional: Adjust the thickness of the line
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textBlack,
+                   ),
+                  ),
+                ],
               ),
             )
 

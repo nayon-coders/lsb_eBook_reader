@@ -12,6 +12,7 @@ import 'package:get/get.dart';
 import '../../../routes/route_name.dart';
 import '../../../utility/app_assets.dart';
 import '../../../utility/app_color.dart';
+import '../../../widgets/app_network_images.dart';
 import '../category_screen/screen/study_screen.dart';
 import 'controller/controller.dart';
 import 'widget/menu_card.dart';
@@ -66,7 +67,7 @@ class HomeScreen extends GetView<HomeController> {
           Obx((){
             if(controller.isGetting.value){
               return SizedBox(
-                height: 150,
+                height: 200,
                 child: ListView.builder(
                   itemCount: 4,
                     scrollDirection: Axis.horizontal,
@@ -93,7 +94,13 @@ class HomeScreen extends GetView<HomeController> {
                     return Builder(builder: (BuildContext context){ 
                       return ClipRRect(
                           borderRadius: BorderRadius.circular(5),
-                          child: Image.network(data.image.toString(),fit: BoxFit.cover,width: double.infinity,));
+                          child: AppNetworkImage(
+                            src: data.image!,
+                            height: 200,
+                            width: Get.width,
+                            fit: BoxFit.cover,
+                          ),
+                      );
                     });
                   }).toList(),
 
@@ -128,112 +135,159 @@ class HomeScreen extends GetView<HomeController> {
               }),
 
 
-          SizedBox(height: 20,),
-          const Text("জনপ্রিয় বই সমূহ",style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold,color: AppColors.textBlack),),
-          //Category Menu
-          SizedBox(height: 10,),
-          Obx(() {
-            if(bookController.mostTradingBook.value.isEmpty){
-              return Center(child:  EmptyScreen(),);
-            }else{
-              return GridView.builder(
-                  shrinkWrap: true,
-                  physics:const NeverScrollableScrollPhysics(),
-                  gridDelegate:const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    mainAxisSpacing: 10,
-                    crossAxisSpacing: 10,
-                    mainAxisExtent: 180,
-                  ),
-                  itemCount: bookController.mostTradingBook.value.length,
-                  itemBuilder: (context,index){
-                    final data = bookController.mostTradingBook.value[index];
-                    return InkWell(
-                      onTap: (){
-                        bookController.bookId.value = data.bookId.toString();
-                        Get.toNamed(AppRoute.singleBook);
-                      },
-                      child: Container(
-                      //  margin:const EdgeInsets.on(10),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              padding:const EdgeInsets.only(top: 20),
-                              alignment: Alignment.center,
-                              height: 100,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                //borderRadius: BorderRadius.circular(10),
-                                color:index.isEven? AppColors.cardAmber:AppColors.cardBlue,
-                              ),
-                              child: CachedNetworkImage(
-                                imageUrl: data.image!,
-                                height: 80,
-                                width: 80,
-                                fit: BoxFit.cover,
-                                placeholder: (context, url) => const CircularProgressIndicator(),  // Loading indicator
-                                errorWidget: (context, url, error) => const Icon(Icons.error),     // Error indicator
-                              ),
-                            ),
+         Obx((){
+             return Visibility(
+               visible: bookController.mostTradingBook.isNotEmpty,
+               child: Column(
+                 mainAxisAlignment: MainAxisAlignment.start,
+                 crossAxisAlignment: CrossAxisAlignment.start,
+                 children: [
+                   SizedBox(height: 20,),
+                   const Text("জনপ্রিয় বই সমূহ",style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold,color: AppColors.textBlack),),
+                   //Category Menu
+                   SizedBox(height: 10,),
+                   Obx(() {
+                     if(bookController.mostTradingBook.value.isEmpty){
+                       return GridView.builder(
+                           shrinkWrap: true,
+                           physics:const NeverScrollableScrollPhysics(),
+                           gridDelegate:const SliverGridDelegateWithFixedCrossAxisCount(
+                             crossAxisCount: 3,
+                             mainAxisSpacing: 10,
+                             crossAxisSpacing: 10,
+                             mainAxisExtent: 180,
+                           ),
+                           itemCount: 6,
+                           itemBuilder: (context,index){
+                             return AppShimmerPro.circularShimmer(width: Get.width, height: 180, borderRadius: 10,);
 
-                            const SizedBox(height: 6,),
+                           }
+                       );
+                     }else{
+                       return GridView.builder(
+                           shrinkWrap: true,
+                           physics:const NeverScrollableScrollPhysics(),
+                           gridDelegate:const SliverGridDelegateWithFixedCrossAxisCount(
+                             crossAxisCount: 3,
+                             mainAxisSpacing: 10,
+                             crossAxisSpacing: 10,
+                             mainAxisExtent: 180,
+                           ),
+                           itemCount: bookController.mostTradingBook.value.length,
+                           itemBuilder: (context,index){
+                             final data = bookController.mostTradingBook.value[index];
+                             return InkWell(
+                               onTap: (){
+                                 bookController.bookId.value = data.bookId.toString();
+                                 Get.toNamed(AppRoute.singleBook);
+                               },
+                               child: Container(
+                                 //  margin:const EdgeInsets.on(10),
+                                 decoration: BoxDecoration(
+                                     borderRadius: BorderRadius.circular(10),
+                                     color: Colors.white
+                                 ),
+                                 child: Column(
+                                   mainAxisAlignment: MainAxisAlignment.start,
+                                   crossAxisAlignment: CrossAxisAlignment.start,
+                                   children: [
+                                     Container(
+                                       padding:const EdgeInsets.only(top: 20),
+                                       alignment: Alignment.center,
+                                       height: 100,
+                                       width: double.infinity,
+                                       decoration: BoxDecoration(
+                                         //borderRadius: BorderRadius.circular(10),
+                                         color:index.isEven? AppColors.cardAmber:AppColors.cardBlue,
+                                       ),
+                                       child: CachedNetworkImage(
+                                         imageUrl: data.image!,
+                                         height: 80,
+                                         width: 80,
+                                         fit: BoxFit.cover,
+                                         placeholder: (context, url) => const CircularProgressIndicator(),  // Loading indicator
+                                         errorWidget: (context, url, error) => const Icon(Icons.error),     // Error indicator
+                                       ),
+                                     ),
 
-                            //book Name
-                            Padding(
-                              padding: const EdgeInsets.only(left: 6.0),
-                              child: Text(data.bookName.toString(),
-                                style:const TextStyle(fontWeight: FontWeight.w400,
-                                    fontSize: 11,
-                                    color: AppColors.textBlack),
-                              ),
-                            ),
+                                     const SizedBox(height: 6,),
 
-                            //Rating
-                            Padding(
-                              padding: const EdgeInsets.only(left: 6),
-                              child: Row(
-                                children: [
-                                  Icon(Icons.star, color: Colors.amber, size: 14,),
-                                  Text("(${data.averageRating!.toStringAsFixed(1)})",style:const TextStyle(
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.w600,
-                                      color: AppColors.textBlack),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const  SizedBox(height: 5,),
+                                     //book Name
+                                     Padding(
+                                       padding: const EdgeInsets.only(left: 6.0),
+                                       child: Text(data.bookName.toString(),
+                                         style:const TextStyle(fontWeight: FontWeight.w400,
+                                             fontSize: 11,
+                                             color: AppColors.textBlack),
+                                       ),
+                                     ),
 
-                            //price
-                            Padding(
-                              padding: const EdgeInsets.only(left: 6.0),
-                              child: Text("\$${data.price.toString()}",style:const TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.textBlack,
-                              ),
-                              ),
-                            )
+                                     //Rating
+                                     Padding(
+                                       padding: const EdgeInsets.only(left: 6),
+                                       child: Row(
+                                         children: [
+                                           Icon(Icons.star, color: Colors.amber, size: 14,),
+                                           Text("(${data.averageRating!.toStringAsFixed(1)})",style:const TextStyle(
+                                               fontSize: 11,
+                                               fontWeight: FontWeight.w600,
+                                               color: AppColors.textBlack),
+                                           ),
+                                         ],
+                                       ),
+                                     ),
+                                     const  SizedBox(height: 5,),
 
-                          ],
-                        ),
-                      ),
-                    );
+                                     //price
+                                     Padding(
+                                       padding: const EdgeInsets.only(left: 6.0),
+                                       child: data.freeOrPaid != "Paid"
+                                           ?  Text("Free",style:const TextStyle(
+                                               fontSize: 14,
+                                               fontWeight: FontWeight.w600,
+                                               color: Colors.green,
+                                             ),
+                                             )
+                                           : Row(
+                                             children: [
+                                               Text("৳${data.salePrice.toString()}",style:const TextStyle(
+                                                 fontSize: 14,
+                                                 fontWeight: FontWeight.w600,
+                                                 color: AppColors.textBlack,
+                                               ),
+                                               ),
+                                               SizedBox(width: 10,),
+                                               Text("৳${data.price.toString()}",style:const TextStyle(
+                                                 decoration: TextDecoration.lineThrough, // Add strikethrough
+                                                 decorationColor: Colors.black, // Optional: Customize the color of the strikethrough
+                                                 decorationThickness: 1, // Optional: Adjust the thickness of the line
+                                                 fontSize: 12,
+                                                 fontWeight: FontWeight.w600,
+                                                 color: AppColors.textBlack,
+                                               ),
+                                               ),
+                                             ],
+                                           ),
+                                     )
 
-                  }
-                  );
+                                   ],
+                                 ),
+                               ),
+                             );
+
+                           }
+                       );
 
 
-            }
+                     }
 
-          }
-          ),
+                   }
+                   ),
+                 ],
+               ),
+             );
+           }
+         )
         ],
       ),
       ),

@@ -3,9 +3,11 @@ import 'package:ebook_reader/routes/route_name.dart';
 import 'package:ebook_reader/utility/app_color.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/category_screen/controller/book_controller.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/my_order_screen/controller/my_order_controller.dart';
+import 'package:ebook_reader/view/bottom_navigation_menu/my_order_screen/model/get_my_order_model.dart';
 import 'package:ebook_reader/widgets/empty_screen.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 
 import '../../../../widgets/app_shimmer_pro.dart';
@@ -18,7 +20,7 @@ class MyOrderScreen extends GetView<MyOrderController> {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       controller.getMyOrder();
     });
     return Scaffold(
@@ -82,7 +84,7 @@ class MyOrderScreen extends GetView<MyOrderController> {
                                 width: 20,
                                 fit: BoxFit.cover,
                                 placeholder: (context, url) => const CircularProgressIndicator(),  // Loading indicator
-                                errorWidget: (context, url, error) => const Icon(Icons.error),     // Error indicator
+                                errorWidget: (context, url, error) => Icon(Icons.error),     // Error indicator
                               ),
                               //child: Image.asset(Assets.book1,height:40,width:20,fit: BoxFit.cover,),
                             ),
@@ -111,7 +113,7 @@ class MyOrderScreen extends GetView<MyOrderController> {
                                   //rating
                                   Row(
                                     children: [
-                                      const Icon(Icons.star_half, color: Colors.amber,size: 13,),
+                                      Icon(Icons.star_half, color: Colors.amber,size: 13,),
                                       Text("(${data.averageRating!.toStringAsFixed(2)})",style:const TextStyle(fontSize: 13,color: AppColors.textBlack),),
                                     ],
                                   ),
@@ -131,15 +133,23 @@ class MyOrderScreen extends GetView<MyOrderController> {
 
                         SizedBox(
                           width: 80,
-                          child: TextButton(onPressed: (){
-                            if(data.orderStatus == "pending" || data.orderStatus == "cancel"){
-                              return;
-                            }else{
-                              bookController.bookId.value = data.bookId.toString();
-                              Get.toNamed(AppRoute.mySingleBook);
-                            }
-                          },
-                            child:   Text(data.orderStatus == "pending" ? "Payment Verifying" : data.orderStatus == "cancel" ? "Canceled" : "Read",style: const TextStyle(fontSize: 12,fontWeight: FontWeight.w500,color: AppColors.linkColor),),),
+                          child: InkWell(
+                              onTap: (){
+                              if(data.orderStatus == "pending" || data.orderStatus == "cancel"){
+                                return null;
+                              }else{
+                                bookController.bookId.value = data.bookId.toString();
+                                Get.toNamed(AppRoute.mySingleBook);
+                              }
+                            },
+                            child: data.orderStatus!.toLowerCase().contains("pending")
+                                ? const Text("Payment Pending",style: TextStyle(fontSize: 12,fontWeight: FontWeight.w600,color: Colors.red),)
+                                : data.orderStatus!.toLowerCase().contains("cancel")
+                                ? const StatusButton(text: "Cancel",color: Colors.red,)
+                                : data.orderStatus.toString().toLowerCase().contains("complete") || data.orderStatus.toString().toLowerCase().contains("accept")
+                                ? const StatusButton(text: "Read",color: Colors.green)
+                                : const StatusButton(text: "Pending",color: Colors.orange),
+                          ),
                         ),
 
 
@@ -153,6 +163,37 @@ class MyOrderScreen extends GetView<MyOrderController> {
 
 
           }
+        ),
+      ),
+    );
+  }
+}
+
+class StatusButton extends StatelessWidget {
+  const StatusButton({
+    super.key,
+    required this.text,
+    this.color = AppColors.cardAmber,
+  });
+
+  final String text;
+  final Color? color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 45,
+      width: 120,
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Center(
+        child:  Text(text,
+          style:const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: Colors.white),
         ),
       ),
     );

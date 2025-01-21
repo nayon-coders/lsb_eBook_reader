@@ -74,10 +74,10 @@ class CreateOrderController extends GetxController {
     var data = {
       "book_id": bookInfo.bookId.toString(),
       "price": bookInfo.price!.toString(),
-      "delivery_address_id": selectedShippingAddress.value.id.toString(),
+      "delivery_address_id": "-1",
       "delivery_fee": deliveryCharge.value.toString(),
       "quantity": "1",
-      "total_price": "${(totalAmount.value + paymentCharge.value).toStringAsFixed(2)}",
+      "total_price": (totalAmount.value + paymentCharge.value).toStringAsFixed(2),
       "payment_method" : selectedPaymentMethod.value.methodName!.toString(),
       "transection_id" : payTransId.value.text,
       "number" : payNumber.value.text,

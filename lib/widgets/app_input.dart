@@ -18,7 +18,8 @@ class AppInput extends StatelessWidget {
     this.onChanged,
     this.maxLine = 1,
     this.isValidatorNeed = true,
-    this.isDataLoading = false
+    this.isDataLoading = false,
+    this.feildColor = AppColors.filleColor
 
   });
   final String hint;
@@ -28,6 +29,7 @@ class AppInput extends StatelessWidget {
   String? Function(String?)? validator;
   final bool readOnly;
   final bool obscureText;
+  final Color feildColor;
   final TextInputType?textType;
   final VoidCallback? onClick;
   final Function(String)? onChanged;
@@ -62,9 +64,9 @@ class AppInput extends StatelessWidget {
       decoration: InputDecoration(
         contentPadding:const EdgeInsets.only(left: 15,),
         filled: true,
-        fillColor: AppColors.filleColor,
+        fillColor: feildColor,
         hintText: hint,
-        hintStyle:const TextStyle(fontWeight: FontWeight.w600,fontSize: 14,color: Colors.black),
+        hintStyle:const TextStyle(fontWeight: FontWeight.w400,fontSize: 14,color: Colors.black),
 
         suffixIcon: suffixIcon,
         prefixIcon: prefixIcon,

@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:ebook_reader/routes/route_name.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../app_config.dart';
@@ -109,10 +111,61 @@ class AuthController extends GetxController{
 
   // logout
   logout()async{
+    await FirebaseAuth.instance.signOut();
+    await GoogleSignIn().signOut();
     SharedPreferences _pref = await SharedPreferences.getInstance();
     _pref.remove("token");
     _pref.remove("id");
     Get.offAllNamed(AppRoute.login);
+
+  }
+
+  //signin with google
+  signInWithGoogle()async{
+    //api call
+
+
+   final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+    final AuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    final UserCredential authResult = await FirebaseAuth.instance.signInWithCredential(credential);
+    final User? user = authResult.user;
+    print("User: ${user!.displayName}");
+    print("User: ${user.email}");
+    print("User: ${user.phoneNumber}");
+
+    if(user != null){
+      isLoading.value = true;
+      var response = await ApiServices.postApi(AppConfig.GOOGLE_LOGIN, {
+        "name": user.displayName,
+        "email": user.email,
+        "phone": user.phoneNumber == null ? "" : user.phoneNumber,
+      });
+      if(response.statusCode == 200){
+        if(jsonDecode(response.body)["data"]["user"]["status"] == "Pending"){
+          Get.snackbar("Google Login!", "Your account is not active yet", snackPosition: SnackPosition.TOP, backgroundColor: Colors.red);
+          isLoading.value = false;
+          return;
+        }else{
+          var data = jsonDecode(response.body);
+          sharedPreferences!.setString("token", data["data"]["token"]);
+          sharedPreferences!.setString("user_id", data["data"]["user"]["id"].toString());
+          Get.snackbar("Success", "Login success", snackPosition: SnackPosition.TOP, backgroundColor: Colors.green);
+          Get.offAllNamed(AppRoute.appNavigation); //navigate to app navigation
+        }
+
+      }else{
+        Get.snackbar("Google Login!", "Google login failed", snackPosition: SnackPosition.TOP, backgroundColor: Colors.red);
+      }
+      isLoading.value = false;
+    }else{
+      Get.snackbar("Google Login!", "Google login failed", snackPosition: SnackPosition.TOP, backgroundColor: Colors.red);
+    }
+
 
   }
 

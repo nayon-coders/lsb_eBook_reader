@@ -44,12 +44,13 @@ class SingleBookList {
   final String? title;
   final String? language;
   final String? publisher;
-  final DateTime? publicationYear;
-  final DateTime? firstEditionYear;
-  final DateTime? lastEditionYear;
+  final String? publicationYear;
+  final String? firstEditionYear;
+  final String? lastEditionYear;
   final String? publisherName;
   final String? freeOrPaid;
   final int? price;
+  final int? salePrice;
   final int? totalPages;
   final String? sortDescription;
   final String? dedication;
@@ -76,6 +77,7 @@ class SingleBookList {
     this.publisherName,
     this.freeOrPaid,
     this.price,
+    this.salePrice,
     this.totalPages,
     this.sortDescription,
     this.dedication,
@@ -97,12 +99,13 @@ class SingleBookList {
     title: json["title"],
     language: json["language"],
     publisher: json["publisher"],
-    publicationYear: json["publication_year"] == null ? null : DateTime.parse(json["publication_year"]),
-    firstEditionYear: json["first_edition_year"] == null ? null : DateTime.parse(json["first_edition_year"]),
-    lastEditionYear: json["last_edition_year"] == null ? null : DateTime.parse(json["last_edition_year"]),
+    publicationYear: json["publication_year"],
+    firstEditionYear: json["first_edition_year"],
+    lastEditionYear: json["last_edition_year"],
     publisherName: json["publisher_name"],
     freeOrPaid: json["free_or_paid"],
     price: json["price"],
+    salePrice: json["sell_price"],
     totalPages: json["total_pages"],
     sortDescription: json["sort_description"],
     dedication: json["dedication"],
@@ -124,9 +127,9 @@ class SingleBookList {
     "title": title,
     "language": language,
     "publisher": publisher,
-    "publication_year": publicationYear?.toIso8601String(),
-    "first_edition_year": firstEditionYear?.toIso8601String(),
-    "last_edition_year": lastEditionYear?.toIso8601String(),
+    "publication_year": publicationYear,
+    "first_edition_year": firstEditionYear,
+    "last_edition_year": lastEditionYear,
     "publisher_name": publisherName,
     "free_or_paid": freeOrPaid,
     "price": price,

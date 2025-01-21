@@ -1,4 +1,4 @@
-package com.example.ebook_reader
+package com.ebook.nayon.coders.app
 
 import io.flutter.embedding.android.FlutterActivity
 

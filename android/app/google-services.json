@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "621147548567",
+    "project_id": "ebook-9675c",
+    "storage_bucket": "ebook-9675c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:621147548567:android:9c68e1ca65c04f3f9f32d2",
+        "android_client_info": {
+          "package_name": "com.ebook.nayon.coders.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKQ0rcJjs0Zt2A8DGa3gEmXc5pWXU1YDA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
