@@ -206,8 +206,8 @@ class _ReadingScreenState extends State<ReadingScreen> {
           //_buildNextPrevious(),
           Obx(() {
 
-            return controller.isPDFLoading.value || controller.isLoading.value ? Center() : Text("Total Page ${controller.peragraphModel.value.data!.first.pageNumber}",
-            );
+            return controller.isPDFLoading.value || controller.isLoading.value ? const Center() :const Text("ব্যাখ্যা ও তথ্য খুঁজুন",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: AppColors.textBlack),);
+            //Text("Total Page ${controller.peragraphModel.value.data!.first.pageNumber}",);
           }
           ),
 
@@ -315,9 +315,9 @@ class _ReadingScreenState extends State<ReadingScreen> {
               padding: const EdgeInsets.all(20),
               height: Get.height,
               width: Get.width,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: AppColors.bgColor,
-                borderRadius: const BorderRadius.only(
+                borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30),
                   topRight: Radius.circular(30),
                 ),
@@ -326,12 +326,12 @@ class _ReadingScreenState extends State<ReadingScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Definition", style: const TextStyle(
+                  const Text("Definition", style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                     color: AppColors.textBlack,
                   ),),
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   Expanded(
                     child: Obx(() {
                       if(controller.peragraphModel.value.markTextData == null || controller.peragraphModel.value.markTextData!.isEmpty){
@@ -341,6 +341,9 @@ class _ReadingScreenState extends State<ReadingScreen> {
                           itemCount: controller.peragraphModel.value.markTextData!.length,
                           itemBuilder: (context, index) {
                             var data = controller.peragraphModel.value.markTextData![index];
+
+                            //definition expanded
+                            RxInt selectedTileId = (-1).obs;
                             //    markTextController.checkMarkTextIsAdded(data.id.toString());
                             return Container(
                               margin: const EdgeInsets.only(bottom: 10),
@@ -358,14 +361,31 @@ class _ReadingScreenState extends State<ReadingScreen> {
                               ),
                               child: Obx(() {
                                 return ListTile(
+                                  onTap: (){
+                                    if (selectedTileId.value == data.id) {
+                                      selectedTileId.value = -1;
+                                    } else {
+                                      selectedTileId.value = data.id!;
+                                    }
+                                  },
                                   title: Text("${data.text}",
                                     style: const TextStyle(
-                                      fontSize: 15,
+                                      fontSize: 16,
                                       fontWeight: FontWeight.w600,
                                       color: AppColors.textBlack,
                                     ),
                                   ),
-                                  subtitle: Text("${data.definition}",
+                                  subtitle:selectedTileId.value == data.id
+                                      ? Text("${data.definition}",
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColors.textBlack,
+                                    ),
+                                  ):Text(
+                                    "${data.definition}",
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,
