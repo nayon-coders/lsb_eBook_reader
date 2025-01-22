@@ -9,7 +9,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../app_config.dart';
-import '../../../data/model/my_profile_model.dart';
 import '../../../data/services/api_services.dart';
 import '../../../main.dart';
 class AuthController extends GetxController{

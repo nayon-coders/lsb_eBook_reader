@@ -3,7 +3,6 @@ import 'package:ebook_reader/widgets/app_shimmer_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../utility/app_assets.dart';
 import '../../../../utility/app_color.dart';
 import '../controller/create_order_controller.dart';
 
@@ -14,7 +13,7 @@ class PaymentMethodView extends GetView<PaymentController> {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       controller.getPaymentInfo();
     });
     return Obx((){
@@ -22,7 +21,7 @@ class PaymentMethodView extends GetView<PaymentController> {
         return ListView.builder(
           itemCount: 2,
           shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (_, index){
             return AppShimmerPro.circularShimmer(width: Get.width, height: 50, borderRadius: 5);
           },
@@ -52,9 +51,9 @@ class PaymentMethodView extends GetView<PaymentController> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 leading: Image.network(data.logoImage!,height: 40,width: 40,),
-                title: Text("${data.methodName}",style: TextStyle(fontSize: 15,fontWeight: FontWeight.w600,color: AppColors.textBlack),),
+                title: Text("${data.methodName}",style: const TextStyle(fontSize: 15,fontWeight: FontWeight.w600,color: AppColors.textBlack),),
                 trailing: Obx((){
-                  return orderController.selectedPaymentMethod.value.id == data.id ? Icon(Icons.check_circle,color: Colors.green,) : const SizedBox();
+                  return orderController.selectedPaymentMethod.value.id == data.id ? const Icon(Icons.check_circle,color: Colors.green,) : const SizedBox();
                 }),
 
                 subtitle:  Obx((){
@@ -62,19 +61,19 @@ class PaymentMethodView extends GetView<PaymentController> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 10,),
+                        const SizedBox(height: 10,),
                         Row(
                           children: [
-                            Text("${data.methodName} number: ",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w400,color: AppColors.textBlack),),
-                            Text("${data.acocuntNumber}",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w600,color: Colors.blue),),
-                            SizedBox(width: 5,),
-                            Icon(Icons.copy, color: Colors.blue, size: 15,)
+                            Text("${data.methodName} number: ",style: const TextStyle(fontSize: 14,fontWeight: FontWeight.w400,color: AppColors.textBlack),),
+                            Text("${data.acocuntNumber}",style: const TextStyle(fontSize: 14,fontWeight: FontWeight.w600,color: Colors.blue),),
+                            const SizedBox(width: 5,),
+                            const Icon(Icons.copy, color: Colors.blue, size: 15,)
                           ],
                         ),
-                        SizedBox(height: 7,),
-                        Text("Account Type: ${data.accountType}",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w600,color: AppColors.textBlack),),
-                        SizedBox(height: 7,),
-                        Text("Fee: ${data.charge}%",style: TextStyle(fontSize: 14,fontWeight: FontWeight.w600,color: AppColors.textBlack),),
+                        const SizedBox(height: 7,),
+                        Text("Account Type: ${data.accountType}",style: const TextStyle(fontSize: 14,fontWeight: FontWeight.w600,color: AppColors.textBlack),),
+                        const SizedBox(height: 7,),
+                        Text("Fee: ${data.charge}%",style: const TextStyle(fontSize: 14,fontWeight: FontWeight.w600,color: AppColors.textBlack),),
 
                       ],
                     );

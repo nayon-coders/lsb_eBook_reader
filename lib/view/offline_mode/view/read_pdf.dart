@@ -135,8 +135,7 @@ class _OffLineReadPdfState extends State<OffLineReadPdf> {
           //_buildNextPrevious(),
           Obx(() {
 
-            return controller.isPDFLoading.value || controller.isLoading.value ? Center() : Text("Total Page 1",
-            );
+            return controller.isPDFLoading.value || controller.isLoading.value ? const Center() : const Text("ব্যাখ্যা ও তথ্য খুঁজুন",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: AppColors.textBlack),);
           }
           ),
 
@@ -206,9 +205,9 @@ class _OffLineReadPdfState extends State<OffLineReadPdf> {
               padding: const EdgeInsets.all(20),
               height: Get.height,
               width: Get.width,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: AppColors.bgColor,
-                borderRadius: const BorderRadius.only(
+                borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30),
                   topRight: Radius.circular(30),
                 ),
@@ -217,8 +216,8 @@ class _OffLineReadPdfState extends State<OffLineReadPdf> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 20,),
-                  Text("Definition", style: const TextStyle(
+                  const SizedBox(height: 20,),
+                  const Text("Definition", style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                     color: AppColors.textBlack,
@@ -228,6 +227,9 @@ class _OffLineReadPdfState extends State<OffLineReadPdf> {
                       itemCount: data.content!.markTextData!.length,
                       itemBuilder: (context, index) {
                         var markText = data.content!.markTextData![index];
+
+                        //definition expanded
+                        RxBool selectedTileId =false.obs;
                         return Container(
                           margin: const EdgeInsets.only(bottom: 10),
                           decoration: BoxDecoration(
@@ -243,6 +245,9 @@ class _OffLineReadPdfState extends State<OffLineReadPdf> {
                             ],
                           ),
                           child:ListTile(
+                            onTap: (){
+                              selectedTileId.value = !selectedTileId.value;
+                            },
                             title: Text("${markText.text}",
                               style: const TextStyle(
                                 fontSize: 15,
@@ -250,7 +255,16 @@ class _OffLineReadPdfState extends State<OffLineReadPdf> {
                                 color: AppColors.textBlack,
                               ),
                             ),
-                            subtitle: Text("${markText.definition}",
+                            subtitle:selectedTileId.value ? Text("${markText.definition}",
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.textBlack,
+                              ),
+                            ):Text(
+                              "${markText.definition}",
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,

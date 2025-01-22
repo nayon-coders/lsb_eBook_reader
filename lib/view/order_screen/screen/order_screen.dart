@@ -54,7 +54,7 @@ class OrderScreen extends GetView<CreateOrderController> {
           children: [
             //book details
             Container(
-              height: 100,
+              height: 80,
               width:size.width ,
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -74,41 +74,41 @@ class OrderScreen extends GetView<CreateOrderController> {
                   ),
                   const SizedBox(width: 10,),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(5.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
 
                         //book name
-                        Text("${bookInfo!.bookName}",style: TextStyle(
+                        Text("${bookInfo!.bookName}",style: const TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w500,
                             color: AppColors.textBlack),
                         ),
-                        SizedBox(height: 5,),
+                        const SizedBox(height: 3,),
 
                         //rating
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Icon(Icons.star,color: Colors.amber,size: 17,),
+                            const Icon(Icons.star,color: Colors.amber,size: 17,),
                             Text("(${bookInfo!.averageRating!.toStringAsFixed(2)})")
                           ],
                         ),
-                        SizedBox(height: 5,),
+                        const SizedBox(height: 3,),
 
                         //Price
                         Row(
                           children: [
-                            Text("৳ ${bookInfo!.sellPrice ?? 0}",style: TextStyle(
-                                fontSize: 16,
+                            Text("৳ ${bookInfo!.sellPrice ?? 0}",style: const TextStyle(
+                                fontSize: 15,
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.textBlack),
                             ),
-                            SizedBox(width: 10,),
-                            Text("৳ ${bookInfo!.price!.toStringAsFixed(2)}",style: TextStyle(
+                            const SizedBox(width: 10,),
+                            Text("৳ ${bookInfo!.price!.toStringAsFixed(2)}",style: const TextStyle(
                                 fontSize: 13,
                                 decoration: TextDecoration.lineThrough,
                                 fontWeight: FontWeight.w600,
@@ -127,7 +127,7 @@ class OrderScreen extends GetView<CreateOrderController> {
               ),
             ),
 
-          const SizedBox(height: 20,),
+          const SizedBox(height: 15,),
 
            const Text("Choose Payment get way",
               style: TextStyle(fontWeight: FontWeight.w600,
@@ -143,7 +143,7 @@ class OrderScreen extends GetView<CreateOrderController> {
             //Shopping address
             //ShippingAddressView(),
 
-            const SizedBox(height: 20,),
+            const SizedBox(height: 10,),
             AppInput(
               hint: "Coupon",
 

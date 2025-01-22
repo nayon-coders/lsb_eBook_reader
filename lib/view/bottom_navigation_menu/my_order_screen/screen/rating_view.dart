@@ -21,13 +21,13 @@ class _RatingViewState extends State<RatingView> {
     return Container(
       width: Get.width,
       color: Colors.white,
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 20,),
-          Center(child: Text("Rate",style:const TextStyle(fontWeight: FontWeight.w600,fontSize: 20,color: Colors.black),)),
+          const Center(child: Text("Rate",style:TextStyle(fontWeight: FontWeight.w600,fontSize: 20,color: Colors.black),)),
           Obx(() {
               return StarRating(
                 rating: controller.rating.value,
@@ -41,7 +41,7 @@ class _RatingViewState extends State<RatingView> {
             }
           ),
           const SizedBox(height: 20,),
-          Text("Review",style:const TextStyle(fontWeight: FontWeight.w600,fontSize: 20,color: Colors.black),),
+          const Text("Review",style:TextStyle(fontWeight: FontWeight.w600,fontSize: 20,color: Colors.black),),
           const SizedBox(height: 20,),
           Container(
             padding:const EdgeInsets.all(10),
@@ -69,7 +69,7 @@ class _RatingViewState extends State<RatingView> {
                 onClick: (){
                   if(controller.reviewController.value.text.isEmpty){
                     Get.snackbar("Error", "Please write a review", backgroundColor: Colors.red);
-                    return null;
+                    return;
                   }
                   controller.submitRating(widget.id);
                 },

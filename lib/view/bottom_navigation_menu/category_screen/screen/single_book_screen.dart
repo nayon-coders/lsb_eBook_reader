@@ -128,7 +128,7 @@ class SingleBookScreen extends GetView<BookController> {
                                 left: 40,
                                 right: 40,
                                 child: CachedNetworkImage(
-                                  imageUrl:controller.singleBookModel.value.data!.image!??"",
+                                  imageUrl:controller.singleBookModel.value.data!.image!,
                                   height: 180,
                                   width: 180,
                                   fit: BoxFit.contain,
@@ -174,7 +174,7 @@ class SingleBookScreen extends GetView<BookController> {
                                         crossAxisAlignment: CrossAxisAlignment.center,
                                         children: [
                                           const Icon(Icons.star,color: Colors.deepOrange,size: 20,),
-                                          Text("${controller.singleBookModel.value.data!.averageRating!.toStringAsFixed(2)??0.0}",style:const  TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: Colors.black),)
+                                          Text("${controller.singleBookModel.value.data!.averageRating!.toStringAsFixed(2)}",style:const  TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: Colors.black),)
                                         ],
                                       ),
 
@@ -186,7 +186,7 @@ class SingleBookScreen extends GetView<BookController> {
                                       crossAxisAlignment: CrossAxisAlignment.center,
 
                                       children: [
-                                        Text( "${controller.singleBookModel.value.data!.mainToc?? 'Unknown Language'} Chapter's",
+                                        Text( "${controller.singleBookModel.value.data!.mainToc} Chapter's",
                                           style:const TextStyle(fontWeight: FontWeight.w600,
                                               fontSize: 13,color: Colors.black),
                                         ),
@@ -229,14 +229,14 @@ class SingleBookScreen extends GetView<BookController> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const SizedBox(height: 60,),
-                              const Text("Book description",
-                                style:TextStyle(fontWeight: FontWeight.w600,
+                              Text("Book description",
+                                style:const TextStyle(fontWeight: FontWeight.w600,
                                     fontSize: 20,
                                     color: AppColors.textBlack),
                               ),
 
                               const SizedBox(height: 20,),
-                              Text(controller.singleBookModel.value.data!.sortDescription??'No description available',
+                              Text("${controller.singleBookModel.value.data!.sortDescription}",
                                 style: const TextStyle(fontWeight: FontWeight.w400,
                                     fontSize: 16,
                                     color: AppColors.textBlack)
@@ -254,13 +254,13 @@ class SingleBookScreen extends GetView<BookController> {
           ),
           bottomNavigationBar: Obx(() {
             if(controller.singleBookModel.value.data == null) {
-              return const SizedBox(height: 1,);
+              return SizedBox(height: 1,);
             }else{
               return Container(
-                padding:const EdgeInsets.all(14),
+                padding:const EdgeInsets.all(30),
                 color:AppColors.bgColor,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     InkWell(
@@ -269,32 +269,29 @@ class SingleBookScreen extends GetView<BookController> {
                       },
                       child: Container(
                         height: 45,
-                        width: 120,
+                        width: 140,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(color: AppColors.buttonGreen),
                         ),
-                        child: const Center(child: Text("Read Sample",style:TextStyle(fontSize: 17,fontWeight: FontWeight.w600,color:AppColors.buttonGreen),)),
+                        child: Center(child: Text("Read Sample",style:const TextStyle(fontSize: 17,fontWeight: FontWeight.w600,color:AppColors.buttonGreen),)),
                       ),
                     ),
                     Obx(() {
                       if(controller.singleBookModel.value.data == null) {
-                        return const Center();
+                        return Center();
                       }
                       if(controller.singleBookModel.value.data!.freeOrPaid!.toLowerCase() == "free"){
-                        return const Center();
+                        return Center();
                       }else{
                         return AppButton(
-                          width: 120,
-                          name: "Buy Now",
+                          width: 140,
+                          name: "Buy eBook",
                           onClick: ()=>Get.toNamed(AppRoute.orderScreen, arguments: controller.singleBookModel.value.data!),);
                       }
 
-                    }),
-                    AppButton(
-                      width: 120,
-                        name: "Buy PDF", onClick: ()=>Get.toNamed(AppRoute.orderScreen, arguments: controller.singleBookModel.value.data!),)
-
+                    }
+                    )
                   ],
                 ),
               );

@@ -6,9 +6,7 @@ import 'package:ebook_reader/view/order_screen/screen/payment_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../utility/app_color.dart';
 import '../../../widgets/app_button.dart';
-import '../../../widgets/app_input.dart';
 import 'order_rice_text.dart';
 
 
@@ -46,7 +44,7 @@ class BottomCalculationView extends GetView<CreateOrderController> {
             children: [
 
                OrderRiceText(name: "Sub Total", price: controller.subtotal.value!.toStringAsFixed(2)),
-               SizedBox(height: 6,),
+               const SizedBox(height: 6,),
                OrderRiceText(name: "Delivery Fee", price: "(+) ${controller.deliveryCharge.value.toStringAsFixed(2)}"),
               const SizedBox(height: 6,),
                OrderRiceText(name: "Discount", price: "(-) ${controller.discountAmount.value.toStringAsFixed(2)}"),

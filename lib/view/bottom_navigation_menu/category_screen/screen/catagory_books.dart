@@ -1,14 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:ebook_reader/app_config.dart';
 import 'package:ebook_reader/routes/route_name.dart';
 import 'package:ebook_reader/widgets/app_shimmer_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
-import '../../../../utility/app_assets.dart';
 import '../../../../utility/app_color.dart';
 import '../controller/book_controller.dart';
-import 'single_book_screen.dart';
+
 
 class CategoryBook extends GetView<BookController> {
   const CategoryBook({super.key});
@@ -53,7 +51,7 @@ class CategoryBook extends GetView<BookController> {
                   var data = controller.allBooksModel.value.data![index];
                   return SingleBookWidgets(
                     onTap: (){
-                      controller.bookId.value = data!.bookId!.toString();
+                      controller.bookId.value = data.bookId!.toString();
                       controller.getBookById();
                       Get.toNamed(AppRoute.singleBook,arguments: data);
                     },
@@ -118,7 +116,7 @@ class SingleBookWidgets extends StatelessWidget {
                 width: 120,
                 fit: BoxFit.cover,
                 placeholder: (context, url) => const CircularProgressIndicator(),  // Loading indicator
-                errorWidget: (context, url, error) => Icon(Icons.error),     // Error indicator
+                errorWidget: (context, url, error) => const Icon(Icons.error),     // Error indicator
               ),
             ),
 
@@ -127,7 +125,7 @@ class SingleBookWidgets extends StatelessWidget {
             //book Name
             Padding(
               padding: const EdgeInsets.only(left: 6.0),
-              child: Text("${bookName}",
+              child: Text(bookName,
                 style:const TextStyle(fontWeight: FontWeight.w600,
                     fontSize: 13,
                     color: AppColors.textBlack),
@@ -156,7 +154,7 @@ class SingleBookWidgets extends StatelessWidget {
             //price
             Padding(
               padding:const  EdgeInsets.only(left: 6.0),
-              child: Text("${bookPrice}",style:const TextStyle(
+              child: Text(bookPrice,style:const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
                 color: AppColors.textBlack,

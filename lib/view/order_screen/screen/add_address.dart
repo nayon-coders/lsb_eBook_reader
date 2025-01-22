@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import '../../../../widgets/app_button.dart';
 import '../controller/create_order_controller.dart';
 import '../controller/shipping_address_controller.dart';
-import 'order_screen.dart';
 
 class AddAddress extends GetView<ShippingAddressController> {
    AddAddress({super.key});
@@ -41,6 +40,15 @@ class AddAddress extends GetView<ShippingAddressController> {
           child: ListView(
             children: [
 
+              //Name number
+              AppInput(
+                hint: "Name",
+                controller:controller.name.value,
+                textType: TextInputType.name,
+
+              ),
+
+              const SizedBox(height: 15,),
               //phone number
               AppInput(
                   hint: "Phone",
@@ -52,27 +60,39 @@ class AddAddress extends GetView<ShippingAddressController> {
 
               const SizedBox(height: 15,),
 
-              //city
+              //Village
               AppInput(
-                  hint: "City",
+                  hint: "Village",
                   textType: TextInputType.name,
-                  controller:controller.city.value
+                  controller:controller.village.value
               ),
 
               const SizedBox(height: 15,),
+
+              //Union Name
               AppInput(
-                hint: "District Name",
-                controller:controller.district.value,
+                hint: "Union Name",
+                controller:controller.union.value,
               ),
               const SizedBox(height: 15,),
 
 
+              //Upazila Name
               AppInput(
-                  hint: "Division Name",
-                  controller:controller.division.value
+                  hint: "Upazila Name",
+                  controller:controller.upazila.value
               ),
               const SizedBox(height: 15,),
 
+              //Zila Name
+              AppInput(
+                  hint: "Zila Name",
+                  controller:controller.zila.value
+              ),
+              const SizedBox(height: 15,),
+
+
+              //Address
               AppInput(
                   hint: "Address",
                   controller:controller.address.value,

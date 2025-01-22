@@ -90,7 +90,7 @@ class CreateOrderController extends GetxController {
       clearAll(); //clear all
       myOrderController.getMyOrder(); //refresh my order
      Get.snackbar("Success!", "Order placed successfully", backgroundColor: Colors.green);
-     Get.to(OrderSuccess(), transition: Transition.downToUp);
+     Get.to(const OrderSuccess(), transition: Transition.downToUp);
     }else{
       Get.snackbar("Error!", "Failed to place order: Status Code: ${res.statusCode}", backgroundColor: Colors.red);
     }

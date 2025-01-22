@@ -11,10 +11,12 @@ class ShippingAddressController extends GetxController{
 
   //text Editing controller
   Rx<TextEditingController> phone = TextEditingController().obs;
+  Rx<TextEditingController> name = TextEditingController().obs;
   Rx<TextEditingController> address = TextEditingController().obs;
-  Rx<TextEditingController> city = TextEditingController().obs;
-  Rx<TextEditingController> district = TextEditingController().obs;
-  Rx<TextEditingController> division = TextEditingController().obs;
+  Rx<TextEditingController> village = TextEditingController().obs;
+  Rx<TextEditingController> union = TextEditingController().obs;
+  Rx<TextEditingController> upazila = TextEditingController().obs;
+  Rx<TextEditingController> zila = TextEditingController().obs;
 
 
   //Model
@@ -52,14 +54,17 @@ class ShippingAddressController extends GetxController{
 
 
   //add shipping address
+
+  ///TODO:database change filed name
   addShippingAddress()async{
     isLoading.value= true;
     final body ={
       "phone":phone.value.text,
       "address":address.value.text,
-      "city":city.value.text,
-      "district": district.value.text,
-      "division": division.value.text,
+      "city":village.value.text,
+      "district": union.value.text,
+      "division": upazila.value.text,
+      "zila": zila.value.text,
     };
     final res = await ApiServices.postApi(AppConfig.ADD_SHIPPING_ADDRESS, body);
     if(res.statusCode == 200){
@@ -109,9 +114,9 @@ class ShippingAddressController extends GetxController{
     var res = await ApiServices.putApi(AppConfig.UPDATE_SHIPPING_ADDRESS+id.value, {
       "phone":phone.value.text,
       "address":address.value.text,
-      "city":city.value.text,
-      "district": district.value.text,
-      "division": division.value.text,
+      "city":village.value.text,
+      "district": union.value.text,
+      "division": upazila.value.text,
     });
 
     if(res.statusCode == 200) {
@@ -137,20 +142,20 @@ class ShippingAddressController extends GetxController{
     isEditing.value = true;
     phone.value.text = data.phone!;
     address.value.text = data.address!;
-    city.value.text = data.city!;
-    district.value.text = data.district!;
-    division.value.text = data.division!;
+    village.value.text = data.city!;
+    union.value.text = data.district!;
+    upazila.value.text = data.division!;
 
-    print("district --- ${district.value.text}");
+    print("district --- ${upazila.value.text}");
   }
 
   //clear all text field
   clearAll(){
     phone.value.clear();
     address.value.clear();
-    city.value.clear();
-    district.value.clear();
-    division.value.clear();
+    village.value.clear();
+    union.value.clear();
+    upazila.value.clear();
   }
 
 

@@ -28,7 +28,7 @@ class MyOrderScreen extends GetView<MyOrderController> {
         surfaceTintColor:Colors.transparent,
        //automaticallyImplyLeading: false,
         backgroundColor: AppColors.bgColor,
-        title:const Text("My Order Books",
+        title:const Text("My Books",
           style: TextStyle(fontWeight: FontWeight.w600,fontSize: 18,color: AppColors.textBlack),
         ),
       ),
