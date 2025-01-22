@@ -2,18 +2,10 @@ import 'package:ebook_reader/data/model/single_book_model.dart';
 import 'package:ebook_reader/utility/app_color.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/category_screen/screen/fav_this_book_view.dart';
 import 'package:ebook_reader/widgets/app_shimmer_pro.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:html/parser.dart' as html_parser;
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:page_flip/page_flip.dart';
-import 'package:syncfusion_flutter_core/theme.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:turn_page_transition/turn_page_transition.dart';
 
 import '../../../../widgets/not-find.dart';
@@ -30,21 +22,18 @@ class ReadingScreen extends StatefulWidget {
 class _ReadingScreenState extends State<ReadingScreen> {
   final ReadingController controller = Get.find<ReadingController>();
   final MarkTextController markTextController = Get.find<MarkTextController>();
-  final pageFlipWidgetsController = GlobalKey<PageFlipWidgetState>();
-  final PdfViewerController _pdfViewerController = PdfViewerController();
-
-
-  int _currentPageNumber = 0;
+  final TurnPageController turnController = TurnPageController();
 
   late BookInfo bookInfo;
   // topic id
-  late String topicId;
+   late String topicId;
 
   @override
   void initState() {
     super.initState();
     bookInfo = Get.arguments["bookInfo"] as BookInfo;
     topicId = Get.arguments["id"] as String;
+
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       if (bookInfo.bookId != null) {
@@ -56,12 +45,17 @@ class _ReadingScreenState extends State<ReadingScreen> {
     });
   }
 
-
+  @override
+  void dispose() {
+    //font size reset
+    controller.dispose();
+    turnController.dispose(); // Dispose of the TurnPageController
+    super.dispose();
+  }
 
 
   @override
   Widget build(BuildContext context) {
-
     return  WillPopScope(
       onWillPop: () async {
         // Return false to prevent the back button from closing the screen
@@ -69,14 +63,14 @@ class _ReadingScreenState extends State<ReadingScreen> {
         return false; // Disable back button
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.grey.shade200,
         appBar: AppBar(
           centerTitle: true,
           backgroundColor: AppColors.bgColor,
 
           leading: IconButton(
             onPressed: () {
-              controller.clearAllData();
+             controller.clearAllData();
               Get.back();
             },
             icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
@@ -94,122 +88,69 @@ class _ReadingScreenState extends State<ReadingScreen> {
               onPressed: () =>Get.to(FavThisBookView()),
               icon: const Icon(Icons.favorite),
             ),
-            SizedBox(width: 10,),
+            const SizedBox(width: 10,),
           ],
         ),
-        body: Container(
-
-          child: Obx(() {
-            print(" controller.isPDFLoading.value --- ${ controller.isPDFLoading.value}");
-            print(" controller.isLoading.value --- ${  controller.pdfBook.value}");
-            // Check if data is loading
-            if(controller.isPDFLoading.value){
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Lottie.asset("assets/images/book-loading.json", height: 100, width: 100),
-                    Text("Loading..."),
-                  ],
-                ),
-              );
-            }else if (controller.isLoading.value) {
-              return _buildBookLoading();
-            }
-            // Check if the data is null or empty
-            else if (controller.peragraphModel.value.data == null || controller.peragraphModel.value.data!.isEmpty) {
-              return NotFind(); // Show "Not Found" if no content is available
-            }
-            else {
-
-              return PageFlipWidget(
-                key: pageFlipWidgetsController,
-                backgroundColor: Colors.white,
-                // isRightSwipe: true,
-                //lastPage: Container(color: Colors.white, child: const Center(child: Text('Last Page!'))),
-                children: <Widget>[
-                  for (var i = 0; i < int.parse("${controller.peragraphModel.value.data!.first!.pageNumber}"); i++) _buildPDFBookShow(i) ,
-                ],
-              );
-            }
-          }),
-        ),
-
-
-        bottomNavigationBar:  Obx(() {
-            return controller.isPDFLoading.value ? SizedBox(height: 0,) : _buildBottomBar();
+        body: Obx(() {
+          // Check if data is loading
+          if (controller.isLoading.value) {
+            return _buildBookLoading();
           }
-        ),
-      ),
-    );
-  }
-
-  Container _buildPDFBookShow(int i){
-    _currentPageNumber = i;
-    return Container(
-
-  //    margin: EdgeInsets.only(left: 10, right: 10),
-      child: Obx(() {
-          return controller.isPDFLoading.value
-              ? Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    CircularProgressIndicator(),
-                    Text("Loading..."),
-                  ],
-                ),
-              ): AbsorbPointer(
-                absorbing: true,
-                child: SfPdfViewerTheme(
-                  data: SfPdfViewerThemeData(
-                    backgroundColor: Color(0xffF5F5F5) //<----
-                  ),
-                  child: SfPdfViewer.memory(
-                    controller.pdfBook.value,
-                    maxZoomLevel: 1.3,
-                    initialZoomLevel: controller.pageWidth.value,
-                    scrollDirection: PdfScrollDirection.horizontal,
-                    controller: _pdfViewerController,
-                    canShowScrollHead: false,
-                    canShowScrollStatus: false,
-                    canShowPaginationDialog: false,
-                    initialPageNumber: i,
-                    enableDoubleTapZooming: false,
-                    enableTextSelection: false,
-                    enableDocumentLinkAnnotation: true,
-                    onHyperlinkClicked: (details) {
-                      _showMyDialog(details.uri);
+          // Check if the data is null or empty
+          else if (controller.peragraphModel.value.data == null || controller.peragraphModel.value.data!.isEmpty) {
+            return NotFind(); // Show "Not Found" if no content is available
+          }
+          // Check if totalBookPages is populated
+          else if (controller.totalBookPages.value == null || controller.totalBookPages.value!.isEmpty) {
+            return const Center(child: Text("No pages available."));
+          }
+          else {
+            return SizedBox(
+              height: Get.height,
+              width: Get.width,
+              child: Column(
+                children: [
+                  TurnPageView.builder(
+                    useOnTap: false,
+                    useOnSwipe: true,
+                    onSwipe: (isForward) {
+                      print('Tapped on page isForward $isForward');
+                      if (isForward) {
+                        controller.currentPage.value++;
+                      } else {
+                        controller.currentPage.value--;
+                      }
                     },
+
+                    controller: turnController,
+                    itemCount: controller.totalBookPages.value!.length,
+                    itemBuilder: (context, index) {
+                      var data = controller.totalBookPages.value![index];
+                      return _buildBookWidgets(index, data);
+                    },
+                    overleafColorBuilder: (index) => Colors.grey.shade200,
+                    animationTransitionPoint: 0.5,
                   ),
-                ),
+                ],
+              ),
+            );
+          }
+        }),
 
 
-          );
-        }
+        bottomNavigationBar: _buildBottomBar(),
       ),
     );
-
   }
-
 
   Container _buildBottomBar() {
     return Container(
-
-      padding: const EdgeInsets.only(left: 40, right: 40, top: 5, bottom: 5),
+      padding: const EdgeInsets.all(20),
       color: Colors.grey.shade200,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          //_buildNextPrevious(),
-          Obx(() {
-
-            return controller.isPDFLoading.value || controller.isLoading.value ? Center() : Text("Total Page ${controller.peragraphModel.value.data!.first.pageNumber}",
-            );
-          }
-          ),
+          _buildNextPrevious(),
 
 
           // Add the icons for the first and last page
@@ -219,6 +160,54 @@ class _ReadingScreenState extends State<ReadingScreen> {
     );
   }
 
+  Container _buildBookWidgets(int index, String data) {
+   // controller.currentPage.value = index;
+    print("data 00000 ${data}");
+    return Container(
+      height: MediaQuery.of(context).size.height*0.76,
+      padding: const EdgeInsets.all(15),
+      color: Colors.white,
+      child: Obx(() {
+          return _buildHighlightedHtmlText(context, data, controller.peragraphModel.value.markTextData!.map((e) => e!.text!).toList());
+        }
+      ),
+      // child: Obx(() {
+      //
+      //     // return HtmlWidget(
+      //     //   data,
+      //     //   textStyle: TextStyle(
+      //     //     fontSize: controller.fontSize.value,
+      //     //     color: Colors.black,
+      //     //     letterSpacing: 0.5,
+      //     //     height: 1.7,
+      //     //
+      //     //   ),
+      //     //   onTapUrl: (url)  {
+      //     //     print("yes you click on url $url");
+      //     //     return true; // Return null to let the widget handle the URL
+      //     //   },
+      //     //   // Apply padding and alignment to fit the text nicely within the screen
+      //     //   customStylesBuilder: (element) {
+      //     //     return {
+      //     //       'text-align': 'justify',  // Justify text for a book-like effect
+      //     //     };
+      //     //   },
+      //     //
+      //     //   // Custom render for specific tags (like bold, italics, etc.)
+      //     //   customWidgetBuilder: (element) {
+      //     //     if (element.localName == 'b') {
+      //     //       return Text(
+      //     //         element.text,  // Render bold text
+      //     //         style: TextStyle(fontWeight: FontWeight.bold),
+      //     //       );
+      //     //     }
+      //     //     return null;
+      //     //   },
+      //     // );
+      //   }
+      // )
+    );
+  }
 
   Column _buildBookLoading() {
     return Column(
@@ -239,34 +228,28 @@ class _ReadingScreenState extends State<ReadingScreen> {
   Row _buildFontDafination() {
     return Row(
       children: [
-        // IconButton(
-        //     onPressed: () {
-        //       controller.decreaseFontSizePdf();
-        //     },
-        //     icon: Icon(Icons.text_decrease_outlined)),
-        // IconButton(
-        //     onPressed: () {
-        //       controller.increaseFontSizePdf();
-        //     },
-        //     icon: Icon(Icons.text_increase_outlined)),
-        // SizedBox(width: 20,),
+        IconButton(
+            onPressed: () {
+              if(controller.fontSize.value > 15.5) {
+                controller.fontSize.value = controller.fontSize.value - 0.1;
+              }
+
+            },
+            icon: const Icon(Icons.text_decrease_outlined)),
+        IconButton(
+            onPressed: () {
+              if(controller.fontSize.value < 16.5) {
+                controller.fontSize.value = controller.fontSize.value + 0.1;
+              }
+              print(" controller.fontSize.value --- ${ controller.fontSize.value}");
+            },
+            icon: const Icon(Icons.text_increase_outlined)),
+        const SizedBox(width: 20,),
 
 
         InkWell(
-          onTap: ()=> _showVocabularyList(),
-          child: Container(
-            width: 40,
-            height: 40,
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(100)
-            ),
-            child: InkWell(
-
-                child: Image.asset("assets/images/definition.png",height: 30,width: 30,)),
-          ),
-        ),
+            onTap: ()=> _showVocabularyList(),
+            child: Image.asset("assets/images/definition.png",height: 30,width: 30,)),
       ],
     );
   }
@@ -277,28 +260,21 @@ class _ReadingScreenState extends State<ReadingScreen> {
       children: [
         IconButton(
           onPressed: () {
-           setState(() {
-             pageFlipWidgetsController.currentState!.previousPage();
-           });
-           setState(() {
-
-           });
+           if(controller.currentPage.value > 1){
+             controller.currentPage.value--;
+             turnController.previousPage();
+           }
           },
           icon: const Icon(Icons.arrow_back_ios),
         ),
         Obx(() {
-            return Text("Page ${controller.content.length} of ${pageFlipWidgetsController.currentState!.pageNumber+1}",
-            );
-          }
+          return Text("Page ${controller.currentPage.value} of ${controller.totalBookPages.value!.length}");
+        }
         ),
         IconButton(
           onPressed: () {
-            setState(() {
-              pageFlipWidgetsController.currentState!.nextPage();
-            });
-            setState(() {
-
-            });
+            controller.currentPage.value++;
+            turnController.nextPage();
           },
           icon: const Icon(Icons.arrow_forward_ios),
         ),
@@ -308,16 +284,16 @@ class _ReadingScreenState extends State<ReadingScreen> {
   //show the vocabulary list
   void _showVocabularyList() {
 
-    showMaterialModalBottomSheet(
+    showModalBottomSheet(
         context: context,
         builder: (context) {
           return Container(
               padding: const EdgeInsets.all(20),
               height: Get.height,
               width: Get.width,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: AppColors.bgColor,
-                borderRadius: const BorderRadius.only(
+                borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30),
                   topRight: Radius.circular(30),
                 ),
@@ -326,12 +302,12 @@ class _ReadingScreenState extends State<ReadingScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Definition", style: const TextStyle(
+                  const Text("Definition", style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                     color: AppColors.textBlack,
                   ),),
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   Expanded(
                     child: Obx(() {
                       if(controller.peragraphModel.value.markTextData == null || controller.peragraphModel.value.markTextData!.isEmpty){
@@ -341,7 +317,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
                           itemCount: controller.peragraphModel.value.markTextData!.length,
                           itemBuilder: (context, index) {
                             var data = controller.peragraphModel.value.markTextData![index];
-                            //    markTextController.checkMarkTextIsAdded(data.id.toString());
+                        //    markTextController.checkMarkTextIsAdded(data.id.toString());
                             return Container(
                               margin: const EdgeInsets.only(bottom: 10),
                               decoration: BoxDecoration(
@@ -357,35 +333,35 @@ class _ReadingScreenState extends State<ReadingScreen> {
                                 ],
                               ),
                               child: Obx(() {
-                                return ListTile(
-                                  title: Text("${data.text}",
-                                    style: const TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600,
-                                      color: AppColors.textBlack,
+                                  return ListTile(
+                                    title: Text("${data.text}",
+                                      style: const TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600,
+                                        color: AppColors.textBlack,
+                                      ),
                                     ),
-                                  ),
-                                  subtitle: Text("${data.definition}",
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                      color: AppColors.textBlack,
+                                    subtitle: Text("${data.definition}",
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                        color: AppColors.textBlack,
+                                      ),
                                     ),
-                                  ),
-                                  trailing: IconButton(
-                                    onPressed: (){
-                                      if( markTextController.markTextFavModel.value.data!.any((item) => item.id == data.id)){
-                                        //markTextController.removeMarkTextFromFave(data.id.toString());
-                                      }else{
-                                        markTextController.addMarkTextToFave(data.id.toString());
-                                      }
+                                    trailing: IconButton(
+                                      onPressed: (){
+                                        if( markTextController.markTextFavModel.value.data!.any((item) => item.id == data.id)){
+                                          //markTextController.removeMarkTextFromFave(data.id.toString());
+                                        }else{
+                                          markTextController.addMarkTextToFave(data.id.toString());
+                                        }
 
-                                    },
-                                    icon: Icon(
-                                        markTextController.markTextFavModel.value.data!.any((item) => item.id == data.id) ? Icons.favorite : Icons.favorite_border),
-                                  ),
-                                );
-                              }
+                                      },
+                                      icon: Icon(
+                                          markTextController.markTextFavModel.value.data!.any((item) => item.id == data.id) ? Icons.favorite : Icons.favorite_border),
+                                    ),
+                                  );
+                                }
                               ),
                             );
                           },
@@ -404,6 +380,20 @@ class _ReadingScreenState extends State<ReadingScreen> {
   //////// end bottom navigation bar
   ////
   //
+
+
+  // Parse and highlight terms in the HTML content
+  RichText _buildHighlightedHtmlText(BuildContext context, String htmlContent, List<String> searchTerms) {
+    // Parse HTML to extract text content
+    final document = html_parser.parse(htmlContent);
+    final text = document.body?.text ?? "";
+
+    // Build highlighted text spans
+    return RichText(
+      textAlign: TextAlign.justify,
+      text: _buildHighlightedTextSpans(context, text, searchTerms),
+    );
+  }
 
   // Helper to build highlighted text with clickable spans
   TextSpan _buildHighlightedTextSpans(BuildContext context, String text, List<String> terms) {
@@ -448,48 +438,48 @@ class _ReadingScreenState extends State<ReadingScreen> {
               color: Colors.black,
               fontSize: controller.fontSize.value,
               wordSpacing: 1.5,
-              height: 1.7
+            height: 1.7
           ),
         ));
       }
 
       // Add highlighted, clickable text for the matched term
       spans.add(TextSpan(
-          text: matchedTerm,
-          style: TextStyle(
-              fontSize: controller.fontSize.value,
-              color: Colors.red, fontWeight: FontWeight.bold
-          ),
-          recognizer: TapGestureRecognizer()
-            ..onTap = () {
-              print("বাসটা --- ${matchedTerm}");
-              for (var i in controller.peragraphModel.value.markTextData!) {
-                if (i.text == matchedTerm) {
-                  Get.defaultDialog(
-                    barrierDismissible: false,
-                    backgroundColor: Colors.white,
-                    title: "${i!.text}",
-                    titleStyle: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textBlack,
+        text: matchedTerm,
+        style: TextStyle(
+          fontSize: controller.fontSize.value,
+            color: Colors.red, fontWeight: FontWeight.bold
+        ),
+        recognizer: TapGestureRecognizer()
+          ..onTap = () {
+            print("বাসটা --- ${matchedTerm}");
+            for (var i in controller.peragraphModel.value.markTextData!) {
+              if (i.text == matchedTerm) {
+                Get.defaultDialog(
+                  barrierDismissible: false,
+                  backgroundColor: Colors.white,
+                  title: "${i!.text}",
+                  titleStyle: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textBlack,
+                  ),
+                  content: Text(i!.definition!),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      child: const Text("Close"),
                     ),
-                    content: Text(i!.definition!),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Get.back();
-                        },
-                        child: Text("Close"),
-                      ),
-                    ],
-                  );
-                }
-                // ScaffoldMessenger.of(context).showSnackBar(
-                //   SnackBar(content: Text('Clicked on: $matchedTerm')),
-                // );
+                  ],
+                );
               }
+              // ScaffoldMessenger.of(context).showSnackBar(
+              //   SnackBar(content: Text('Clicked on: $matchedTerm')),
+              // );
             }
+          }
       ));
 
       // Move the start index past the matched term
@@ -501,126 +491,4 @@ class _ReadingScreenState extends State<ReadingScreen> {
         children: spans);
   }
 
-
-  Future<void> _showMyDialog(text) async {
-    //logic start
-    String defination = "";
-
-    String extractedText = text.split("https://").last;
-
-    for(var i in controller.peragraphModel.value.markTextData!){
-
-      if(i.text!.toLowerCase().contains(extractedText!.toString().toLowerCase())){
-        defination = i.definition!;
-      }
-    }
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          actionsPadding: EdgeInsets.only(bottom: 5, left: 5, right: 5),
-          contentPadding: EdgeInsets.all(20),
-          insetPadding: EdgeInsets.all(20),
-          iconPadding: EdgeInsets.all(20),
-          content: Container(
-            height: 250,
-            width: Get.width,
-
-            child: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                      color: AppColors.linkColor.withOpacity(0.2),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10),
-                      )
-                    ),
-                    child: Text("$extractedText",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: AppColors.textBlack,
-                      ),
-                    ),
-                  ),
-
-                  Container(
-                    height: 250,
-                    padding: EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                        color: AppColors.menuColor.withOpacity(0.3),
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(10),
-                          bottomRight: Radius.circular(10),
-                        )
-                    ),
-                    child: Text(defination),
-                  ),
-
-                ],
-              ),
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text('Close'),
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
 }
-
-// Container _buildBookContent(data) {
-//   return Container(
-//       padding: const EdgeInsets.all(20),
-//       child: Obx(() {
-//         return HtmlWidget(data,
-//           textStyle: TextStyle(
-//             fontSize: controller.fontSize.value,
-//           ),
-//           customWidgetBuilder: (element) {
-//             print("element.localName -- ${element.localName}");
-//             // Check if the current element is an <u> tag
-//             if (element.localName == 'u') {
-//
-//               bool isMarked = false;
-//               for(var i in controller.peragraphModel.value.markTextData!){
-//                 if(i.text!.toLowerCase().contains(element.text.toLowerCase())){
-//                   isMarked = true;
-//                 }
-//               }
-//
-//               return Obx(() {
-//                 return GestureDetector(
-//                   onTap: () {
-//                     // _showPopup(context, text);
-//                     isMarked ? _showMyDialog(element.text) : null;
-//                   },
-//                   child: HtmlWidget(
-//                     element.innerHtml,
-//                     textStyle: TextStyle(
-//                       fontSize: controller.fontSize.value,
-//                     ),
-//                   ),
-//                 );
-//               }
-//               );
-//             }
-//             return null; // Use default rendering for other elements
-//           },
-//
-//
-//         );
-//       }
-//       )
-//   );
-// }

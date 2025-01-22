@@ -58,6 +58,7 @@ class AppInput extends StatelessWidget {
           }
           return null;
         }
+        return null;
 
       },
       decoration: InputDecoration(

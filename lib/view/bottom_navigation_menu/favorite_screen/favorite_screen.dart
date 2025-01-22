@@ -7,7 +7,6 @@ import 'package:ebook_reader/widgets/empty_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
-import '../../../app_config.dart';
 import '../../../widgets/app_shimmer_pro.dart';
 
 class FavoriteScreen extends GetView<FavoriteBookController> {
@@ -44,7 +43,7 @@ class FavoriteScreen extends GetView<FavoriteBookController> {
                   height: 225,
                   child: Obx(() {
                     if(bookController.mostTradingBook.value.isEmpty){
-                      return Center(child:  EmptyScreen(),);
+                      return const Center(child:  EmptyScreen(),);
                     }else{
                       return ListView.builder(
                           scrollDirection: Axis.horizontal,
@@ -176,7 +175,7 @@ class FavoriteScreen extends GetView<FavoriteBookController> {
                         },
                         child: Container(
                           margin:const EdgeInsets.only(bottom: 15),
-                          padding:const EdgeInsets.only(right: 10),
+                          padding:const EdgeInsets.only(right: 15),
                           height: 80,
                           width:double.infinity ,
                           decoration: BoxDecoration(
@@ -230,7 +229,7 @@ class FavoriteScreen extends GetView<FavoriteBookController> {
 
                                         //rating
                                         Padding(
-                                          padding: const EdgeInsets.only(left: 6.0),
+                                          padding: const EdgeInsets.only(left: 6.0,),
                                           child: RatingBar(
                                             itemSize: 13,
                                             minRating: 1,
