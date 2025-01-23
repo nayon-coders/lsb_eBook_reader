@@ -48,10 +48,10 @@ class TopProfileInfoWidget extends GetView<ProfileController> {
                   height: 120,
                   width: 120,
                   decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.grey)
+                   //   shape: BoxShape. circle,
+                     border: Border.all(color: Colors.grey.shade100)
                   ),
-                  child: Image.asset(Assets.logo,height: 50,width: 50,fit: BoxFit.cover,),
+                  child: ClipRRect(borderRadius: BorderRadius.circular(5), child: Image.asset(Assets.profile,height: 120,width: 120,fit: BoxFit.contain,)),
                 );
               }
               }

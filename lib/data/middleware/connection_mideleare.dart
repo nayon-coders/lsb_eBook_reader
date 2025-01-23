@@ -50,22 +50,22 @@ class ConnectionMiddleware extends GetMiddleware {
         sharedPreferences!.setBool("isOnline", false);
 
 
-        Get.snackbar(
-          "Online",
-          "You are back online.",
-          duration: Duration(hours: 5),
-          mainButton: TextButton(
-            onPressed: () {
-              Get.offAllNamed(AppRoute.start);
-              Get.back();
-            },
-            child: Text("Go Online"),
-          ),
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-          snackPosition: SnackPosition.BOTTOM,
-
-        );
+        // Get.snackbar(
+        //   "Online",
+        //   "You are back online.",
+        //   duration: Duration(hours: 5),
+        //   mainButton: TextButton(
+        //     onPressed: () {
+        //       Get.offAllNamed(AppRoute.start);
+        //       Get.back();
+        //     },
+        //     child: Text("Go Online"),
+        //   ),
+        //   backgroundColor: Colors.green,
+        //   colorText: Colors.white,
+        //   snackPosition: SnackPosition.BOTTOM,
+        //
+        // );
       }
     }
   }

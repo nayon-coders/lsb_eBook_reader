@@ -25,7 +25,7 @@ class PaymentScreen extends GetView<CreateOrderController> {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(15.0),
+        padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,7 +95,7 @@ class PaymentScreen extends GetView<CreateOrderController> {
                 AppConst.copyToClipboard(controller.selectedPaymentMethod.value.acocuntNumber.toString());
               },
               child: Container(
-                padding:const  EdgeInsets.all(10),
+                padding:const  EdgeInsets.symmetric(vertical: 5, horizontal: 10 ),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10)
@@ -105,14 +105,14 @@ class PaymentScreen extends GetView<CreateOrderController> {
                     const Text("একাউন্ট নাম্বার: ",
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
-                        fontSize: 15,
+                        fontSize: 14,
                         color: AppColors.textBlack,
                       ),
                     ),
                     Text("${controller.selectedPaymentMethod.value.acocuntNumber}",
                       style: const TextStyle(
                         fontWeight: FontWeight.w600,
-                        fontSize: 18,
+                        fontSize: 17,
                         color: Colors.blue,
                       ),
                     ),
@@ -122,7 +122,7 @@ class PaymentScreen extends GetView<CreateOrderController> {
                 ),
               ),
             ),
-            const SizedBox(height: 20,),
+            const SizedBox(height: 10,),
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
@@ -141,7 +141,7 @@ class PaymentScreen extends GetView<CreateOrderController> {
                 ],
               ),
             ),
-            const SizedBox(height: 20,),
+            const SizedBox(height: 12,),
             const Text("আপনার পেমেন্ট নিশ্চিত করুন",
               style: TextStyle(
                 fontWeight: FontWeight.w600,
@@ -149,9 +149,9 @@ class PaymentScreen extends GetView<CreateOrderController> {
                 color: AppColors.textBlack,
               ),
             ),
-            const SizedBox(height: 10,),
+            const SizedBox(height: 8,),
             AppInput(hint: "যেই নম্বর থেকে টাকা পাঠিয়েছেন", controller: controller.payNumber.value, textType: TextInputType.number, ),
-            const SizedBox(height: 15,),
+            const SizedBox(height: 10,),
             AppInput(hint: "ট্রানজেকশন আইডি", controller: controller.payTransId.value),
 
             const SizedBox(height: 30,),

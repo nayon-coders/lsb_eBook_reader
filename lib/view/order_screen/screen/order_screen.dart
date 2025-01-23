@@ -47,7 +47,7 @@ class OrderScreen extends GetView<CreateOrderController> {
         title: Text("${bookInfo!.bookName} - Order",style:const TextStyle(fontWeight: FontWeight.w600,fontSize: 18,color: AppColors.textBlack),)
       ),
       body: SingleChildScrollView(
-        padding:const EdgeInsets.all(20),
+        padding:const EdgeInsets.only(left: 20, right: 20 , bottom: 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,6 +55,7 @@ class OrderScreen extends GetView<CreateOrderController> {
             //book details
             Container(
               height: 80,
+              padding: const EdgeInsets.only(left: 10, right: 10),
               width:size.width ,
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -63,14 +64,14 @@ class OrderScreen extends GetView<CreateOrderController> {
               child: Row(
                 children: [
                   Container(
-                    padding:const EdgeInsets.all(10),
-                    height: 80,
-                    width: 120,
+                    padding: const EdgeInsets.all(5),
+                    height: 50,
+                    width: 70,
                     decoration: BoxDecoration(
                       color: AppColors.cardAmber,
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(5),
                     ),
-                    child: Image.network(bookInfo!.image!,fit: BoxFit.cover,),
+                    child: Image.network(bookInfo!.image!,fit: BoxFit.contain,),
                   ),
                   const SizedBox(width: 10,),
                   Padding(
@@ -127,13 +128,13 @@ class OrderScreen extends GetView<CreateOrderController> {
               ),
             ),
 
-          const SizedBox(height: 15,),
+           const SizedBox(height: 10,),
 
            const Text("Choose Payment get way",
               style: TextStyle(fontWeight: FontWeight.w600,
-                  fontSize: 18,color: AppColors.textBlack),
+                  fontSize: 16,color: AppColors.textBlack),
             ),
-           const SizedBox(height: 10,),
+           const SizedBox(height: 5,),
 
             //payment method view
             PaymentMethodView(),

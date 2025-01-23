@@ -69,6 +69,8 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   modal_bottom_sheet: ^3.0.0
+  audioplayers: ^6.1.0
+  syncfusion_flutter_pdf: ^26.2.14
 
 
 
@@ -102,6 +104,7 @@ flutter:
     - assets/images/
     - assets/pdf.pdf
     - assets/book.pdf
+    - assets/page-flip.mp3
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

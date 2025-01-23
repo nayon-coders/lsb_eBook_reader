@@ -122,15 +122,13 @@ class BookController extends GetxController{
     //store main toc in the model
     List<SubTopics> subTocs = [];
     List<LocalDBbookModel> myBookList = [];
-    //
-    // var existingData = await getStoredBooks();
-    //
-    // myBookList = existingData; //assign the existing data to the list
+
   try{
     var response = await ApiServices.getApi(AppConfig.bookWithTopics+id);
     if(response.statusCode == 200){
       bookInfoModelWithMainAndSubTopics.value = BookInfoModelWithMainAndSubTopics.fromJson(jsonDecode(response.body));
 
+      print("bookInfoModelWithMainAndSubTopics.value!.bookInfo!.bookName -- ${bookInfoModelWithMainAndSubTopics.value.bookInfo}");
       //store book info in the model
       var bookInfo = LocalDBbookModel(
           book: MyBook(

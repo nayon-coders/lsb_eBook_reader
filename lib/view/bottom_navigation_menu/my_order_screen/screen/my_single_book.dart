@@ -216,6 +216,8 @@ class MySingleBookScreen extends GetView<BookController> {
         
                     ],
                   ),
+
+
         
                   Padding(
                     padding: const EdgeInsets.all(20.0),
@@ -223,7 +225,27 @@ class MySingleBookScreen extends GetView<BookController> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 60,),
+                        Center(
+                          child: Padding(
+                            padding: EdgeInsets.all(20),
+                            child: TextButton(
+                              style: ButtonStyle(
+                                backgroundColor: WidgetStateProperty.all(AppColors.linkColor),
+                              ),
+                              child: controller.isGettingBookInfo.value
+                                  ?  SizedBox(width: 20, height: 20, child: CircularProgressIndicator(color: Colors.white,),)
+                                  : Text("Read offline book",
+                                style: TextStyle(
+                                    color: Colors.white
+                                ),
+                              ),
+                              onPressed: (){
+                                if(controller.isGettingBookInfo.value) return;
+                                controller.getBookInfoWithTopics(controller.bookId.value); //get book info with topics
+                              },
+                            ),
+                          ),
+                        ),
                         const Text("Book description",
                           style:TextStyle(fontWeight: FontWeight.w600,
                               fontSize: 20,

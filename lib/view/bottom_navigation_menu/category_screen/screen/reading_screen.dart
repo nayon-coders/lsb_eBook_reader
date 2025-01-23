@@ -1,6 +1,8 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:ebook_reader/data/model/single_book_model.dart';
 import 'package:ebook_reader/utility/app_color.dart';
 import 'package:ebook_reader/view/bottom_navigation_menu/category_screen/screen/fav_this_book_view.dart';
+import 'package:ebook_reader/view/bottom_navigation_menu/category_screen/widgets/PageFlipWithSound.dart';
 import 'package:ebook_reader/widgets/app_shimmer_pro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -28,6 +30,8 @@ class ReadingScreen extends StatefulWidget {
 }
 
 class _ReadingScreenState extends State<ReadingScreen> {
+  final player = AudioPlayer();
+
   final ReadingController controller = Get.find<ReadingController>();
   final MarkTextController markTextController = Get.find<MarkTextController>();
   final pageFlipWidgetsController = GlobalKey<PageFlipWidgetState>();
@@ -100,8 +104,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
         body: Container(
 
           child: Obx(() {
-            print(" controller.isPDFLoading.value --- ${ controller.isPDFLoading.value}");
-            print(" controller.isLoading.value --- ${  controller.pdfBook.value}");
+
             // Check if data is loading
             if(controller.isPDFLoading.value){
               return Center(
@@ -122,16 +125,18 @@ class _ReadingScreenState extends State<ReadingScreen> {
               return NotFind(); // Show "Not Found" if no content is available
             }
             else {
+              return PageFlipWithSound();
 
-              return PageFlipWidget(
-                key: pageFlipWidgetsController,
-                backgroundColor: Colors.white,
-                // isRightSwipe: true,
-                //lastPage: Container(color: Colors.white, child: const Center(child: Text('Last Page!'))),
-                children: <Widget>[
-                  for (var i = 0; i < int.parse("${controller.peragraphModel.value.data!.first!.pageNumber}"); i++) _buildPDFBookShow(i) ,
-                ],
-              );
+              // return PageFlipWidget(
+              //
+              //   key: pageFlipWidgetsController,
+              //   backgroundColor: Colors.white,
+              //   // isRightSwipe: true,
+              //   //lastPage: Container(color: Colors.white, child: const Center(child: Text('Last Page!'))),
+              //   children: <Widget>[
+              //     for (var i = 0; i < int.parse("${controller.peragraphModel.value.data!.first!.pageNumber}"); i++) _buildPDFBookShow(i) ,
+              //   ],
+              // );
             }
           }),
         ),
@@ -145,53 +150,9 @@ class _ReadingScreenState extends State<ReadingScreen> {
     );
   }
 
-  Container _buildPDFBookShow(int i){
-    _currentPageNumber = i;
-    return Container(
-
-  //    margin: EdgeInsets.only(left: 10, right: 10),
-      child: Obx(() {
-          return controller.isPDFLoading.value
-              ? Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    CircularProgressIndicator(),
-                    Text("Loading..."),
-                  ],
-                ),
-              ): AbsorbPointer(
-                absorbing: true,
-                child: SfPdfViewerTheme(
-                  data: SfPdfViewerThemeData(
-                    backgroundColor: Color(0xffF5F5F5) //<----
-                  ),
-                  child: SfPdfViewer.memory(
-                    controller.pdfBook.value,
-                    maxZoomLevel: 1.3,
-                    initialZoomLevel: controller.pageWidth.value,
-                    scrollDirection: PdfScrollDirection.horizontal,
-                    controller: _pdfViewerController,
-                    canShowScrollHead: false,
-                    canShowScrollStatus: false,
-                    canShowPaginationDialog: false,
-                    initialPageNumber: i,
-                    enableDoubleTapZooming: false,
-                    enableTextSelection: false,
-                    enableDocumentLinkAnnotation: true,
-                    onHyperlinkClicked: (details) {
-                      _showMyDialog(details.uri);
-                    },
-                  ),
-                ),
-
-
-          );
-        }
-      ),
-    );
-
+  _playSound()async{
+    await player.setSource(AssetSource('page-flip.mp3'));
+    print("sound is play now");
   }
 
 
@@ -239,18 +200,6 @@ class _ReadingScreenState extends State<ReadingScreen> {
   Row _buildFontDafination() {
     return Row(
       children: [
-        // IconButton(
-        //     onPressed: () {
-        //       controller.decreaseFontSizePdf();
-        //     },
-        //     icon: Icon(Icons.text_decrease_outlined)),
-        // IconButton(
-        //     onPressed: () {
-        //       controller.increaseFontSizePdf();
-        //     },
-        //     icon: Icon(Icons.text_increase_outlined)),
-        // SizedBox(width: 20,),
-
 
         InkWell(
           onTap: ()=> _showVocabularyList(),

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -21,7 +22,11 @@ class OffLineReadPdf extends StatefulWidget {
 }
 
 class _OffLineReadPdfState extends State<OffLineReadPdf> {
+  final AudioPlayer audioPlayer = AudioPlayer();
 
+  Future<void> playPageFlipSound() async {
+    await audioPlayer.play(AssetSource('page-flip.mp3'));
+  }
 
   SubTopics data = Get.arguments;
 
@@ -103,6 +108,9 @@ class _OffLineReadPdfState extends State<OffLineReadPdf> {
                   initialPageNumber: 1,
                   enableDoubleTapZooming: false,
                   enableTextSelection: false,
+                  onDocumentLoaded: (v){
+                    playPageFlipSound();
+                  },
                   enableDocumentLinkAnnotation: true,
                   // onHyperlinkClicked: (details) {
                   //   _showMyDialog(details.uri);

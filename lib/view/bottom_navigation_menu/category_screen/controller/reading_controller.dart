@@ -8,7 +8,9 @@ import 'package:html/dom.dart' as dom;
 import 'package:get/get.dart';
 import 'package:page_flip/page_flip.dart';
 import 'package:http/http.dart' as http;
-import '../../../../data/model/mark_fav_model.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+
 import '../../../../data/model/peragraphModel.dart';
 import 'mark_text_controller.dart';
 class ReadingController extends GetxController {
@@ -107,25 +109,33 @@ class ReadingController extends GetxController {
 
   Rx<Uint8List> pdfBook = Uint8List(0).obs;
   RxBool isPDFLoading = false.obs;
-  Future<void> _loadPdf(pdfUrl) async {
-    print("pdfUrl -- ${pdfUrl}");
 
+  Future<void> _loadPdf(String pdfUrl) async {
     try {
       isPDFLoading.value = true;
-      final response = await http.get(Uri.parse(pdfUrl));
-      if (response.statusCode == 200) {
-          pdfBook.value = response.bodyBytes; // Load PDF data into memory
-          isPDFLoading.value = false;
-      } else {
-        isPDFLoading.value = false;
-        throw Exception('Failed to load PDF');
+      final cacheManager = DefaultCacheManager();
+      final file = await cacheManager.getSingleFile(pdfUrl);
+      final pdfBytes = await file.readAsBytes();
 
-      }
+      pdfBook.value = pdfBytes;
     } catch (e) {
       print('Error loading PDF: $e');
+    } finally {
       isPDFLoading.value = false;
     }
   }
+
+
+
+  // Future<void> preloadPdfPages(Uint8List pdfData) async {
+  //   final PdfDocument document = PdfDocument(inputBytes: pdfData);
+  //   for (int i = 0; i < document.pages.count; i++) {
+  //     final page = document.pages[i];
+  //     await page.render(width: 1000, height: 1000); // Render the page
+  //   }
+  //   document.dispose(); // Clean up resources
+  // }
+
 
 
 //Function to initialize controllers and set their content

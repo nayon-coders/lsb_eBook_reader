@@ -53,7 +53,7 @@ class AuthController extends GetxController{
     isLogin.value = true;
     //api call
     var response = await ApiServices.postApi(AppConfig.LOGIN, {
-      "email": email.value.text,
+      "phone": email.value.text,
       "password": pass.value.text
     });
 
@@ -102,7 +102,7 @@ class AuthController extends GetxController{
       Get.offAllNamed(AppRoute.appNavigation);
     } else {
       isRegister.value = false;
-      Get.snackbar("Error", "Invalid email or password",
+      Get.snackbar("Error", "${jsonDecode(response.body)["message"]}",
           snackPosition: SnackPosition.TOP, backgroundColor: Colors.red);
     }
   }

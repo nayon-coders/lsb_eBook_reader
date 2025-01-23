@@ -48,7 +48,7 @@ class LoginScreen extends GetView<AuthController> {
 
              const SizedBox(height: 50,),
               AppInput(
-                  hint: "Email",
+                  hint: "Phone Number",
                   textType: TextInputType.emailAddress,
                   controller: controller.email.value,
               ),

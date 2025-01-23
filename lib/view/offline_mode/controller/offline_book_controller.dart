@@ -69,6 +69,7 @@ class OfflineBookController extends GetxController {
       // Save the updated list back to SharedPreferences
       final updatedJson = myLocalBookList.map((book) => book.toJson()).toList();
       prefs.setString("my_book", jsonEncode(updatedJson));
+      getMyLocalBook();
       update();
       Get.back();
     }

@@ -56,7 +56,7 @@ class _OfflinePagesState extends State<OfflinePages> {
                 children: [
                   Expanded( 
                     child: AppButton(name: "Reload", onClick: (){
-                      Get.toNamed(AppRoute.OfflinePages);
+                      Get.toNamed(AppRoute.start);
                     }, bgColor: Colors.blue,)
                   ),
                   SizedBox(width: 20,),

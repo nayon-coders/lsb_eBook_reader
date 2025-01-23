@@ -151,6 +151,7 @@ class FavoriteScreen extends GetView<FavoriteBookController> {
             Obx(() {
               if(controller.isLoading.value){
                 return ListView.builder(
+                  shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                     scrollDirection: Axis.vertical,
                     itemCount:4,

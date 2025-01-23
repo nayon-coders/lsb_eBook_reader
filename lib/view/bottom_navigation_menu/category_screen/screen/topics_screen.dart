@@ -72,7 +72,7 @@ class TopicsScreen extends GetView<BookController> {
                       child: Center(child: Text("${index+1}",style: const TextStyle(fontWeight: FontWeight.w600,fontSize: 16,color: Colors.white),)),
                     ),
                     title: Text("${data.name}",style:const TextStyle(fontSize: 16,fontWeight: FontWeight.w600,color: AppColors.textBlack),),
-                    subtitle: Text("${data.pageNumber} Page",style: const TextStyle(fontWeight: FontWeight.w400,fontSize: 14,color: AppColors.textBlack),),
+                   // subtitle: Text("${data} Page",style: const TextStyle(fontWeight: FontWeight.w400,fontSize: 14,color: AppColors.textBlack),),
                     trailing:  Icon(allPermission ? Icons.double_arrow :  data.lookStatus == AppConst.lock ? Icons.lock : Icons.double_arrow,color: AppColors.buttonGreen,),
                   ),
                 );
